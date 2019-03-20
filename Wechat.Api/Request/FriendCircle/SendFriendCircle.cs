@@ -55,7 +55,7 @@ namespace Wechat.Api.Request.FriendCircle
 
     public class MediaInfo
     {
-        
+
         /// <summary>
         /// 数据链接
         /// </summary>
@@ -65,5 +65,20 @@ namespace Wechat.Api.Request.FriendCircle
         /// 图片链接
         /// </summary>
         public string ImageUrl { get; set; }
+
+        /// <summary>
+        /// 高度
+        /// </summary> 
+        public decimal Width { get; set; } = 300;
+        /// <summary>
+        /// 宽度
+        /// </summary>
+        public decimal Height { get; set; } = 300;
+        /// <summary>
+        /// 总大小
+        /// </summary>
+        public decimal TotalSize { get; set; }
+
+
     }
 }

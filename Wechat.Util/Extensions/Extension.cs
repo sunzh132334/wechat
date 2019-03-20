@@ -1,10 +1,14 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ZXing;
+using ZXing.Common;
+using ZXing.QrCode;
 
 namespace Wechat.Util.Extensions
 {
@@ -72,7 +76,7 @@ namespace Wechat.Util.Extensions
         public static bool IsVoice(this string fileName)
         {
             bool isVoice = false;
-            string[] exts = { ".wav", ".aif", ".aiff", ".au", ".mp3", ".ra", ".rm", ".ram", ".wma", ".mmf", ".amr", ".aac", ".flac",".snd" };
+            string[] exts = { ".wav", ".aif", ".aiff", ".au", ".mp3", ".ra", ".rm", ".ram", ".wma", ".mmf", ".amr", ".aac", ".flac", ".snd" };
             if (exts.Contains(fileName.ToLower()))
             {
                 isVoice = true;
@@ -80,6 +84,35 @@ namespace Wechat.Util.Extensions
             return isVoice;
         }
 
-   
+
+        public static Bitmap CreateQRCode(this string asset)
+        {
+            EncodingOptions options = new QrCodeEncodingOptions
+            {
+                DisableECI = true,
+                CharacterSet = "UTF-8",
+                Width = 280,
+                Height = 280
+            };
+            BarcodeWriter writer = new BarcodeWriter();
+            writer.Format = BarcodeFormat.QR_CODE;
+            writer.Options = options;
+            var bitmap = writer.Write(asset);
+            return bitmap;
+        }
+
+        /// <summary>
+        ///  4、图片转换成字节流 
+        /// </summary>
+        /// <param name="img"></param>
+        /// <returns></returns>
+        public static byte[] ImageToByteArray(this Image img)
+        {
+            ImageConverter imgconv = new ImageConverter();
+            byte[] b = (byte[])imgconv.ConvertTo(img, typeof(byte[]));
+            return b;
+        }
+
+
     }
 }

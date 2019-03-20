@@ -10,11 +10,17 @@ using Wechat.Api.Filters;
 
 namespace Wechat.Api
 {
+    /// <summary>
+    /// 启动文件
+    /// </summary>
     public class WebApiApplication : System.Web.HttpApplication
     {
+        /// <summary>
+        /// 
+        /// </summary>
         protected void Application_Start()
         {
-        
+ 
             //webapi 配置
             GlobalConfiguration.Configure(WebApiConfig.Register);
             //RouteConfig.RegisterRoutes(RouteTable.Routes);
@@ -24,6 +30,7 @@ namespace Wechat.Api
             GlobalConfiguration.Configuration.Filters.Add(new ValidParameterAttribute());
             //注册认证
             //GlobalConfiguration.Configuration.Filters.Add(new AuthenticationAttribute());
+            
 
         }
     }

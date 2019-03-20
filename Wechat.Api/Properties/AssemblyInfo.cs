@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Web;
+using Wechat.Api;
 
 // 有关程序集的常规信息是通过以下项进行控制的
 // 控制。更改这些特性值可修改
@@ -21,7 +23,7 @@ using System.Runtime.InteropServices;
 
 // 如果此项目向 COM 公开，则下列 GUID 用于 typelib 的 ID
 [assembly: Guid("4aed2644-c334-4232-a14e-e2516be77451")]
-
+[assembly: PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
 // 程序集的版本信息由下列四个值组成:
 //
 //      主版本

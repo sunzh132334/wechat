@@ -53,3 +53,16 @@ C:\Users\LTL\Desktop\Wechat1111\Wechat\obj\Debug\Wechat.csproj.CoreCompileInputs
 C:\Users\LTL\Desktop\Wechat1111\Wechat\obj\Debug\Wechat.csproj.CopyComplete
 C:\Users\LTL\Desktop\Wechat1111\Wechat\obj\Debug\Wechat.exe
 C:\Users\LTL\Desktop\Wechat1111\Wechat\obj\Debug\Wechat.pdb
+C:\Users\LTL\Desktop\Wechat\Wechat\bin\Debug\Wechat.exe.config
+C:\Users\LTL\Desktop\Wechat\Wechat\bin\Debug\Wechat.exe
+C:\Users\LTL\Desktop\Wechat\Wechat\bin\Debug\Wechat.pdb
+C:\Users\LTL\Desktop\Wechat\Wechat\bin\Debug\Newtonsoft.Json.dll
+C:\Users\LTL\Desktop\Wechat\Wechat\obj\Debug\Wechat.csprojAssemblyReference.cache
+C:\Users\LTL\Desktop\Wechat\Wechat\obj\Debug\Wechat.exe.config
+C:\Users\LTL\Desktop\Wechat\Wechat\obj\Debug\Wechat.Form1.resources
+C:\Users\LTL\Desktop\Wechat\Wechat\obj\Debug\Wechat.Properties.Resources.resources
+C:\Users\LTL\Desktop\Wechat\Wechat\obj\Debug\Wechat.csproj.GenerateResource.cache
+C:\Users\LTL\Desktop\Wechat\Wechat\obj\Debug\Wechat.csproj.CoreCompileInputs.cache
+C:\Users\LTL\Desktop\Wechat\Wechat\obj\Debug\Wechat.csproj.CopyComplete
+C:\Users\LTL\Desktop\Wechat\Wechat\obj\Debug\Wechat.exe
+C:\Users\LTL\Desktop\Wechat\Wechat\obj\Debug\Wechat.pdb

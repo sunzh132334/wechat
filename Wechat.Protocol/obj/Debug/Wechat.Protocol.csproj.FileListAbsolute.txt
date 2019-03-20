@@ -124,3 +124,5 @@ C:\Users\LTL\Desktop\Wechat\Wechat.Protocol\obj\Debug\Wechat.Protocol.csproj.Cor
 C:\Users\LTL\Desktop\Wechat\Wechat.Protocol\obj\Debug\Wechat.Protocol.csproj.CopyComplete
 C:\Users\LTL\Desktop\Wechat\Wechat.Protocol\obj\Debug\Wechat.Protocol.dll
 C:\Users\LTL\Desktop\Wechat\Wechat.Protocol\obj\Debug\Wechat.Protocol.pdb
+C:\Users\LTL\Desktop\Wechat\Wechat.Protocol\bin\Debug\zxing.pdb
+C:\Users\LTL\Desktop\Wechat\Wechat.Protocol\bin\Debug\zxing.presentation.pdb

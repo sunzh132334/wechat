@@ -22,7 +22,7 @@ namespace Wechat.Api.Helper
             {
                 foreach (var item in mediaInfos)
                 {
-                    string media = $"<media><id>1</id><type>3</type><title></title><description></description><private>0</private><url type=\"1\">{item.ImageUrl}</thumb><size height=\"300.0\" width=\"300.0\" totalSize=\"16354.0\"></size></media>";
+                    string media = $"<media><id>1</id><type>3</type><title></title><description></description><private>0</private><url type=\"1\">{item.Url}</url><thumb type=\"1\">{item.ImageUrl}</thumb><size height=\"{item.Height}\" width=\"{item.Width}\" totalSize=\"{item.TotalSize}\"></size></media>";
                     sb.Append(media);
                 }
             }
@@ -36,7 +36,7 @@ namespace Wechat.Api.Helper
             {
                 foreach (var item in mediaInfos)
                 {
-                    string media = $"<media><id>1</id><type>4</type><title></title><description></description><private>0</private><url type=\"1\">{item.ImageUrl}</thumb><size height=\"300.0\" width=\"300.0\" totalSize=\"16354.0\"></size></media>";
+                    string media = $"<media><id>4</id><type>2</type><title></title><description></description><private>0</private><url type=\"1\">{item.Url}</url><thumb type=\"1\">{item.ImageUrl}</thumb><size height=\"{item.Height}\" width=\"{item.Width}\" totalSize=\"{item.TotalSize}\"></size></media>";
                     sb.Append(media);
                 }
             }
@@ -50,7 +50,7 @@ namespace Wechat.Api.Helper
             {
                 foreach (var item in mediaInfos)
                 {
-                    string media = $"<media><id>1</id><type>4</type><title></title><description></description><private>0</private><url type=\"1\">{item.ImageUrl}</thumb><size height=\"300.0\" width=\"300.0\" totalSize=\"16354.0\"></size></media>";
+                    string media = $"<media><id>1</id><type>2</type><title></title><description></description><private>0</private><url type=\"1\">{item.Url}</url><thumb type=\"1\">{item.ImageUrl}</thumb><size height=\"{item.Height}\" width=\"{item.Width}\" totalSize=\"{item.TotalSize}\"></size></media>";
                     sb.Append(media);
                 }
             }
@@ -65,11 +65,11 @@ namespace Wechat.Api.Helper
             {
                 foreach (var item in mediaInfos)
                 {
-                    string media = $"<media><id>1</id><type>2</type><title></title><description></description><private>0</private><url type=\"1\">{item.ImageUrl}</thumb><size height=\"300.0\" width=\"300.0\" totalSize=\"16354.0\"></size></media>";
+                    string media = $"<media><id>1</id><type>2</type><title></title><description></description><private>0</private><url type=\"1\">{item.Url}</url><thumb type=\"1\">{item.ImageUrl}</thumb><size height=\"{item.Height}\" width=\"{item.Width}\" totalSize=\"{item.TotalSize}\"></size></media>";
                     sb.Append(media);
                 }
             }
-            string template = $"<TimelineObject><id>1</id><username>1</username><createTime>1</createTime><contentDescShowType>0</contentDescShowType><contentDescScene>0</contentDescScene><private>0</private><contentDesc>{content}</contentDesc><contentattr>0</contentattr><sourceUserName></sourceUserName><sourceNickName></sourceNickName><statisticsData></statisticsData><weappInfo><appUserName></appUserName><pagePath></pagePath></weappInfo><canvasInfoXml></canvasInfoXml><ContentObject><contentStyle>1</contentStyle><contentSubStyle>0</contentSubStyle><title></title><description></description><contentUrl></contentUrl><mediaList>{sb}</mediaList></ContentObject><actionInfo><appMsg><mediaTagName></mediaTagName><messageExt></messageExt><messageAction></messageAction></appMsg></actionInfo><appInfo><id></id></appInfo><location poiClassifyId=\"\" poiName=\"\" poiAddress=\"\" poiClassifyType=\"0\" city=\"\"></location><publicUserName></publicUserName><streamvideo><streamvideourl></streamvideourl><streamvideothumburl></streamvideothumburl><streamvideoweburl></streamvideoweburl></streamvideo></TimelineObject>";
+            string template = $"<TimelineObject><id>1</id><username>1</username><createTime>1</createTime><contentDescShowType>0</contentDescShowType><contentDescScene>0</contentDescScene><private>0</private><contentDesc>{content}</contentDesc><contentattr>0</contentattr><sourceUserName></sourceUserName><sourceNickName></sourceNickName><statisticsData></statisticsData><weappInfo><appUserName></appUserName><pagePath></pagePath></weappInfo><canvasInfoXml></canvasInfoXml><ContentObject><contentStyle>1</contentStyle><contentSubStyle>0</contentSubStyle><title>{title}</title><description>{description}</description><contentUrl></contentUrl><mediaList>{sb}</mediaList></ContentObject><actionInfo><appMsg><mediaTagName></mediaTagName><messageExt></messageExt><messageAction></messageAction></appMsg></actionInfo><appInfo><id></id></appInfo><location poiClassifyId=\"\" poiName=\"\" poiAddress=\"\" poiClassifyType=\"0\" city=\"\"></location><publicUserName></publicUserName><streamvideo><streamvideourl></streamvideourl><streamvideothumburl></streamvideothumburl><streamvideoweburl></streamvideoweburl></streamvideo></TimelineObject> ";
             return template;
         }
 
@@ -97,7 +97,7 @@ namespace Wechat.Api.Helper
             {
                 foreach (var item in mediaInfos)
                 {
-                    string media = $"<media><id>1</id><type>2</type><title></title><description></description><private>0</private><url type=\"1\">{item.Url}</url><thumb type=\"1\">{item.ImageUrl}</thumb><size height=\"150.0\" width=\"150.0\" totalSize=\"14888.0\"></size></media>";
+                    string media = $"<media><id>1</id><type>2</type><title></title><description></description><private>0</private><url type=\"1\">{item.Url}</url><thumb type=\"1\">{item.ImageUrl}</thumb><size height=\"{item.Height}\" width=\"{item.Width}\" totalSize=\"{item.TotalSize}\"></size></media>";
                     sb.Append(media);
                 }
             }

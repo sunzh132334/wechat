@@ -1,7 +1,9 @@
-﻿using System.IO;
+﻿using System.Drawing;
+using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Wechat.Api.Response;
+using Wechat.Util.Extensions;
 
 namespace Wechat.Api.Extensions
 {
@@ -18,9 +20,14 @@ namespace Wechat.Api.Extensions
             return Task.FromResult(HttpResponseMessageHelper.GetJsonOk(response));
         }
 
-        public static Task<HttpResponseMessage> ToHttpResponseAsync(this byte[] response)
+        public static Task<HttpResponseMessage> ToHttpImageResponseAsync(this byte[] response)
         {
             return Task.FromResult(HttpResponseMessageHelper.GetImageOk(response));
+        }
+
+        public static Task<HttpResponseMessage> ToHttpImageResponseAsync(this Image image)
+        {
+            return Task.FromResult(HttpResponseMessageHelper.GetImageOk(image.ImageToByteArray()));
         }
 
         public static MMPro.MM.VoiceFormat GetVoiceType(this string fileName)

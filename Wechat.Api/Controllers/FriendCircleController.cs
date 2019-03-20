@@ -21,11 +21,6 @@ namespace Wechat.Api.Controllers
     /// </summary>
     public class FriendCircleController : WebchatControllerBase
     {
-        private WechatHelper _wechat = null;
-        public FriendCircleController()
-        {
-            _wechat = new WechatHelper();
-        }
 
         /// <summary>
         /// 获取特定人朋友圈
@@ -39,12 +34,12 @@ namespace Wechat.Api.Controllers
             ResponseBase<FriendCircleResponse> response = new ResponseBase<FriendCircleResponse>();
             try
             {
-                var result = _wechat.SnsUserPage(friendCircle.FristPageMd5, friendCircle.WxId, friendCircle.ToWxId);
+                var result = wechat.SnsUserPage(friendCircle.FristPageMd5, friendCircle.WxId, friendCircle.ToWxId);
                 if (result == null || result.baseResponse.ret != (int)MMPro.MM.RetConst.MM_OK)
                 {
-                     response.Success = false;
+                    response.Success = false;
                     response.Code = "402";
-                    response.Message = "获取失败";
+                    response.Message = result.baseResponse.errMsg.@string ?? "获取失败";
                 }
                 else
                 {
@@ -58,13 +53,13 @@ namespace Wechat.Api.Controllers
             }
             catch (ExpiredException ex)
             {
-                 response.Success = false;
+                response.Success = false;
                 response.Code = "401";
                 response.Message = ex.Message;
             }
             catch (Exception ex)
             {
-                 response.Success = false;
+                response.Success = false;
                 response.Code = "500";
                 response.Message = ex.Message;
             }
@@ -83,12 +78,12 @@ namespace Wechat.Api.Controllers
             ResponseBase<FriendCircleResponse> response = new ResponseBase<FriendCircleResponse>();
             try
             {
-                var result = _wechat.SnsTimeLine(friendCircleList.WxId, friendCircleList.FristPageMd5);
+                var result = wechat.SnsTimeLine(friendCircleList.WxId, friendCircleList.FristPageMd5);
                 if (result == null || result.baseResponse.ret != (int)MMPro.MM.RetConst.MM_OK)
                 {
-                     response.Success = false;
+                    response.Success = false;
                     response.Code = "402";
-                    response.Message = "获取失败";
+                    response.Message = result.baseResponse.errMsg.@string ?? "获取失败";
                 }
                 else
                 {
@@ -102,13 +97,13 @@ namespace Wechat.Api.Controllers
             }
             catch (ExpiredException ex)
             {
-                 response.Success = false;
+                response.Success = false;
                 response.Code = "401";
                 response.Message = ex.Message;
             }
             catch (Exception ex)
             {
-                 response.Success = false;
+                response.Success = false;
                 response.Code = "500";
                 response.Message = ex.Message;
             }
@@ -126,12 +121,12 @@ namespace Wechat.Api.Controllers
             ResponseBase response = new ResponseBase();
             try
             {
-                var result = _wechat.GetSnsObjectOp(setFriendCircle.Id, setFriendCircle.WxId, setFriendCircle.Type);
+                var result = wechat.GetSnsObjectOp(setFriendCircle.Id, setFriendCircle.WxId, setFriendCircle.Type);
                 if (result == null || result.baseResponse.ret != (int)MMPro.MM.RetConst.MM_OK)
                 {
-                     response.Success = false;
+                    response.Success = false;
                     response.Code = "402";
-                    response.Message = "操作失败";
+                    response.Message = result.baseResponse.errMsg.@string ?? "操作失败";
                 }
                 else
                 {
@@ -141,13 +136,13 @@ namespace Wechat.Api.Controllers
             }
             catch (ExpiredException ex)
             {
-                 response.Success = false;
+                response.Success = false;
                 response.Code = "401";
                 response.Message = ex.Message;
             }
             catch (Exception ex)
             {
-                 response.Success = false;
+                response.Success = false;
                 response.Code = "500";
                 response.Message = ex.Message;
             }
@@ -178,12 +173,12 @@ namespace Wechat.Api.Controllers
 
                 }
 
-                var result = _wechat.SnsPost(sendFriendCircle.WxId, content, sendFriendCircle.BlackList, sendFriendCircle.WithUserList);
+                var result = wechat.SnsPost(sendFriendCircle.WxId, content, sendFriendCircle.BlackList, sendFriendCircle.WithUserList);
                 if (result == null || result.baseResponse.ret != (int)MMPro.MM.RetConst.MM_OK)
                 {
-                     response.Success = false;
+                    response.Success = false;
                     response.Code = "402";
-                    response.Message = "发送失败";
+                    response.Message = result.baseResponse.errMsg.@string ?? "发送失败";
                 }
                 else
                 {
@@ -194,13 +189,13 @@ namespace Wechat.Api.Controllers
             }
             catch (ExpiredException ex)
             {
-                 response.Success = false;
+                response.Success = false;
                 response.Code = "401";
                 response.Message = ex.Message;
             }
             catch (Exception ex)
             {
-                 response.Success = false;
+                response.Success = false;
                 response.Code = "500";
                 response.Message = ex.Message;
             }
@@ -220,12 +215,12 @@ namespace Wechat.Api.Controllers
             ResponseBase response = new ResponseBase();
             try
             {
-                var result = _wechat.SnsSync(wxId);
+                var result = wechat.SnsSync(wxId);
                 if (result == null || result.baseResponse.ret != (int)MMPro.MM.RetConst.MM_OK)
                 {
-                     response.Success = false;
+                    response.Success = false;
                     response.Code = "402";
-                    response.Message = "同步失败";
+                    response.Message = result.baseResponse.errMsg.@string ?? "同步失败";
                 }
                 else
                 {
@@ -235,13 +230,13 @@ namespace Wechat.Api.Controllers
             }
             catch (ExpiredException ex)
             {
-                 response.Success = false;
+                response.Success = false;
                 response.Code = "401";
                 response.Message = ex.Message;
             }
             catch (Exception ex)
             {
-                 response.Success = false;
+                response.Success = false;
                 response.Code = "500";
                 response.Message = ex.Message;
             }
@@ -259,14 +254,14 @@ namespace Wechat.Api.Controllers
             ResponseBase<IList<SendFriendCircleImage>> response = new ResponseBase<IList<SendFriendCircleImage>>();
             if (!Request.Content.IsMimeMultipartContent())
             {
-                 response.Success = false;
+                response.Success = false;
                 response.Code = "400";
                 response.Message = "请表单提交";
                 return await response.ToHttpResponseAsync();
             }
             if (!Request.Content.IsMimeMultipartContent())
             {
-                 response.Success = false;
+                response.Success = false;
                 response.Code = "400";
                 response.Message = "请表单提交";
                 return await response.ToHttpResponseAsync();
@@ -274,14 +269,14 @@ namespace Wechat.Api.Controllers
             var fileCount = HttpContext.Current.Request.Files.Count;
             if (fileCount == 0)
             {
-                 response.Success = false;
+                response.Success = false;
                 response.Code = "400";
                 response.Message = "请上传文件";
             }
             var wxId = HttpContext.Current.Request["WxId"];
             if (string.IsNullOrEmpty(wxId))
             {
-                 response.Success = false;
+                response.Success = false;
                 response.Code = "400";
                 response.Message = "WxId不能为空";
                 return await response.ToHttpResponseAsync();
@@ -292,7 +287,7 @@ namespace Wechat.Api.Controllers
                 var file = HttpContext.Current.Request.Files[i];
                 if (file.FileName.IsImage() && file.FileName.IsVideo())
                 {
-                     response.Success = false;
+                    response.Success = false;
                     response.Code = "400";
                     response.Message = $"{file.FileName}不是图片文件";
                     return await response.ToHttpResponseAsync();
@@ -304,7 +299,7 @@ namespace Wechat.Api.Controllers
                 for (int i = 0; i < fileCount; i++)
                 {
                     var file = HttpContext.Current.Request.Files[i];
-                    var result = _wechat.SnsUpload(wxId, file.InputStream);
+                    var result = wechat.SnsUpload(wxId, file.InputStream);
                     if (result == null || result.BaseResponse.Ret != (int)MMPro.MM.RetConst.MM_OK)
                     {
                         throw new Exception("上传失败");
@@ -324,18 +319,60 @@ namespace Wechat.Api.Controllers
             }
             catch (ExpiredException ex)
             {
-                 response.Success = false;
+                response.Success = false;
                 response.Code = "401";
                 response.Message = ex.Message;
             }
             catch (Exception ex)
             {
-                 response.Success = false;
+                response.Success = false;
                 response.Code = "500";
                 response.Message = ex.Message;
             }
             return await response.ToHttpResponseAsync();
         }
+
+
+        /// <summary>
+        /// 发送评论
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("api/FriendCircle/SendFriendCircleComment")]
+        public async Task<HttpResponseMessage> SendFriendCircleComment(FriendCircleComment friendCircleComment)
+        {
+            ResponseBase<micromsg.SnsObject> response = new ResponseBase<micromsg.SnsObject>();
+            try
+            {
+                var result = wechat.SnsComment(Convert.ToUInt64(friendCircleComment.Id), friendCircleComment.WxId, friendCircleComment.WxId, friendCircleComment.ReplyCommnetId, friendCircleComment.Content, (MMPro.MM.SnsObjectType)friendCircleComment.Type);
+                if (result == null || result.BaseResponse.Ret != (int)MMPro.MM.RetConst.MM_OK)
+                {
+                    response.Success = false;
+                    response.Code = "402";
+                    response.Message = result.BaseResponse.ErrMsg.String ?? "发送失败";
+                }
+                else
+                {
+                    response.Data = result.SnsObject;
+                    response.Message = "发送成功";
+                }
+            }
+            catch (ExpiredException ex)
+            {
+                response.Success = false;
+                response.Code = "401";
+                response.Message = ex.Message;
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Code = "500";
+                response.Message = ex.Message;
+            }
+            return await response.ToHttpResponseAsync();
+        }
+
+
 
     }
 }

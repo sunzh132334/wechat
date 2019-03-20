@@ -113,3 +113,7 @@ C:\Users\LTL\Desktop\Wechat\Wechat.Util\bin\Release\System.Xml.XmlDocument.dll
 C:\Users\LTL\Desktop\Wechat\Wechat.Util\bin\Release\System.Xml.XmlSerializer.dll
 C:\Users\LTL\Desktop\Wechat\Wechat.Util\bin\Release\System.Xml.XPath.dll
 C:\Users\LTL\Desktop\Wechat\Wechat.Util\bin\Release\System.Xml.XPath.XDocument.dll
+C:\Users\LTL\Desktop\Wechat\Wechat.Util\bin\Release\zxing.dll
+C:\Users\LTL\Desktop\Wechat\Wechat.Util\bin\Release\zxing.pdb
+C:\Users\LTL\Desktop\Wechat\Wechat.Util\bin\Release\zxing.presentation.dll
+C:\Users\LTL\Desktop\Wechat\Wechat.Util\bin\Release\zxing.presentation.pdb

@@ -36,6 +36,7 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <DocumentationFile>Wechat.Api.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -63,6 +64,9 @@
     </Reference>
     <Reference Include="protobuf-net, Version=2.4.0.0, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
       <HintPath>..\packages\protobuf-net.2.4.0\lib\net40\protobuf-net.dll</HintPath>
+    </Reference>
+    <Reference Include="Swashbuckle.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cd1bb07a5ac7c7bc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Swashbuckle.Core.5.6.0\lib\net40\Swashbuckle.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -124,6 +128,9 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.4\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebActivatorEx.2.0\lib\net40\WebActivatorEx.dll</HintPath>
+    </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
@@ -152,14 +159,17 @@
     <Compile Include="Abstracts\WebchatControllerBase.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\FriendCircleController.cs" />
     <Compile Include="Controllers\FriendController.cs" />
+    <Compile Include="Controllers\GroupController.cs" />
     <Compile Include="Controllers\LabelController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
+    <Compile Include="Controllers\PayController.cs" />
     <Compile Include="Extensions\Extension.cs" />
     <Compile Include="Filters\AuthenticationAttribute.cs" />
     <Compile Include="Filters\ExceptionAttribute.cs" />
@@ -171,14 +181,25 @@
     <Compile Include="Helper\SendSnsConst.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Request\Common\BindEmail.cs" />
+    <Compile Include="Request\Common\ChangePassword.cs" />
+    <Compile Include="Request\Common\ForkOfficialAccount.cs" />
     <Compile Include="Request\Common\PeopleNearby.cs" />
     <Compile Include="Request\Common\SharkItOff.cs" />
+    <Compile Include="Request\Common\UploadContrat.cs" />
     <Compile Include="Request\FriendCircle\FriendCircle.cs" />
+    <Compile Include="Request\FriendCircle\FriendCircleComment.cs" />
     <Compile Include="Request\FriendCircle\FriendCircleList.cs" />
     <Compile Include="Request\FriendCircle\SendFriendCircle.cs" />
     <Compile Include="Request\FriendCircle\SendFriendCircleImage.cs" />
     <Compile Include="Request\FriendCircle\SetFriendCircle.cs" />
     <Compile Include="Request\Friend\AddFriend.cs" />
+    <Compile Include="Request\Friend\AddFriendList.cs" />
+    <Compile Include="Request\Friend\FriendVerify.cs" />
+    <Compile Include="Request\Group\GroupMember.cs" />
+    <Compile Include="Request\Group\CreateGroup.cs" />
+    <Compile Include="Request\Group\GetGroupMember.cs" />
+    <Compile Include="Request\Group\GroupAnnouncement.cs" />
+    <Compile Include="Request\Group\QuitGroup.cs" />
     <Compile Include="Request\Label\AddLabel.cs" />
     <Compile Include="Request\Label\DeleteLabel.cs" />
     <Compile Include="Request\Label\UpdateLabel.cs" />
@@ -191,6 +212,9 @@
     <Compile Include="Request\Message\TxtMessage.cs" />
     <Compile Include="Request\Message\VideoMessage.cs" />
     <Compile Include="Request\Message\VoiceMessage.cs" />
+    <Compile Include="Request\Pay\ConfirmTransfer.cs" />
+    <Compile Include="Request\Pay\CreatePreTransfer.cs" />
+    <Compile Include="Request\Pay\GeneratePayQCode.cs" />
     <Compile Include="Request\RequestBase.cs" />
     <Compile Include="Response\FriendCircle\FriendCircleListResponse.cs" />
     <Compile Include="Response\FriendCircle\FriendCircleResponse.cs" />
@@ -204,6 +228,10 @@
   <ItemGroup>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Wechat.Api.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <EmbeddedResource Include="Scripts\swagger.js" />
     <Content Include="protobuf-net.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

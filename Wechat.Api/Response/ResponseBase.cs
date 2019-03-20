@@ -29,5 +29,23 @@
         /// </summary>
         public virtual T Data { get; set; }
 
+
+
+    }
+
+
+    public class ResponseBase<T1,T2> : ResponseBase
+    {
+
+        /// <summary>
+        /// 数据
+        /// </summary>
+        public virtual T1 Data { get; set; }
+
+        /// <summary>
+        /// 数据
+        /// </summary>
+        public virtual T2 Result { get; set; }
+
     }
 }

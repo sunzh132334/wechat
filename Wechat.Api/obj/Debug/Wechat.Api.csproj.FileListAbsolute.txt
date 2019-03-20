@@ -107,3 +107,8 @@ C:\Users\LTL\Desktop\Wechat\Wechat.Api\bin\zh-Hans\System.Web.WebPages.Razor.res
 C:\Users\LTL\Desktop\Wechat\Wechat.Api\obj\Debug\Wechat.Api.csproj.CopyComplete
 C:\Users\LTL\Desktop\Wechat\Wechat.Api\obj\Debug\Wechat.Api.dll
 C:\Users\LTL\Desktop\Wechat\Wechat.Api\obj\Debug\Wechat.Api.pdb
+C:\Users\LTL\Desktop\Wechat\Wechat.Api\bin\Swashbuckle.Core.dll
+C:\Users\LTL\Desktop\Wechat\Wechat.Api\bin\WebActivatorEx.dll
+C:\Users\LTL\Desktop\Wechat\Wechat.Api\bin\Wechat.Api.xml
+C:\Users\LTL\Desktop\Wechat\Wechat.Api\bin\zxing.dll
+C:\Users\LTL\Desktop\Wechat\Wechat.Api\bin\zxing.pdb

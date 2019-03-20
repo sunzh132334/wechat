@@ -20,11 +20,7 @@ namespace Wechat.Api.Controllers
     public class LabelController : WebchatControllerBase
     {
 
-        private WechatHelper _wechat = null;
-        public LabelController()
-        {
-            _wechat = new WechatHelper();
-        }
+        
 
         /// <summary>
         /// 获取标签列表
@@ -38,12 +34,12 @@ namespace Wechat.Api.Controllers
             ResponseBase<MMPro.MM.LabelPair[]> response = new ResponseBase<MMPro.MM.LabelPair[]>();
             try
             {
-                var result = _wechat.GetContactLabelList(wxId);
+                var result = wechat.GetContactLabelList(wxId);
                 if (result == null || result.baseResponse.ret != (int)MMPro.MM.RetConst.MM_OK)
                 {
                      response.Success = false;
                     response.Code = "501";
-                    response.Message = "获取失败";
+                    response.Message = result.baseResponse.errMsg.@string ?? "获取失败";
                 }
                 else
                 {
@@ -77,12 +73,12 @@ namespace Wechat.Api.Controllers
             ResponseBase<IList<micromsg.LabelPair>> response = new ResponseBase<IList<micromsg.LabelPair>>();
             try
             {
-                var result = _wechat.AddContactLabel(addLabel.WxId, addLabel.LabelName);
+                var result = wechat.AddContactLabel(addLabel.WxId, addLabel.LabelName);
                 if (result == null || result.BaseResponse.Ret != (int)MMPro.MM.RetConst.MM_OK)
                 {
                      response.Success = false;
                     response.Code = "501";
-                    response.Message = "添加失败";
+                    response.Message = result.BaseResponse.ErrMsg.String ?? "添加失败";
                 }
                 else
                 {
@@ -122,12 +118,12 @@ namespace Wechat.Api.Controllers
                 userLabels[0] = new micromsg.UserLabelInfo();
                 userLabels[0].LabelIDList = updateLabel.LabelIDList;
                 userLabels[0].UserName = updateLabel.ToWxId;
-                var result = _wechat.ModifyContactLabelList(updateLabel.WxId, userLabels);
+                var result = wechat.ModifyContactLabelList(updateLabel.WxId, userLabels);
                 if (result == null || result.BaseResponse.Ret != (int)MMPro.MM.RetConst.MM_OK)
                 {
                      response.Success = false;
                     response.Code = "501";
-                    response.Message = "修改失败";
+                    response.Message = result.BaseResponse.ErrMsg.String ?? "修改失败";
                 }
                 else
                 {
@@ -163,12 +159,12 @@ namespace Wechat.Api.Controllers
             ResponseBase response = new ResponseBase();
             try
             {   
-                var result = _wechat.DelContactLabel(deleteLabel.WxId, deleteLabel.LabelIDList);
+                var result = wechat.DelContactLabel(deleteLabel.WxId, deleteLabel.LabelIDList);
                 if (result == null || result.BaseResponse.Ret != (int)MMPro.MM.RetConst.MM_OK)
                 {
                      response.Success = false;
                     response.Code = "501";
-                    response.Message = "删除失败";
+                    response.Message = result.BaseResponse.ErrMsg.String ?? "删除失败";
                 }
                 else
                 {

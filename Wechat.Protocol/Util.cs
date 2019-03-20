@@ -1,7 +1,11 @@
 ﻿using CRYPT;
+using Google.ProtocolBuffers;
+using micromsg;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
@@ -63,7 +67,171 @@ namespace Wechat.Protocol
 
             return rsa.Encrypt(data, RSAEncryptionPadding.Pkcs1);
         }
+        public static string stringWithFormEncodedComponentsAscending(Dictionary<string, object> queryPairs, bool ascending, bool skipempty, string sep)
+        {
+            List<string> list;
+            if (ascending)
+            {
+                list = (from m in queryPairs
+                        select m.Key into b
+                        orderby b
+                        select b).ToList<string>();
+            }
+            else
+            {
+                list = (from m in queryPairs
+                        select m.Key into b
+                        orderby b descending
+                        select b).ToList<string>();
+            }
+            string str = null;
+            foreach (string str2 in list)
+            {
+                string str3;
+                if (queryPairs[str2] == null)
+                {
+                    str3 = string.Empty;
+                }
+                else if (queryPairs[str2] is Enum)
+                {
+                    str3 = ((int)queryPairs[str2]).ToString();
+                }
+                else
+                {
+                    str3 = System.Web.HttpUtility.UrlEncode(queryPairs[str2].ToString());
+                }
+                if (!skipempty || !string.IsNullOrEmpty(str3))
+                {
+                    if (str == null)
+                    {
+                        str = str2 + "=" + str3;
+                    }
+                    else
+                    {
+                        str = str + sep + str2 + "=" + str3;
+                    }
+                }
+            }
+            return str;
+        }
 
+
+
+        public static SKBuiltinBuffer_t packQueryQuest(Dictionary<string, object> queryDic, bool needLog = false)
+        {
+            string str = stringWithFormEncodedComponentsAscending(queryDic, true, true, "&");
+
+            if (string.IsNullOrEmpty(str))
+            {
+                str = "WCPaySign=";
+            }
+            else
+            {
+                //string str2 = "";//TenpayUtil.Get3DesSignData(str);
+                string str2 = WCPaySignDES3Encode(str, "6BA3DAAA443A2BBB6311D7932B25F626");
+                //str = str + "&WCPaySign=" + str2;
+            }
+            return Util.toSKBuffer(str);
+        }
+        public static SKBuiltinBuffer_t toSKBuffer(string inStr)
+        {
+            SKBuiltinBuffer_t sKBuiltinBuffer_T = new SKBuiltinBuffer_t();
+            if (string.IsNullOrEmpty(inStr))
+            {
+                sKBuiltinBuffer_T.iLen = 0;
+            }
+            else
+            {
+                sKBuiltinBuffer_T.Buffer = ByteString.CopyFromUtf8(inStr).ToByteArray();
+                sKBuiltinBuffer_T.iLen = (uint)sKBuiltinBuffer_T.Buffer.Length;
+            }
+            return sKBuiltinBuffer_T;
+        }
+
+
+
+        public static string WCPaySignDES3Encode(string data, string key)
+        {
+            TripleDESCryptoServiceProvider DES = new TripleDESCryptoServiceProvider();
+            //DES.KeySize = 16;
+            DES.Mode = CipherMode.CBC;
+            DES.Padding = PaddingMode.Zeros;
+            Type t = Type.GetType("System.Security.Cryptography.CryptoAPITransformMode");
+            object obj = t.GetField("Encrypt", BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly).GetValue(t);
+            MethodInfo mi = DES.GetType().GetMethod("_NewEncryptor", BindingFlags.Instance | BindingFlags.NonPublic);
+            byte[] keys = str2Bcd(key);
+            ICryptoTransform desCrypt = (ICryptoTransform)mi.Invoke(DES, new object[] { keys, CipherMode.CBC, null, 0, obj });
+            byte[] Buffer = Encoding.UTF8.GetBytes(data);
+            byte[] result = desCrypt.TransformFinalBlock(Buffer, 0, Buffer.Length);
+
+            return bcd2Str(result);
+        }
+        public static string bcd2Str(byte[] bytes)
+        {
+            StringBuilder temp = new StringBuilder(bytes.Length * 2);
+
+            for (int i = 0; i < bytes.Length; i++)
+            {
+                temp.Append((byte)((bytes[i] & 0xf0) >> 4));
+                temp.Append((byte)(bytes[i] & 0x0f));
+            }
+            return temp.ToString().Substring(0, 1).Equals("0") ? temp.ToString().Substring(1) : temp.ToString();
+        }
+        public static byte[] str2Bcd(string asc)
+        {
+            int len = asc.Length;
+            int mod = len % 2;
+
+            if (mod != 0)
+            {
+                asc = "0" + asc;
+                len = asc.Length;
+            }
+
+            byte[] abt = new byte[len];
+            if (len >= 2)
+            {
+                len = len / 2;
+            }
+
+            byte[] bbt = new byte[len];
+            abt = System.Text.Encoding.UTF8.GetBytes(asc);
+            int j, k;
+
+            for (int p = 0; p < asc.Length / 2; p++)
+            {
+                if ((abt[2 * p] >= '0') && (abt[2 * p] <= '9'))
+                {
+                    j = abt[2 * p] - '0';
+                }
+                else if ((abt[2 * p] >= 'a') && (abt[2 * p] <= 'z'))
+                {
+                    j = abt[2 * p] - 'a' + 0x0a;
+                }
+                else
+                {
+                    j = abt[2 * p] - 'A' + 0x0a;
+                }
+
+                if ((abt[2 * p + 1] >= '0') && (abt[2 * p + 1] <= '9'))
+                {
+                    k = abt[2 * p + 1] - '0';
+                }
+                else if ((abt[2 * p + 1] >= 'a') && (abt[2 * p + 1] <= 'z'))
+                {
+                    k = abt[2 * p + 1] - 'a' + 0x0a;
+                }
+                else
+                {
+                    k = abt[2 * p + 1] - 'A' + 0x0a;
+                }
+
+                int a = (j << 4) + k;
+                byte b = (byte)a;
+                bbt[p] = b;
+            }
+            return bbt;
+        }
         public static byte[] HttpPost(byte[] data, string Url_GCI)
         {
             //Console.WriteLine(shortUrl + Url_GCI);
@@ -126,7 +294,7 @@ namespace Wechat.Protocol
         //    }
 
         //    int head = FinIndex + "6E756C6C5F1020".Length;
-       
+
         //    return Encoding.Default.GetString(Data.Substring(head, 64).ToByteArray(16, 2));
         //}
         /// <summary>
@@ -313,6 +481,8 @@ namespace Wechat.Protocol
             }
             return strbul.ToString();
         }
+
+  
     }
 
 

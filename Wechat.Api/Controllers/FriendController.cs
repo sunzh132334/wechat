@@ -20,11 +20,7 @@ namespace Wechat.Api.Controllers
     public class FriendController : WebchatControllerBase
     {
 
-        private WechatHelper _wechat = null;
-        public FriendController()
-        {
-            _wechat = new WechatHelper();
-        }
+    
 
         /// <summary>
         /// 获取好友联系人
@@ -39,12 +35,12 @@ namespace Wechat.Api.Controllers
             ResponseBase<ContractListResponse> response = new ResponseBase<ContractListResponse>();
             try
             {
-                var result = _wechat.InitContact(WxId, CurrentWxcontactSeq);
+                var result = wechat.InitContact(WxId, CurrentWxcontactSeq);
                 if (result == null || result.baseResponse.ret != (int)MMPro.MM.RetConst.MM_OK)
                 {
-                     response.Success = false;
+                    response.Success = false;
                     response.Code = "501";
-                    response.Message = "获取失败";
+                    response.Message = result.baseResponse.errMsg.@string ?? "获取失败";
                     return response.ToHttpResponseAsync();
                 }
                 else
@@ -58,13 +54,13 @@ namespace Wechat.Api.Controllers
             }
             catch (ExpiredException ex)
             {
-                 response.Success = false;
+                response.Success = false;
                 response.Code = "401";
                 response.Message = ex.Message;
             }
             catch (Exception ex)
             {
-                 response.Success = false;
+                response.Success = false;
                 response.Code = "500";
                 response.Message = ex.Message;
             }
@@ -76,7 +72,7 @@ namespace Wechat.Api.Controllers
         /// 获取好友详情
         /// </summary>
         /// <param name="WxId"></param>
-        /// <param name="CurrentWxcontactSeq"></param>
+        /// <param name="SearchWxId"></param>
         /// <returns></returns>
         [HttpPost]
         [Route("api/Friend/GetContractDetail/{WxId}/{SearchWxId}")]
@@ -85,12 +81,12 @@ namespace Wechat.Api.Controllers
             ResponseBase<micromsg.ModContact> response = new ResponseBase<micromsg.ModContact>();
             try
             {
-                var result = _wechat.GetContactDetail(WxId, SearchWxId);
+                var result = wechat.GetContactDetail(WxId, SearchWxId);
                 if (result == null || result.BaseResponse.Ret != (int)MMPro.MM.RetConst.MM_OK)
                 {
-                     response.Success = false;
+                    response.Success = false;
                     response.Code = "501";
-                    response.Message = "获取失败";
+                    response.Message = result.BaseResponse.ErrMsg.String ?? "获取失败";
                     return response.ToHttpResponseAsync();
                 }
                 else
@@ -101,13 +97,13 @@ namespace Wechat.Api.Controllers
             }
             catch (ExpiredException ex)
             {
-                 response.Success = false;
+                response.Success = false;
                 response.Code = "401";
                 response.Message = ex.Message;
             }
             catch (Exception ex)
             {
-                 response.Success = false;
+                response.Success = false;
                 response.Code = "500";
                 response.Message = ex.Message;
             }
@@ -128,12 +124,12 @@ namespace Wechat.Api.Controllers
             ResponseBase<MMPro.MM.SearchContactResponse> response = new ResponseBase<MMPro.MM.SearchContactResponse>();
             try
             {
-                var result = _wechat.SearchContact(WxId, SearchWxName);
+                var result = wechat.SearchContact(WxId, SearchWxName);
                 if (result == null || result.baseResponse.ret != (int)MMPro.MM.RetConst.MM_OK)
                 {
-                     response.Success = false;
+                    response.Success = false;
                     response.Code = "501";
-                    response.Message = "获取失败";
+                    response.Message = result.baseResponse.errMsg.@string ?? "获取失败";
                     return response.ToHttpResponseAsync();
                 }
                 else
@@ -144,19 +140,18 @@ namespace Wechat.Api.Controllers
             }
             catch (ExpiredException ex)
             {
-                 response.Success = false;
+                response.Success = false;
                 response.Code = "401";
                 response.Message = ex.Message;
             }
             catch (Exception ex)
             {
-                 response.Success = false;
+                response.Success = false;
                 response.Code = "500";
                 response.Message = ex.Message;
             }
             return response.ToHttpResponseAsync();
         }
-
 
         /// <summary>
         /// 添加好友
@@ -170,10 +165,10 @@ namespace Wechat.Api.Controllers
             ResponseBase<string> response = new ResponseBase<string>();
             try
             {
-                var result = _wechat.VerifyUser(addFriend.WxId, MMPro.MM.VerifyUserOpCode.MM_VERIFYUSER_SENDREQUEST, addFriend.Content, addFriend.AntispamTicket, addFriend.UserNameV1, (byte)addFriend.Origin);
+                var result = wechat.VerifyUser(addFriend.WxId, MMPro.MM.VerifyUserOpCode.MM_VERIFYUSER_ADDCONTACT, addFriend.Content, addFriend.AntispamTicket, addFriend.UserNameV1, (byte)addFriend.Origin);
                 if (result == null || result.baseResponse.ret != (int)MMPro.MM.RetConst.MM_OK)
                 {
-                     response.Success = false;
+                    response.Success = false;
                     response.Code = "501";
                     response.Message = result?.baseResponse?.errMsg?.@string;
                     return response.ToHttpResponseAsync();
@@ -186,18 +181,202 @@ namespace Wechat.Api.Controllers
             }
             catch (ExpiredException ex)
             {
-                 response.Success = false;
+                response.Success = false;
                 response.Code = "401";
                 response.Message = ex.Message;
             }
             catch (Exception ex)
             {
-                 response.Success = false;
+                response.Success = false;
                 response.Code = "500";
                 response.Message = ex.Message;
             }
             return response.ToHttpResponseAsync();
         }
+        /// <summary>
+        /// 添加好友
+        /// </summary>
+        /// <param name="addFriend"></param> 
+        /// <returns></returns>
+        [HttpPost]
+        [Route("api/Friend/AddFriendRequest")]
+        public Task<HttpResponseMessage> AddFriendRequest(AddFriend addFriend)
+        {
+            ResponseBase<string> response = new ResponseBase<string>();
+            try
+            {
+                var result = wechat.VerifyUser(addFriend.WxId, MMPro.MM.VerifyUserOpCode.MM_VERIFYUSER_SENDREQUEST, addFriend.Content, addFriend.AntispamTicket, addFriend.UserNameV1, (byte)addFriend.Origin);
+                if (result == null || result.baseResponse.ret != (int)MMPro.MM.RetConst.MM_OK)
+                {
+                    response.Success = false;
+                    response.Code = "501";
+                    response.Message = result?.baseResponse?.errMsg?.@string;
+                    return response.ToHttpResponseAsync();
+                }
+                else
+                {
+                    response.Data = result.userName;
+                }
+
+            }
+            catch (ExpiredException ex)
+            {
+                response.Success = false;
+                response.Code = "401";
+                response.Message = ex.Message;
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Code = "500";
+                response.Message = ex.Message;
+            }
+            return response.ToHttpResponseAsync();
+        }
+
+        /// <summary>
+        /// 批量添加好友
+        /// </summary>
+        /// <param name="addFriendList"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("api/Friend/AddFriendRequestList")]
+        public Task<HttpResponseMessage> AddFriendRequestList(AddFriendList addFriendList)
+        {
+            ResponseBase<string> response = new ResponseBase<string>();
+            if (addFriendList == null || addFriendList.Friends == null || addFriendList.Friends.Count == 0)
+            {
+                response.Success = false;
+                response.Code = "400";
+                response.Message = "添加好友信息不能为空";
+                return response.ToHttpResponseAsync();
+            }
+            try
+            {
+                MMPro.MM.VerifyUser[] verifyUser_ = new MMPro.MM.VerifyUser[addFriendList.Friends.Count];
+                for (int i = 0; i < addFriendList.Friends.Count; i++)
+                {
+                    MMPro.MM.VerifyUser user = new MMPro.MM.VerifyUser();
+                    user.value = addFriendList.Friends[i].UserNameV1;
+                    user.antispamTicket = addFriendList.Friends[i].AntispamTicket;
+                    user.friendFlag = 0;
+                    user.scanQrcodeFromScene = 0;
+                    verifyUser_[i] = user;
+                }
+
+                var result = wechat.VerifyUserList(addFriendList.WxId, MMPro.MM.VerifyUserOpCode.MM_VERIFYUSER_SENDREQUEST, addFriendList.Content, verifyUser_, (byte)addFriendList.Origin);
+                if (result == null || result.baseResponse.ret != (int)MMPro.MM.RetConst.MM_OK)
+                {
+                    response.Success = false;
+                    response.Code = "501";
+                    response.Message = result?.baseResponse?.errMsg?.@string;
+                    return response.ToHttpResponseAsync();
+                }
+                else
+                {
+                    response.Data = result.userName;
+                }
+
+            }
+            catch (ExpiredException ex)
+            {
+                response.Success = false;
+                response.Code = "401";
+                response.Message = ex.Message;
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Code = "500";
+                response.Message = ex.Message;
+            }
+            return response.ToHttpResponseAsync();
+        }
+
+
+        /// <summary>
+        /// 通过好友验证
+        /// </summary>
+        /// <param name="passFriendVerify"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("api/Friend/PassFriendVerify")]
+        public Task<HttpResponseMessage> PassFriendVerify(FriendVerify passFriendVerify)
+        {
+            ResponseBase<string> response = new ResponseBase<string>();
+            try
+            {
+                var result = wechat.VerifyUser(passFriendVerify.WxId, MMPro.MM.VerifyUserOpCode.MM_VERIFYUSER_VERIFYOK, passFriendVerify.Content, passFriendVerify.AntispamTicket, passFriendVerify.UserNameV1, (byte)passFriendVerify.Origin);
+                if (result == null || result.baseResponse.ret != (int)MMPro.MM.RetConst.MM_OK)
+                {
+                    response.Success = false;
+                    response.Code = "501";
+                    response.Message = result?.baseResponse?.errMsg?.@string;
+                    return response.ToHttpResponseAsync();
+                }
+                else
+                {
+                    response.Data = result.userName;
+                }
+
+            }
+            catch (ExpiredException ex)
+            {
+                response.Success = false;
+                response.Code = "401";
+                response.Message = ex.Message;
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Code = "500";
+                response.Message = ex.Message;
+            }
+            return response.ToHttpResponseAsync();
+        }
+
+        /// <summary>
+        /// 拒绝好友验证
+        /// </summary>
+        /// <param name="rejectFriendVerify"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("api/Friend/RejectFriendVerify")]
+        public Task<HttpResponseMessage> RejectFriendVerify(FriendVerify rejectFriendVerify)
+        {
+            ResponseBase<string> response = new ResponseBase<string>();
+            try
+            {
+                var result = wechat.VerifyUser(rejectFriendVerify.WxId, MMPro.MM.VerifyUserOpCode.MM_VERIFYUSER_VERIFYREJECT, rejectFriendVerify.Content, rejectFriendVerify.AntispamTicket, rejectFriendVerify.UserNameV1, (byte)rejectFriendVerify.Origin);
+                if (result == null || result.baseResponse.ret != (int)MMPro.MM.RetConst.MM_OK)
+                {
+                    response.Success = false;
+                    response.Code = "501";
+                    response.Message = result?.baseResponse?.errMsg?.@string;
+                    return response.ToHttpResponseAsync();
+                }
+                else
+                {
+                    response.Data = result.userName;
+                }
+
+            }
+            catch (ExpiredException ex)
+            {
+                response.Success = false;
+                response.Code = "401";
+                response.Message = ex.Message;
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Code = "500";
+                response.Message = ex.Message;
+            }
+            return response.ToHttpResponseAsync();
+        }
+
+
 
     }
 }

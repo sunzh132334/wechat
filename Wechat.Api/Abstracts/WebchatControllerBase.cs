@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Mvc;
+using Wechat.Protocol;
 
 namespace Wechat.Api.Abstracts
 {
@@ -12,11 +13,11 @@ namespace Wechat.Api.Abstracts
     /// </summary>
     public abstract class WebchatControllerBase : ApiController
     {
-     
 
+        protected WechatHelper wechat = null;
         public WebchatControllerBase()
         {
-
+            wechat = new WechatHelper();
         }
 
 

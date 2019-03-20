@@ -252,6 +252,9 @@
     <File Include="bin/roslyn/VBCSCompiler.exe.config">
       <publishTime>05/24/2018 13:38:24</publishTime>
     </File>
+    <File Include="bin/Swashbuckle.Core.dll">
+      <publishTime>07/08/2017 01:30:56</publishTime>
+    </File>
     <File Include="bin/System.Diagnostics.DiagnosticSource.dll">
       <publishTime>07/19/2017 10:01:30</publishTime>
     </File>
@@ -288,26 +291,32 @@
     <File Include="bin/System.Web.WebPages.Razor.dll">
       <publishTime>02/01/2018 12:20:56</publishTime>
     </File>
+    <File Include="bin/WebActivatorEx.dll">
+      <publishTime>02/08/2013 16:42:28</publishTime>
+    </File>
     <File Include="bin/WebGrease.dll">
       <publishTime>01/23/2014 13:57:34</publishTime>
     </File>
     <File Include="bin/Wechat.Api.dll">
-      <publishTime>03/19/2019 09:36:05</publishTime>
+      <publishTime>03/20/2019 17:59:10</publishTime>
     </File>
     <File Include="bin/Wechat.Api.pdb">
-      <publishTime>03/19/2019 09:36:05</publishTime>
+      <publishTime>03/20/2019 17:59:10</publishTime>
+    </File>
+    <File Include="bin/Wechat.Api.xml">
+      <publishTime>03/20/2019 17:50:11</publishTime>
     </File>
     <File Include="bin/Wechat.Protocol.dll">
-      <publishTime>03/18/2019 18:33:49</publishTime>
+      <publishTime>03/20/2019 17:59:07</publishTime>
     </File>
     <File Include="bin/Wechat.Protocol.pdb">
-      <publishTime>03/18/2019 18:33:49</publishTime>
+      <publishTime>03/20/2019 17:59:07</publishTime>
     </File>
     <File Include="bin/Wechat.Util.dll">
-      <publishTime>03/16/2019 17:58:23</publishTime>
+      <publishTime>03/20/2019 17:58:59</publishTime>
     </File>
     <File Include="bin/Wechat.Util.pdb">
-      <publishTime>03/16/2019 17:58:23</publishTime>
+      <publishTime>03/20/2019 17:58:59</publishTime>
     </File>
     <File Include="bin/zh-Hans/System.Net.Http.Formatting.resources.dll">
       <publishTime>02/01/2018 12:17:22</publishTime>
@@ -342,6 +351,12 @@
     <File Include="bin/zlib.net.dll">
       <publishTime>05/24/2012 21:55:52</publishTime>
     </File>
+    <File Include="bin/zxing.dll">
+      <publishTime>04/14/2018 18:39:12</publishTime>
+    </File>
+    <File Include="bin/zxing.pdb">
+      <publishTime>04/14/2018 18:39:12</publishTime>
+    </File>
     <File Include="favicon.ico">
       <publishTime>03/11/2019 11:37:33</publishTime>
     </File>
@@ -352,7 +367,10 @@
       <publishTime>03/13/2019 13:43:31</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>03/14/2019 12:00:48</publishTime>
+      <publishTime>03/19/2019 17:35:06</publishTime>
+    </File>
+    <File Include="Wechat.Api.xml">
+      <publishTime>03/20/2019 17:50:11</publishTime>
     </File>
   </ItemGroup>
 </Project>

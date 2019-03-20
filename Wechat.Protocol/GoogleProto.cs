@@ -259,6 +259,10 @@ namespace Wechat.Protocol
 
         public static MMSnsSyncRequest CreateMMSnsSyncRequest(byte[] deviceID, string sessionKey, uint uin, string OSType, byte[] keyBuffer)
         {
+            if (keyBuffer == null)
+            {
+                throw new Exception("还未初始化用户信息");
+            }
             BaseRequest br = CreateBaseRequestEntity(deviceID, "", uin, OSType, 3);
             MMSnsSyncRequest.Builder SnsSync = new MMSnsSyncRequest.Builder();
             SnsSync.SetSelector(509);

@@ -32,7 +32,7 @@ namespace Wechat.Protocol
         private static extern uint Adler32(uint adler, byte[] buf, int len);
 
         //微信版本号
-        private int version = 369558056;
+        private int version = 369658059;//369558056;
 
         //RSA秘钥版本
         private uint LOGIN_RSA_VER = 174;
@@ -260,108 +260,110 @@ namespace Wechat.Protocol
                         case SyncCmdID.CmdInvalid:
                             break;
                         case SyncCmdID.CmdIdModUserInfo:
-                            var modUserInfo = Util.Deserialize<MM.ModUserInfo>(r.CmdBuf.Buffer.ToByteArray());
+                            var modUserInfo = Util.Deserialize<micromsg.ModUserInfo>(r.CmdBuf.Buffer.ToByteArray());
                             list.ModUserInfos.Add(modUserInfo);
                             break;
                         case SyncCmdID.CmdIdModContact:
-                            var modContact = Util.Deserialize<MM.ModContact>(r.CmdBuf.Buffer.ToByteArray());
+                            var modContact = Util.Deserialize<micromsg.ModContact>(r.CmdBuf.Buffer.ToByteArray());
                             list.ModContacts.Add(modContact);
                             break;
                         case SyncCmdID.CmdIdDelContact:
-                            var delContact = Util.Deserialize<MM.DelContact>(r.CmdBuf.Buffer.ToByteArray());
+                            var delContact = Util.Deserialize<micromsg.DelContact>(r.CmdBuf.Buffer.ToByteArray());
                             list.DelContacts.Add(delContact);
                             break;
                         case SyncCmdID.CmdIdAddMsg:
-                            var addMsg = Util.Deserialize<MM.AddMsg>(r.CmdBuf.Buffer.ToByteArray());
+                            var addMsg = Util.Deserialize<micromsg.AddMsg>(r.CmdBuf.Buffer.ToByteArray());
                             list.AddMsgs.Add(addMsg);
                             break;
                         case SyncCmdID.CmdIdModMsgStatus:
-                            var mdMsgStatus = Util.Deserialize<MM.ModMsgStatus>(r.CmdBuf.Buffer.ToByteArray());
+                            var mdMsgStatus = Util.Deserialize<micromsg.ModMsgStatus>(r.CmdBuf.Buffer.ToByteArray());
                             list.ModMsgStatuss.Add(mdMsgStatus);
                             break;
                         case SyncCmdID.CmdIdDelChatContact:
-                            var delChatContact = Util.Deserialize<MM.DelChatContact>(r.CmdBuf.Buffer.ToByteArray());
+                            var delChatContact = Util.Deserialize<micromsg.DelChatContact>(r.CmdBuf.Buffer.ToByteArray());
                             list.DelChatContacts.Add(delChatContact);
                             break;
                         case SyncCmdID.CmdIdDelContactMsg:
-                            var delContactMsg = Util.Deserialize<MM.DelContactMsg>(r.CmdBuf.Buffer.ToByteArray());
+                            var delContactMsg = Util.Deserialize<micromsg.DelContactMsg>(r.CmdBuf.Buffer.ToByteArray());
                             list.DelContactMsgs.Add(delContactMsg);
                             break;
                         case SyncCmdID.CmdIdDelMsg:
-                            var dlMsg = Util.Deserialize<MM.DelMsg>(r.CmdBuf.Buffer.ToByteArray());
+                            var dlMsg = Util.Deserialize<micromsg.DelMsg>(r.CmdBuf.Buffer.ToByteArray());
                             list.DelMsgs.Add(dlMsg);
                             break;
                         case SyncCmdID.CmdIdReport:
-                            //Util.Deserialize<MM.Report>(r.CmdBuf.Buffer.ToByteArray());
+                            Util.Deserialize<micromsg.Report>(r.CmdBuf.Buffer.ToByteArray());
                             break;
                         case SyncCmdID.CmdIdOpenQQMicroBlog:
-                            var openQQMicroBlog = Util.Deserialize<MM.OpenQQMicroBlog>(r.CmdBuf.Buffer.ToByteArray());
+                            var openQQMicroBlog = Util.Deserialize<micromsg.OpenQQMicroBlog>(r.CmdBuf.Buffer.ToByteArray());
                             list.OpenQQMicroBlogs.Add(openQQMicroBlog);
                             break;
                         case SyncCmdID.CmdIdCloseMicroBlog:
-                            var closeMicroBlog = Util.Deserialize<MM.CloseMicroBlog>(r.CmdBuf.Buffer.ToByteArray());
+                            var closeMicroBlog = Util.Deserialize<micromsg.CloseMicroBlog>(r.CmdBuf.Buffer.ToByteArray());
                             list.CloseMicroBlogs.Add(closeMicroBlog);
                             break;
                         case SyncCmdID.CmdIdModMicroBlog:
-                            //Util.Deserialize<MM.ModMicroBlog>(r.CmdBuf.Buffer.ToByteArray());
+                            var inviteFriendOpen = Util.Deserialize<micromsg.InviteFriendOpen>(r.CmdBuf.Buffer.ToByteArray());
+                            list.InviteFriendOpens.Add(inviteFriendOpen);
                             break;
                         case SyncCmdID.CmdIdModNotifyStatus:
-                            var modNotifyStatus = Util.Deserialize<MM.ModNotifyStatus>(r.CmdBuf.Buffer.ToByteArray());
+                            var modNotifyStatus = Util.Deserialize<micromsg.ModNotifyStatus>(r.CmdBuf.Buffer.ToByteArray());
                             list.ModNotifyStatuss.Add(modNotifyStatus);
                             break;
                         case SyncCmdID.CmdIdModChatRoomMember:
-                            var modChatRoomMember = Util.Deserialize<MM.ModChatRoomMember>(r.CmdBuf.Buffer.ToByteArray());
+                            var modChatRoomMember = Util.Deserialize<micromsg.ModChatRoomMember>(r.CmdBuf.Buffer.ToByteArray());
                             list.ModChatRoomMembers.Add(modChatRoomMember);
                             break;
                         case SyncCmdID.CmdIdQuitChatRoom:
-                            var quitChatRoom = Util.Deserialize<MM.QuitChatRoom>(r.CmdBuf.Buffer.ToByteArray());
+                            var quitChatRoom = Util.Deserialize<micromsg.QuitChatRoom>(r.CmdBuf.Buffer.ToByteArray());
                             list.QuitChatRooms.Add(quitChatRoom);
                             break;
                         case SyncCmdID.CmdIdModContactDomainEmail:
-
-                            //Util.Deserialize<MM.ModContactDomainEmail>(r.CmdBuf.Buffer.ToByteArray());
+                            //Util.Deserialize<micromsg.ModContactDomainEmail>(r.CmdBuf.Buffer.ToByteArray());
                             break;
                         case SyncCmdID.CmdIdModUserDomainEmail:
-                            var modUserDomainEmail = Util.Deserialize<MM.ModUserDomainEmail>(r.CmdBuf.Buffer.ToByteArray());
+                            var modUserDomainEmail = Util.Deserialize<micromsg.ModUserDomainEmail>(r.CmdBuf.Buffer.ToByteArray());
                             list.ModUserDomainEmails.Add(modUserDomainEmail);
                             break;
                         case SyncCmdID.CmdIdDelUserDomainEmail:
-                            var delUserDomainEmail = Util.Deserialize<MM.DelUserDomainEmail>(r.CmdBuf.Buffer.ToByteArray());
+                            var delUserDomainEmail = Util.Deserialize<micromsg.DelUserDomainEmail>(r.CmdBuf.Buffer.ToByteArray());
                             list.DelUserDomainEmails.Add(delUserDomainEmail);
                             break;
                         case SyncCmdID.CmdIdModChatRoomNotify:
-                            var modChatRoomNotify = Util.Deserialize<MM.ModChatRoomNotify>(r.CmdBuf.Buffer.ToByteArray());
+                            var modChatRoomNotify = Util.Deserialize<micromsg.ModChatRoomNotify>(r.CmdBuf.Buffer.ToByteArray());
                             list.ModChatRoomNotifys.Add(modChatRoomNotify);
                             break; ;
                         case SyncCmdID.CmdIdPossibleFriend:
-                            var possibleFriend = Util.Deserialize<MM.PossibleFriend>(r.CmdBuf.Buffer.ToByteArray());
+                            var possibleFriend = Util.Deserialize<micromsg.PossibleFriend>(r.CmdBuf.Buffer.ToByteArray());
                             list.PossibleFriends.Add(possibleFriend);
                             break;
                         case SyncCmdID.CmdIdInviteFriendOpen:
-                            var inviteFriendOpen = Util.Deserialize<MM.InviteFriendOpen>(r.CmdBuf.Buffer.ToByteArray());
-                            list.InviteFriendOpens.Add(inviteFriendOpen);
+                            var inviteFriendOpen1 = Util.Deserialize<micromsg.InviteFriendOpen>(r.CmdBuf.Buffer.ToByteArray());
+                            list.InviteFriendOpens.Add(inviteFriendOpen1);
                             break;
                         case SyncCmdID.CmdIdFunctionSwitch:
-                            var functionSwitch = Util.Deserialize<MM.FunctionSwitch>(r.CmdBuf.Buffer.ToByteArray());
+                            var functionSwitch = Util.Deserialize<micromsg.FunctionSwitch>(r.CmdBuf.Buffer.ToByteArray());
                             list.FunctionSwitchs.Add(functionSwitch);
                             break;
                         case SyncCmdID.CmdIdModQContact:
-                            //Util.Deserialize<MM.ModQContact>(r.CmdBuf.Buffer.ToByteArray());
+                            var qContact = Util.Deserialize<micromsg.QContact>(r.CmdBuf.Buffer.ToByteArray());
+                            list.QContacts.Add(qContact);
                             break;
                         case SyncCmdID.CmdIdModTContact:
-                            //Util.Deserialize<MM.ModTContact>(r.CmdBuf.Buffer.ToByteArray());
+                            var tContact = Util.Deserialize<micromsg.TContact>(r.CmdBuf.Buffer.ToByteArray());
+                            list.TContacts.Add(tContact);
                             break;
                         case SyncCmdID.CmdIdPsmStat:
-                            var pSMStat = Util.Deserialize<MM.PSMStat>(r.CmdBuf.Buffer.ToByteArray());
+                            var pSMStat = Util.Deserialize<micromsg.PSMStat>(r.CmdBuf.Buffer.ToByteArray());
                             list.PSMStats.Add(pSMStat);
                             break;
                         case SyncCmdID.CmdIdModChatRoomTopic:
-                            var modChatRoomTopic = Util.Deserialize<MM.ModChatRoomTopic>(r.CmdBuf.Buffer.ToByteArray());
+                            var modChatRoomTopic = Util.Deserialize<micromsg.ModChatRoomTopic>(r.CmdBuf.Buffer.ToByteArray());
                             list.ModChatRoomTopics.Add(modChatRoomTopic);
                             break;
                         case SyncCmdID.MM_SYNCCMD_UPDATESTAT:
-
-                            //var updateStatOpLog = Util.Deserialize<micromsg>(r.CmdBuf.Buffer.ToByteArray());
+                            var updateStatOpLog = Util.Deserialize<micromsg.UpdateStatOpLog>(r.CmdBuf.Buffer.ToByteArray());
+                            list.UpdateStatOpLogs.Add(updateStatOpLog);
                             break;
                         case SyncCmdID.MM_SYNCCMD_MODDISTURBSETTING:
 
@@ -369,11 +371,9 @@ namespace Wechat.Protocol
                             list.ModDisturbSettings.Add(modDisturbSetting);
                             break;
                         case SyncCmdID.MM_SYNCCMD_DELETEBOTTLE:
-
-                            //Util.Deserialize<micromsg>(r.CmdBuf.Buffer.ToByteArray());
+                            //var deleteBottle=  Util.Deserialize<micromsg.DeleteBottle>(r.CmdBuf.Buffer.ToByteArray());
                             break;
                         case SyncCmdID.MM_SYNCCMD_MODBOTTLECONTACT:
-
                             var modBottleContact = Util.Deserialize<micromsg.ModBottleContact>(r.CmdBuf.Buffer.ToByteArray());
                             list.ModBottleContacts.Add(modBottleContact);
                             break;
@@ -393,8 +393,8 @@ namespace Wechat.Protocol
                             list.KVStatItems.Add(kVStatItem);
                             break;
                         case SyncCmdID.NN_SYNCCMD_THEMESTAT:
-
-                            //Util.Deserialize<micromsg>(r.CmdBuf.Buffer.ToByteArray());
+                            var themeOpLog = Util.Deserialize<micromsg.ThemeOpLog>(r.CmdBuf.Buffer.ToByteArray());
+                            list.ThemeOpLogs.Add(themeOpLog);
                             break;
                         case SyncCmdID.MM_SYNCCMD_USERINFOEXT:
 
@@ -402,12 +402,12 @@ namespace Wechat.Protocol
                             list.UserInfoExts.Add(userInfoExt);
                             break;
                         case SyncCmdID.MM_SNS_SYNCCMD_OBJECT:
-
-                            //Util.Deserialize<micromsg>(r.CmdBuf.Buffer.ToByteArray());
+                            var snsObject = Util.Deserialize<micromsg.SnsObject>(r.CmdBuf.Buffer.ToByteArray());
+                            list.SnsObjects.Add(snsObject);
                             break;
                         case SyncCmdID.MM_SNS_SYNCCMD_ACTION:
-
-                            //Util.Deserialize<micromsg>(r.CmdBuf.Buffer.ToByteArray());
+                            var snsActionGroup = Util.Deserialize<micromsg.SnsActionGroup>(r.CmdBuf.Buffer.ToByteArray());
+                            list.SnsActionGroups.Add(snsActionGroup);
                             break;
                         case SyncCmdID.MM_SYNCCMD_BRAND_SETTING:
 
@@ -518,108 +518,110 @@ namespace Wechat.Protocol
                         case SyncCmdID.CmdInvalid:
                             break;
                         case SyncCmdID.CmdIdModUserInfo:
-                            var modUserInfo = Util.Deserialize<MM.ModUserInfo>(r.cmdBuf.data);
+                            var modUserInfo = Util.Deserialize<micromsg.ModUserInfo>(r.cmdBuf.data);
                             list.ModUserInfos.Add(modUserInfo);
                             break;
                         case SyncCmdID.CmdIdModContact:
-                            var modContact = Util.Deserialize<MM.ModContact>(r.cmdBuf.data);
+                            var modContact = Util.Deserialize<micromsg.ModContact>(r.cmdBuf.data);
                             list.ModContacts.Add(modContact);
                             break;
                         case SyncCmdID.CmdIdDelContact:
-                            var delContact = Util.Deserialize<MM.DelContact>(r.cmdBuf.data);
+                            var delContact = Util.Deserialize<micromsg.DelContact>(r.cmdBuf.data);
                             list.DelContacts.Add(delContact);
                             break;
                         case SyncCmdID.CmdIdAddMsg:
-                            var addMsg = Util.Deserialize<MM.AddMsg>(r.cmdBuf.data);
+                            var addMsg = Util.Deserialize<micromsg.AddMsg>(r.cmdBuf.data);
                             list.AddMsgs.Add(addMsg);
                             break;
                         case SyncCmdID.CmdIdModMsgStatus:
-                            var mdMsgStatus = Util.Deserialize<MM.ModMsgStatus>(r.cmdBuf.data);
+                            var mdMsgStatus = Util.Deserialize<micromsg.ModMsgStatus>(r.cmdBuf.data);
                             list.ModMsgStatuss.Add(mdMsgStatus);
                             break;
                         case SyncCmdID.CmdIdDelChatContact:
-                            var delChatContact = Util.Deserialize<MM.DelChatContact>(r.cmdBuf.data);
+                            var delChatContact = Util.Deserialize<micromsg.DelChatContact>(r.cmdBuf.data);
                             list.DelChatContacts.Add(delChatContact);
                             break;
                         case SyncCmdID.CmdIdDelContactMsg:
-                            var delContactMsg = Util.Deserialize<MM.DelContactMsg>(r.cmdBuf.data);
+                            var delContactMsg = Util.Deserialize<micromsg.DelContactMsg>(r.cmdBuf.data);
                             list.DelContactMsgs.Add(delContactMsg);
                             break;
                         case SyncCmdID.CmdIdDelMsg:
-                            var dlMsg = Util.Deserialize<MM.DelMsg>(r.cmdBuf.data);
+                            var dlMsg = Util.Deserialize<micromsg.DelMsg>(r.cmdBuf.data);
                             list.DelMsgs.Add(dlMsg);
                             break;
                         case SyncCmdID.CmdIdReport:
-                            //Util.Deserialize<MM.Report>(r.cmdBuf.data);
+                            Util.Deserialize<micromsg.Report>(r.cmdBuf.data);
                             break;
                         case SyncCmdID.CmdIdOpenQQMicroBlog:
-                            var openQQMicroBlog = Util.Deserialize<MM.OpenQQMicroBlog>(r.cmdBuf.data);
+                            var openQQMicroBlog = Util.Deserialize<micromsg.OpenQQMicroBlog>(r.cmdBuf.data);
                             list.OpenQQMicroBlogs.Add(openQQMicroBlog);
                             break;
                         case SyncCmdID.CmdIdCloseMicroBlog:
-                            var closeMicroBlog = Util.Deserialize<MM.CloseMicroBlog>(r.cmdBuf.data);
+                            var closeMicroBlog = Util.Deserialize<micromsg.CloseMicroBlog>(r.cmdBuf.data);
                             list.CloseMicroBlogs.Add(closeMicroBlog);
                             break;
                         case SyncCmdID.CmdIdModMicroBlog:
-                            //Util.Deserialize<MM.ModMicroBlog>(r.cmdBuf.data);
+                            var inviteFriendOpen = Util.Deserialize<micromsg.InviteFriendOpen>(r.cmdBuf.data);
+                            list.InviteFriendOpens.Add(inviteFriendOpen);
                             break;
                         case SyncCmdID.CmdIdModNotifyStatus:
-                            var modNotifyStatus = Util.Deserialize<MM.ModNotifyStatus>(r.cmdBuf.data);
+                            var modNotifyStatus = Util.Deserialize<micromsg.ModNotifyStatus>(r.cmdBuf.data);
                             list.ModNotifyStatuss.Add(modNotifyStatus);
                             break;
                         case SyncCmdID.CmdIdModChatRoomMember:
-                            var modChatRoomMember = Util.Deserialize<MM.ModChatRoomMember>(r.cmdBuf.data);
+                            var modChatRoomMember = Util.Deserialize<micromsg.ModChatRoomMember>(r.cmdBuf.data);
                             list.ModChatRoomMembers.Add(modChatRoomMember);
                             break;
                         case SyncCmdID.CmdIdQuitChatRoom:
-                            var quitChatRoom = Util.Deserialize<MM.QuitChatRoom>(r.cmdBuf.data);
+                            var quitChatRoom = Util.Deserialize<micromsg.QuitChatRoom>(r.cmdBuf.data);
                             list.QuitChatRooms.Add(quitChatRoom);
                             break;
                         case SyncCmdID.CmdIdModContactDomainEmail:
-
-                            //Util.Deserialize<MM.ModContactDomainEmail>(r.cmdBuf.data);
+                            //Util.Deserialize<micromsg.ModContactDomainEmail>(r.cmdBuf.data);
                             break;
                         case SyncCmdID.CmdIdModUserDomainEmail:
-                            var modUserDomainEmail = Util.Deserialize<MM.ModUserDomainEmail>(r.cmdBuf.data);
+                            var modUserDomainEmail = Util.Deserialize<micromsg.ModUserDomainEmail>(r.cmdBuf.data);
                             list.ModUserDomainEmails.Add(modUserDomainEmail);
                             break;
                         case SyncCmdID.CmdIdDelUserDomainEmail:
-                            var delUserDomainEmail = Util.Deserialize<MM.DelUserDomainEmail>(r.cmdBuf.data);
+                            var delUserDomainEmail = Util.Deserialize<micromsg.DelUserDomainEmail>(r.cmdBuf.data);
                             list.DelUserDomainEmails.Add(delUserDomainEmail);
                             break;
                         case SyncCmdID.CmdIdModChatRoomNotify:
-                            var modChatRoomNotify = Util.Deserialize<MM.ModChatRoomNotify>(r.cmdBuf.data);
+                            var modChatRoomNotify = Util.Deserialize<micromsg.ModChatRoomNotify>(r.cmdBuf.data);
                             list.ModChatRoomNotifys.Add(modChatRoomNotify);
                             break; ;
                         case SyncCmdID.CmdIdPossibleFriend:
-                            var possibleFriend = Util.Deserialize<MM.PossibleFriend>(r.cmdBuf.data);
+                            var possibleFriend = Util.Deserialize<micromsg.PossibleFriend>(r.cmdBuf.data);
                             list.PossibleFriends.Add(possibleFriend);
                             break;
                         case SyncCmdID.CmdIdInviteFriendOpen:
-                            var inviteFriendOpen = Util.Deserialize<MM.InviteFriendOpen>(r.cmdBuf.data);
-                            list.InviteFriendOpens.Add(inviteFriendOpen);
+                            var inviteFriendOpen1 = Util.Deserialize<micromsg.InviteFriendOpen>(r.cmdBuf.data);
+                            list.InviteFriendOpens.Add(inviteFriendOpen1);
                             break;
                         case SyncCmdID.CmdIdFunctionSwitch:
-                            var functionSwitch = Util.Deserialize<MM.FunctionSwitch>(r.cmdBuf.data);
+                            var functionSwitch = Util.Deserialize<micromsg.FunctionSwitch>(r.cmdBuf.data);
                             list.FunctionSwitchs.Add(functionSwitch);
                             break;
                         case SyncCmdID.CmdIdModQContact:
-                            //Util.Deserialize<MM.ModQContact>(r.cmdBuf.data);
+                            var qContact = Util.Deserialize<micromsg.QContact>(r.cmdBuf.data);
+                            list.QContacts.Add(qContact);
                             break;
                         case SyncCmdID.CmdIdModTContact:
-                            //Util.Deserialize<MM.ModTContact>(r.cmdBuf.data);
+                            var tContact = Util.Deserialize<micromsg.TContact>(r.cmdBuf.data);
+                            list.TContacts.Add(tContact);
                             break;
                         case SyncCmdID.CmdIdPsmStat:
-                            var pSMStat = Util.Deserialize<MM.PSMStat>(r.cmdBuf.data);
+                            var pSMStat = Util.Deserialize<micromsg.PSMStat>(r.cmdBuf.data);
                             list.PSMStats.Add(pSMStat);
                             break;
                         case SyncCmdID.CmdIdModChatRoomTopic:
-                            var modChatRoomTopic = Util.Deserialize<MM.ModChatRoomTopic>(r.cmdBuf.data);
+                            var modChatRoomTopic = Util.Deserialize<micromsg.ModChatRoomTopic>(r.cmdBuf.data);
                             list.ModChatRoomTopics.Add(modChatRoomTopic);
                             break;
                         case SyncCmdID.MM_SYNCCMD_UPDATESTAT:
-
-                            //var updateStatOpLog = Util.Deserialize<micromsg>(r.cmdBuf.data);
+                            var updateStatOpLog = Util.Deserialize<micromsg.UpdateStatOpLog>(r.cmdBuf.data);
+                            list.UpdateStatOpLogs.Add(updateStatOpLog);
                             break;
                         case SyncCmdID.MM_SYNCCMD_MODDISTURBSETTING:
 
@@ -627,11 +629,9 @@ namespace Wechat.Protocol
                             list.ModDisturbSettings.Add(modDisturbSetting);
                             break;
                         case SyncCmdID.MM_SYNCCMD_DELETEBOTTLE:
-
-                            //Util.Deserialize<micromsg>(r.cmdBuf.data);
+                            //var deleteBottle=  Util.Deserialize<micromsg.DeleteBottle>(r.cmdBuf.data);
                             break;
                         case SyncCmdID.MM_SYNCCMD_MODBOTTLECONTACT:
-
                             var modBottleContact = Util.Deserialize<micromsg.ModBottleContact>(r.cmdBuf.data);
                             list.ModBottleContacts.Add(modBottleContact);
                             break;
@@ -651,8 +651,8 @@ namespace Wechat.Protocol
                             list.KVStatItems.Add(kVStatItem);
                             break;
                         case SyncCmdID.NN_SYNCCMD_THEMESTAT:
-
-                            //Util.Deserialize<micromsg>(r.cmdBuf.data);
+                            var themeOpLog = Util.Deserialize<micromsg.ThemeOpLog>(r.cmdBuf.data);
+                            list.ThemeOpLogs.Add(themeOpLog);
                             break;
                         case SyncCmdID.MM_SYNCCMD_USERINFOEXT:
 
@@ -660,12 +660,12 @@ namespace Wechat.Protocol
                             list.UserInfoExts.Add(userInfoExt);
                             break;
                         case SyncCmdID.MM_SNS_SYNCCMD_OBJECT:
-
-                            //Util.Deserialize<micromsg>(r.cmdBuf.data);
+                            var snsObject = Util.Deserialize<micromsg.SnsObject>(r.cmdBuf.data);
+                            list.SnsObjects.Add(snsObject);
                             break;
                         case SyncCmdID.MM_SNS_SYNCCMD_ACTION:
-
-                            //Util.Deserialize<micromsg>(r.cmdBuf.data);
+                            var snsActionGroup = Util.Deserialize<micromsg.SnsActionGroup>(r.cmdBuf.data);
+                            list.SnsActionGroups.Add(snsActionGroup);
                             break;
                         case SyncCmdID.MM_SYNCCMD_BRAND_SETTING:
 
@@ -721,7 +721,7 @@ namespace Wechat.Protocol
                             break;
                         case SyncCmdID.CmdIdMax:
 
-                            //Util.Deserialize<micromsg>(r.cmdBuf.data);
+                            //Util.Deserialize<micromsg>(r.CmdBuf.Buffer.ToByteArray());
                             break;
 
 
@@ -793,14 +793,481 @@ namespace Wechat.Protocol
             }
 
         }
+        /// <summary>
+        /// 修改密码
+        /// </summary>
+        /// <param name="NewPasswd"></param>
+        /// <param name="Ticket"></param>
+        /// <param name="authKey"></param>
+        /// <returns></returns>
+        public micromsg.NewSetPasswdResponse NewSetPasswd(string wxId, string NewPasswd, string ticket)
+        {
+            string key = ConstCacheKey.GetWxIdKey(wxId);
+            var cache = CacheHelper.CreateInstance();
+            var customerInfoCache = cache.Get<CustomerInfoCache>(key);
+            if (customerInfoCache == null)
+            {
+                throw new ExpiredException("缓存失效，请重新生成二维码登录");
+            }
+            micromsg.SetPwdRequest newSetPasswdRequest = new micromsg.SetPwdRequest()
+            {
+                AutoAuthKey = new micromsg.SKBuiltinBuffer_t()
+                {
+                    Buffer = customerInfoCache.AuthKey,
+                    iLen = (uint)customerInfoCache.AuthKey.Length
+                },
+                BaseRequest = new micromsg.BaseRequest()
+                {
+                    SessionKey = customerInfoCache.BaseRequest.sessionKey,
+                    Uin = (uint)customerInfoCache.BaseRequest.uin,
+                    DeviceID = customerInfoCache.BaseRequest.devicelId,
+                    ClientVersion = customerInfoCache.BaseRequest.clientVersion,
+                    DeviceType = Encoding.UTF8.GetBytes(customerInfoCache.BaseRequest.osType),
+                    Scene = (uint)customerInfoCache.BaseRequest.scene
+                },
+                Password = Util.EncryptWithMD5(NewPasswd),
+                Ticket = ticket,
 
+
+            };
+
+            // newSetPasswd.SetAutoAuthKey(skb);
+            //newSetPasswd.ImgSid = 0;
+            var RespProtobuf = new byte[0];
+
+            //newSetPasswd.BaseRequest.Scene = 0;
+            var src = Util.Serialize(newSetPasswdRequest);
+            src = src.Concat("2801".ToByteArray(16, 2)).ToArray();
+
+            int mUid = 0;
+            string cookie = null;
+            int bufferlen = src.Length;
+            //组包
+            byte[] SendDate = pack(src, 383, bufferlen, customerInfoCache.AesKey, customerInfoCache.PriKeyBuf, customerInfoCache.MUid, customerInfoCache.Cookie, 5, true, true);
+            //发包
+            byte[] RetDate = Util.HttpPost(SendDate, "/cgi-bin/micromsg-bin/newsetpasswd");
+            if (RetDate.Length > 32)
+            {
+                var packinfo = UnPackHeader(RetDate, out mUid, out cookie);
+                //Console.WriteLine("CGI {0} BodyLength {1} m_bCompressed {2}", packinfo.CGI, packinfo.body.Length, packinfo.m_bCompressed);
+                RespProtobuf = packinfo.body;
+                if (packinfo.m_bCompressed)
+                {
+                    RespProtobuf = Util.uncompress_aes(packinfo.body, customerInfoCache.AesKey);
+                }
+                else
+                {
+                    RespProtobuf = Util.nouncompress_aes(packinfo.body, customerInfoCache.AesKey);
+                }
+
+            }
+            else
+            {
+                throw new ExpiredException("用户可能退出,请重新登陆");
+            }
+
+            var SetPwdResponse = Util.Deserialize<micromsg.NewSetPasswdResponse>(RespProtobuf);
+            if (SetPwdResponse == null || SetPwdResponse.BaseResponse.Ret != (int)MMPro.MM.RetConst.MM_OK)
+            {
+                customerInfoCache.AuthKey = SetPwdResponse.AutoAuthKey.Buffer;
+                cache.Add(key, customerInfoCache);
+            }
+            return SetPwdResponse;
+        }
+
+
+
+        /// <summary>
+        /// 创建群
+        /// </summary>
+        /// <param name="list">要添加进来的好友第一个必须是自己的wxid</param>
+        /// <param name="topic">群名</param>
+        /// <returns></returns>
+        public CreateChatRoomResponese CreateChatRoom(string wxId, MemberReq[] list, string topic = "")
+        {
+            string key = ConstCacheKey.GetWxIdKey(wxId);
+            var cache = CacheHelper.CreateInstance();
+            var customerInfoCache = cache.Get<CustomerInfoCache>(key);
+            if (customerInfoCache == null)
+            {
+                throw new ExpiredException("缓存失效，请重新生成二维码登录");
+            }
+            byte[] RespProtobuf = new byte[0];
+            SKBuiltinString topic_ = new SKBuiltinString();
+            topic_.@string = topic;
+            CreateChatRoomRequest createChatRoom_ = new CreateChatRoomRequest()
+            {
+                baseRequest = new BaseRequest()
+                {
+                    sessionKey = customerInfoCache.BaseRequest.sessionKey,
+                    uin = customerInfoCache.BaseRequest.uin,
+                    devicelId = customerInfoCache.BaseRequest.devicelId,
+                    clientVersion = customerInfoCache.BaseRequest.clientVersion,
+                    osType = customerInfoCache.BaseRequest.osType,
+                    scene = customerInfoCache.BaseRequest.scene
+                },
+                scene = 0,
+                topic = topic_,
+                memberCount = (uint)list.Length,
+                memberList = list
+            };
+            int mUid = 0;
+            string cookie = null;
+            var src = Util.Serialize(createChatRoom_);
+            int bufferlen = src.Length;
+            //组包
+            byte[] SendDate = pack(src, (int)CGI_TYPE.CGI_TYPE_CREATECHATROOM, bufferlen, customerInfoCache.AesKey, customerInfoCache.PriKeyBuf, customerInfoCache.MUid, customerInfoCache.Cookie, 5, true, true);
+            //发包
+            byte[] RetDate = Util.HttpPost(SendDate, URL.CGI_CREATECHATROOM);
+            if (RetDate.Length > 32)
+            {
+                var packinfo = UnPackHeader(RetDate, out mUid, out cookie);
+                //Console.WriteLine("CGI {0} BodyLength {1} m_bCompressed {2}", packinfo.CGI, packinfo.body.Length, packinfo.m_bCompressed);
+                RespProtobuf = packinfo.body;
+                if (packinfo.m_bCompressed)
+                {
+                    RespProtobuf = Util.uncompress_aes(packinfo.body, customerInfoCache.AesKey);
+                }
+                else
+                {
+                    RespProtobuf = Util.nouncompress_aes(packinfo.body, customerInfoCache.AesKey);
+                }
+
+            }
+            else
+            {
+                throw new ExpiredException("用户可能退出,请重新登陆");
+            }
+
+            var CreateChatRoomResponse_ = Util.Deserialize<CreateChatRoomResponese>(RespProtobuf);
+            return CreateChatRoomResponse_;
+        }
+
+        /// <summary>
+        /// 邀请好友
+        /// </summary>
+        /// <param name="chatRoomName">群id</param>
+        /// <param name="list">要邀请的联系人["xxxx","xxxx1","xxxx2"]</param>
+        /// <returns></returns>
+        public AddChatRoomMemberResponse AddChatRoomMember(string wxId, string chatRoomName, MemberReq[] list)
+        {
+            string key = ConstCacheKey.GetWxIdKey(wxId);
+            var cache = CacheHelper.CreateInstance();
+            var customerInfoCache = cache.Get<CustomerInfoCache>(key);
+            if (customerInfoCache == null)
+            {
+                throw new ExpiredException("缓存失效，请重新生成二维码登录");
+            }
+            SKBuiltinString chatRoomName_ = new SKBuiltinString();
+            chatRoomName_.@string = chatRoomName;
+            byte[] RespProtobuf = new byte[0];
+
+            AddChatRoomMemberRequest addChat = new AddChatRoomMemberRequest()
+            {
+                baseRequest = new BaseRequest()
+                {
+                    sessionKey = customerInfoCache.BaseRequest.sessionKey,
+                    uin = customerInfoCache.BaseRequest.uin,
+                    devicelId = customerInfoCache.BaseRequest.devicelId,
+                    clientVersion = customerInfoCache.BaseRequest.clientVersion,
+                    osType = customerInfoCache.BaseRequest.osType,
+                    scene = customerInfoCache.BaseRequest.scene
+                },
+                chatRoomName = chatRoomName_,
+                memberCount = (uint)list.Count(),
+                memberList = list
+            };
+            int mUid = 0;
+            string cookie = null;
+            var src = Util.Serialize(addChat);
+            int bufferlen = src.Length;
+            //组包
+            byte[] SendDate = pack(src, (int)CGI_TYPE.CGI_TYPE_ADDCHATROOMMEMBER, bufferlen, customerInfoCache.AesKey, customerInfoCache.PriKeyBuf, customerInfoCache.MUid, customerInfoCache.Cookie, 5, true, true);
+            //发包
+            byte[] RetDate = Util.HttpPost(SendDate, URL.CGI_ADDCHATROOMMEMBER);
+            if (RetDate.Length > 32)
+            {
+                var packinfo = UnPackHeader(RetDate, out mUid, out cookie);
+                //Console.WriteLine("CGI {0} BodyLength {1} m_bCompressed {2}", packinfo.CGI, packinfo.body.Length, packinfo.m_bCompressed);
+                RespProtobuf = packinfo.body;
+                if (packinfo.m_bCompressed)
+                {
+                    RespProtobuf = Util.uncompress_aes(packinfo.body, customerInfoCache.AesKey);
+                }
+                else
+                {
+                    RespProtobuf = Util.nouncompress_aes(packinfo.body, customerInfoCache.AesKey);
+                }
+
+            }
+            else
+            {
+                throw new ExpiredException("用户可能退出,请重新登陆");
+            }
+
+            var AddChatRoomMemberResponse_ = Util.Deserialize<AddChatRoomMemberResponse>(RespProtobuf);
+            return AddChatRoomMemberResponse_;
+
+        }
+
+        /// <summary>
+        /// 删除群成员
+        /// </summary>
+        /// <param name="chatRoomName"></param>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        public DelChatRoomMemberResponse DelChatRoomMember(string wxId, string chatRoomName, DelMemberReq[] list)
+        {
+            string key = ConstCacheKey.GetWxIdKey(wxId);
+            var cache = CacheHelper.CreateInstance();
+            var customerInfoCache = cache.Get<CustomerInfoCache>(key);
+            if (customerInfoCache == null)
+            {
+                throw new ExpiredException("缓存失效，请重新生成二维码登录");
+            }
+            byte[] RespProtobuf = new byte[0];
+
+            DelChatRoomMemberRequest addChat = new DelChatRoomMemberRequest()
+            {
+                baseRequest = new BaseRequest()
+                {
+                    sessionKey = customerInfoCache.BaseRequest.sessionKey,
+                    uin = customerInfoCache.BaseRequest.uin,
+                    devicelId = customerInfoCache.BaseRequest.devicelId,
+                    clientVersion = customerInfoCache.BaseRequest.clientVersion,
+                    osType = customerInfoCache.BaseRequest.osType,
+                    scene = customerInfoCache.BaseRequest.scene
+                },
+                chatRoomName = chatRoomName,
+                memberCount = (uint)list.Count(),
+                memberList = list
+            };
+            int mUid = 0;
+            string cookie = null;
+            var src = Util.Serialize(addChat);
+            int bufferlen = src.Length;
+            //组包
+            byte[] SendDate = pack(src, (int)CGI_TYPE.CGI_TYPE_DELCHATROOMMEMBER, bufferlen, customerInfoCache.AesKey, customerInfoCache.PriKeyBuf, customerInfoCache.MUid, customerInfoCache.Cookie, 5, true, true);
+            //发包
+            byte[] RetDate = Util.HttpPost(SendDate, URL.CGI_DELCHATROOMMEMBER);
+            if (RetDate.Length > 32)
+            {
+                var packinfo = UnPackHeader(RetDate, out mUid, out cookie);
+                //Console.WriteLine("CGI {0} BodyLength {1} m_bCompressed {2}", packinfo.CGI, packinfo.body.Length, packinfo.m_bCompressed);
+                RespProtobuf = packinfo.body;
+                if (packinfo.m_bCompressed)
+                {
+                    RespProtobuf = Util.uncompress_aes(packinfo.body, customerInfoCache.AesKey);
+                }
+                else
+                {
+                    RespProtobuf = Util.nouncompress_aes(packinfo.body, customerInfoCache.AesKey);
+                }
+
+            }
+            else
+            {
+                throw new ExpiredException("用户可能退出,请重新登陆");
+            }
+            Debug.Print(RespProtobuf.ToString(16, 2));
+            var DelChatRoomMemberResponse_ = Util.Deserialize<DelChatRoomMemberResponse>(RespProtobuf);
+            return DelChatRoomMemberResponse_;
+
+        }
+
+
+        /// <summary>
+        /// 取群成员详细
+        /// </summary>
+        /// <param name="chatroomUserName">群id</param>
+        /// <returns></returns>
+        public GetChatroomMemberDetailResponse GetChatroomMemberDetail(string wxId, string chatroomUserName)
+        {
+            string key = ConstCacheKey.GetWxIdKey(wxId);
+            var cache = CacheHelper.CreateInstance();
+            var customerInfoCache = cache.Get<CustomerInfoCache>(key);
+            if (customerInfoCache == null)
+            {
+                throw new ExpiredException("缓存失效，请重新生成二维码登录");
+            }
+            byte[] RespProtobuf = new byte[0];
+            GetChatroomMemberDetailRequest getChatroomMember_ = new GetChatroomMemberDetailRequest()
+            {
+                baseRequest = new BaseRequest()
+                {
+                    sessionKey = customerInfoCache.BaseRequest.sessionKey,
+                    uin = customerInfoCache.BaseRequest.uin,
+                    devicelId = customerInfoCache.BaseRequest.devicelId,
+                    clientVersion = customerInfoCache.BaseRequest.clientVersion,
+                    osType = customerInfoCache.BaseRequest.osType,
+                    scene = customerInfoCache.BaseRequest.scene
+                },
+                clientVersion = (uint)0,
+                chatroomUserName = chatroomUserName,
+            };
+            int mUid = 0;
+            string cookie = null;
+            var src = Util.Serialize(getChatroomMember_);
+            int bufferlen = src.Length;
+            //组包
+            byte[] SendDate = pack(src, (int)CGI_TYPE.CGI_TYPE_GETCHATROOMMEMBERDETAIL, bufferlen, customerInfoCache.AesKey, customerInfoCache.PriKeyBuf, customerInfoCache.MUid, customerInfoCache.Cookie, 5, true, true);
+            //发包
+            byte[] RetDate = Util.HttpPost(SendDate, URL.CGI_GETCHATROOMMEMBERDETAIL);
+            if (RetDate.Length > 32)
+            {
+                var packinfo = UnPackHeader(RetDate, out mUid, out cookie);
+                //Console.WriteLine("CGI {0} BodyLength {1} m_bCompressed {2}", packinfo.CGI, packinfo.body.Length, packinfo.m_bCompressed);
+                RespProtobuf = packinfo.body;
+                if (packinfo.m_bCompressed)
+                {
+                    RespProtobuf = Util.uncompress_aes(packinfo.body, customerInfoCache.AesKey);
+                }
+                else
+                {
+                    RespProtobuf = Util.nouncompress_aes(packinfo.body, customerInfoCache.AesKey);
+                }
+
+            }
+            else
+            {
+                throw new ExpiredException("用户可能退出,请重新登陆");
+            }
+            Debug.Print(RespProtobuf.ToString(16, 2));
+            var GetChatroomMemberDetailResponse_ = Util.Deserialize<GetChatroomMemberDetailResponse>(RespProtobuf);
+            return GetChatroomMemberDetailResponse_;
+        }
+
+        /// <summary>
+        /// 退出群
+        /// </summary>
+        /// <param name="wxId"></param>
+        /// <param name="chatroomUserName"></param>
+        /// <returns></returns>
+        public micromsg.QuitChatRoomResp QuitGroup(string wxId, string chatroomUserName)
+        {
+            string key = ConstCacheKey.GetWxIdKey(wxId);
+            var cache = CacheHelper.CreateInstance();
+            var customerInfoCache = cache.Get<CustomerInfoCache>(key);
+            if (customerInfoCache == null)
+            {
+                throw new ExpiredException("缓存失效，请重新生成二维码登录");
+            }
+            byte[] RespProtobuf = new byte[0];
+            micromsg.QuitChatRoomReq quitChatRoomReq = new micromsg.QuitChatRoomReq()
+            {
+                BaseRequest = new micromsg.BaseRequest()
+                {
+                    SessionKey = customerInfoCache.BaseRequest.sessionKey,
+                    Uin = (uint)customerInfoCache.BaseRequest.uin,
+                    DeviceID = customerInfoCache.BaseRequest.devicelId,
+                    ClientVersion = customerInfoCache.BaseRequest.clientVersion,
+                    DeviceType = Encoding.UTF8.GetBytes(customerInfoCache.BaseRequest.osType),
+                    Scene = (uint)customerInfoCache.BaseRequest.scene
+                },
+                ChatRoomName = chatroomUserName,
+            };
+            int mUid = 0;
+            string cookie = null;
+            var src = Util.Serialize(quitChatRoomReq);
+            int bufferlen = src.Length;
+            //组包
+            byte[] SendDate = pack(src, 16, bufferlen, customerInfoCache.AesKey, customerInfoCache.PriKeyBuf, customerInfoCache.MUid, customerInfoCache.Cookie, 5, true, true);
+            //发包
+            byte[] RetDate = Util.HttpPost(SendDate, "/cgi-bin/micromsg-bin/quitchatroom");
+            if (RetDate.Length > 32)
+            {
+                var packinfo = UnPackHeader(RetDate, out mUid, out cookie);
+                //Console.WriteLine("CGI {0} BodyLength {1} m_bCompressed {2}", packinfo.CGI, packinfo.body.Length, packinfo.m_bCompressed);
+                RespProtobuf = packinfo.body;
+                if (packinfo.m_bCompressed)
+                {
+                    RespProtobuf = Util.uncompress_aes(packinfo.body, customerInfoCache.AesKey);
+                }
+                else
+                {
+                    RespProtobuf = Util.nouncompress_aes(packinfo.body, customerInfoCache.AesKey);
+                }
+
+            }
+            else
+            {
+                throw new ExpiredException("用户可能退出,请重新登陆");
+            }
+
+            var quitChatRoomResp = Util.Deserialize<micromsg.QuitChatRoomResp>(RespProtobuf);
+            return quitChatRoomResp;
+        }
+        /// <summary>
+        /// 发送群公告
+        /// </summary>
+        /// <param name="ChatRoomName">群wxid</param>
+        /// <param name="Announcement">公告内容</param>
+        /// <returns></returns>
+        public micromsg.SetChatRoomAnnouncementResponse setChatRoomAnnouncement(string wxId, string ChatRoomName, string Announcement)
+        {
+            string key = ConstCacheKey.GetWxIdKey(wxId);
+            var cache = CacheHelper.CreateInstance();
+            var customerInfoCache = cache.Get<CustomerInfoCache>(key);
+            if (customerInfoCache == null)
+            {
+                throw new ExpiredException("缓存失效，请重新生成二维码登录");
+            }
+            micromsg.SetChatRoomAnnouncementRequest setChatRoomAnnouncement_ = new micromsg.SetChatRoomAnnouncementRequest()
+            {
+                BaseRequest = new micromsg.BaseRequest()
+                {
+                    SessionKey = customerInfoCache.BaseRequest.sessionKey,
+                    Uin = (uint)customerInfoCache.BaseRequest.uin,
+                    DeviceID = customerInfoCache.BaseRequest.devicelId,
+                    ClientVersion = customerInfoCache.BaseRequest.clientVersion,
+                    DeviceType = Encoding.UTF8.GetBytes(customerInfoCache.BaseRequest.osType),
+                    Scene = (uint)customerInfoCache.BaseRequest.scene
+                },
+                Announcement = Announcement,
+                ChatRoomName = ChatRoomName
+            };
+
+            var src = Util.Serialize(setChatRoomAnnouncement_);
+
+            byte[] RespProtobuf = new byte[0];
+
+            int mUid = 0;
+            string cookie = null;
+            int bufferlen = src.Length;
+            //组包
+            byte[] SendDate = pack(src, (int)CGI_TYPE.CGI_TYPE_SETCHATROOMANNOUNCEMENT, bufferlen, customerInfoCache.AesKey, customerInfoCache.PriKeyBuf, customerInfoCache.MUid, customerInfoCache.Cookie, 5, true, true);
+            //发包
+            byte[] RetDate = Util.HttpPost(SendDate, "/cgi-bin/micromsg-bin/setchatroomannouncement");
+            if (RetDate.Length > 32)
+            {
+                var packinfo = UnPackHeader(RetDate, out mUid, out cookie);
+                //Console.WriteLine("CGI {0} BodyLength {1} m_bCompressed {2}", packinfo.CGI, packinfo.body.Length, packinfo.m_bCompressed);
+                RespProtobuf = packinfo.body;
+                if (packinfo.m_bCompressed)
+                {
+                    RespProtobuf = Util.uncompress_aes(packinfo.body, customerInfoCache.AesKey);
+                }
+                else
+                {
+                    RespProtobuf = Util.nouncompress_aes(packinfo.body, customerInfoCache.AesKey);
+                }
+
+            }
+            else
+            {
+                throw new ExpiredException("用户可能退出,请重新登陆");
+            }
+            Debug.Print(RespProtobuf.ToString(16, 2));
+            var SetChatRoomAnnouncementResponse_ = Util.Deserialize<micromsg.SetChatRoomAnnouncementResponse>(RespProtobuf);
+            return SetChatRoomAnnouncementResponse_;
+        }
         /// <summary>
         /// 精准获取通讯录  
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
         public InitContactResponse InitContact(string wxId, int currentWxcontactSeq = 0)
-        {
+        {           
             string key = ConstCacheKey.GetWxIdKey(wxId);
             var cache = CacheHelper.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
@@ -1074,7 +1541,7 @@ namespace Wechat.Protocol
         /// <param name="url"></param>
         /// <param name="opcode"></param>
         /// <returns></returns>
-        public micromsg.GetA8KeyResp GetA8Key(string wxId, string userName, string url, int opcode = 2)
+        public micromsg.GetA8KeyResp GetA8Key(string wxId, string url, int opcode = 2)
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
             var cache = CacheHelper.CreateInstance();
@@ -1103,7 +1570,7 @@ namespace Wechat.Protocol
                 fontScale = (uint)100,
                 netType = "WIFI",
                 opCode = (uint)opcode,
-                userName = userName,
+                userName = wxId,
                 reqUrl = requrl_,
                 friendQQ = 0,
 
@@ -1787,7 +2254,7 @@ namespace Wechat.Protocol
             int mUid = 0;
             string cookie = null;
             var RespProtobuf = new byte[0];
-            SnsPostRequest SnsPostReq = Util.Deserialize<SnsPostRequest>("0A570A105D64797E40587E3653492B3770767C6D10E5DA8D81031A20353332363435314632303045304431333043453441453237323632423631363920A28498B0012A1369506164206950686F6E65204F53392E332E33300012810808FB0712FB073C54696D656C696E654F626A6563743E3C69643E31323534323132393139333538343234323934373C2F69643E3C757365726E616D653E777869645F6B727862626D68316A75646533313C2F757365726E616D653E3C63726561746554696D653E313439353133383331303C2F63726561746554696D653E3C636F6E74656E74446573633EE2809CE7BEA1E68595E982A3E4BA9BE4B880E6B2BEE79D80E69E95E5A4B4E5B0B1E883BDE5AE89E79DA1E79A84E4BABAE5928CE982A3E4BA9BE586B3E5BF83E694BEE6898BE4B98BE5908EE5B0B1E4B88DE5868DE59B9EE5A4B4E79A84E4BABAE2809D3C2F636F6E74656E74446573633E3C636F6E74656E744465736353686F77547970653E303C2F636F6E74656E744465736353686F77547970653E3C636F6E74656E74446573635363656E653E333C2F636F6E74656E74446573635363656E653E3C707269766174653E303C2F707269766174653E3C7369676874466F6C6465643E303C2F7369676874466F6C6465643E3C617070496E666F3E3C69643E3C2F69643E3C76657273696F6E3E3C2F76657273696F6E3E3C6170704E616D653E3C2F6170704E616D653E3C696E7374616C6C55726C3E3C2F696E7374616C6C55726C3E3C66726F6D55726C3E3C2F66726F6D55726C3E3C6973466F7263655570646174653E303C2F6973466F7263655570646174653E3C2F617070496E666F3E3C736F75726365557365724E616D653E3C2F736F75726365557365724E616D653E3C736F757263654E69636B4E616D653E3C2F736F757263654E69636B4E616D653E3C73746174697374696373446174613E3C2F73746174697374696373446174613E3C737461744578745374723E3C2F737461744578745374723E3C436F6E74656E744F626A6563743E3C636F6E74656E745374796C653E323C2F636F6E74656E745374796C653E3C7469746C653E3C2F7469746C653E3C6465736372697074696F6E3E3C2F6465736372697074696F6E3E3C6D656469614C6973743E3C2F6D656469614C6973743E3C636F6E74656E7455726C3E3C2F636F6E74656E7455726C3E3C2F436F6E74656E744F626A6563743E3C616374696F6E496E666F3E3C6170704D73673E3C6D657373616765416374696F6E3E3C2F6D657373616765416374696F6E3E3C2F6170704D73673E3C2F616374696F6E496E666F3E3C6C6F636174696F6E20636974793D5C225C2220706F69436C61737369667949643D5C225C2220706F694E616D653D5C225C2220706F69416464726573733D5C225C2220706F69436C617373696679547970653D5C22305C223E3C2F6C6F636174696F6E3E3C7075626C6963557365724E616D653E3C2F7075626C6963557365724E616D653E3C2F54696D656C696E654F626A6563743E0D0A1800280030003A13736E735F706F73745F313533343933333731384001580068008001009A010A0A0012001A0020002800AA010408001200C00100".ToByteArray(16, 2));
+            SnsPostRequest SnsPostReq = new SnsPostRequest();// Util.Deserialize<SnsPostRequest>("0A570A105D64797E40587E3653492B3770767C6D10E5DA8D81031A20353332363435314632303045304431333043453441453237323632423631363920A28498B0012A1369506164206950686F6E65204F53392E332E33300012810808FB0712FB073C54696D656C696E654F626A6563743E3C69643E31323534323132393139333538343234323934373C2F69643E3C757365726E616D653E777869645F6B727862626D68316A75646533313C2F757365726E616D653E3C63726561746554696D653E313439353133383331303C2F63726561746554696D653E3C636F6E74656E74446573633EE2809CE7BEA1E68595E982A3E4BA9BE4B880E6B2BEE79D80E69E95E5A4B4E5B0B1E883BDE5AE89E79DA1E79A84E4BABAE5928CE982A3E4BA9BE586B3E5BF83E694BEE6898BE4B98BE5908EE5B0B1E4B88DE5868DE59B9EE5A4B4E79A84E4BABAE2809D3C2F636F6E74656E74446573633E3C636F6E74656E744465736353686F77547970653E303C2F636F6E74656E744465736353686F77547970653E3C636F6E74656E74446573635363656E653E333C2F636F6E74656E74446573635363656E653E3C707269766174653E303C2F707269766174653E3C7369676874466F6C6465643E303C2F7369676874466F6C6465643E3C617070496E666F3E3C69643E3C2F69643E3C76657273696F6E3E3C2F76657273696F6E3E3C6170704E616D653E3C2F6170704E616D653E3C696E7374616C6C55726C3E3C2F696E7374616C6C55726C3E3C66726F6D55726C3E3C2F66726F6D55726C3E3C6973466F7263655570646174653E303C2F6973466F7263655570646174653E3C2F617070496E666F3E3C736F75726365557365724E616D653E3C2F736F75726365557365724E616D653E3C736F757263654E69636B4E616D653E3C2F736F757263654E69636B4E616D653E3C73746174697374696373446174613E3C2F73746174697374696373446174613E3C737461744578745374723E3C2F737461744578745374723E3C436F6E74656E744F626A6563743E3C636F6E74656E745374796C653E323C2F636F6E74656E745374796C653E3C7469746C653E3C2F7469746C653E3C6465736372697074696F6E3E3C2F6465736372697074696F6E3E3C6D656469614C6973743E3C2F6D656469614C6973743E3C636F6E74656E7455726C3E3C2F636F6E74656E7455726C3E3C2F436F6E74656E744F626A6563743E3C616374696F6E496E666F3E3C6170704D73673E3C6D657373616765416374696F6E3E3C2F6D657373616765416374696F6E3E3C2F6170704D73673E3C2F616374696F6E496E666F3E3C6C6F636174696F6E20636974793D5C225C2220706F69436C61737369667949643D5C225C2220706F694E616D653D5C225C2220706F69416464726573733D5C225C2220706F69436C617373696679547970653D5C22305C223E3C2F6C6F636174696F6E3E3C7075626C6963557365724E616D653E3C2F7075626C6963557365724E616D653E3C2F54696D656C696E654F626A6563743E0D0A1800280030003A13736E735F706F73745F313533343933333731384001580068008001009A010A0A0012001A0020002800AA010408001200C00100".ToByteArray(16, 2));
 
             SnsPostReq.baseRequest = new BaseRequest()
             {
@@ -1798,6 +2265,7 @@ namespace Wechat.Protocol
                 osType = customerInfoCache.BaseRequest.osType,
                 scene = customerInfoCache.BaseRequest.scene
             };
+            SnsPostReq.objectDesc = new SKBuiltinString_S();
             SnsPostReq.objectDesc.iLen = (uint)content.Length;
             SnsPostReq.objectDesc.buffer = content;
 
@@ -2020,6 +2488,94 @@ namespace Wechat.Protocol
         }
 
         /// <summary>
+        /// 回复朋友圈
+        /// </summary>
+        /// <param name="id">朋友圈Id</param>
+        /// <param name="wxId"></param>
+        /// <param name="toWxId"></param>
+        /// <param name="content"></param>
+        /// <param name="type">1点赞 2：文本 3:消息 4：with 5陌生人点赞</param>
+        /// <returns></returns>
+        public micromsg.SnsCommentResponse SnsComment(ulong id, string wxId, string toWxId, int relpyCommentId, string content, SnsObjectType type)
+        {
+            string key = ConstCacheKey.GetWxIdKey(wxId);
+            var cache = CacheHelper.CreateInstance();
+            var customerInfoCache = cache.Get<CustomerInfoCache>(key);
+            if (customerInfoCache == null)
+            {
+                throw new ExpiredException("缓存失效，请重新生成二维码登录");
+            }
+            int mUid = 0;
+            string cookie = null;
+            var RespProtobuf = new byte[0];
+
+
+            SnsCommentRequest snsCommentRequest = new SnsCommentRequest()
+            {
+                baseRequest = new BaseRequest()
+                {
+                    sessionKey = customerInfoCache.BaseRequest.sessionKey,
+                    uin = customerInfoCache.BaseRequest.uin,
+                    devicelId = customerInfoCache.BaseRequest.devicelId,
+                    clientVersion = customerInfoCache.BaseRequest.clientVersion,
+                    osType = customerInfoCache.BaseRequest.osType,
+                    scene = customerInfoCache.BaseRequest.scene
+                },
+                clientid = CurrentTime_().ToString(),
+                action = new SnsActionGroup()
+                {
+                    id = id,
+                    parentId = 0,
+                    currentAction = new SnsAction()
+                    {
+                        replyCommentId = relpyCommentId,
+                        type = type,
+                        content = content,
+                        from = wxId,
+                        to = toWxId,
+                        source = 6,
+                        //fromnickname="李四",
+                        //tonickname="张三"
+                    }
+
+                }
+
+
+            };
+            var src = Util.Serialize(snsCommentRequest);
+
+
+            int bufferlen = src.Length;
+            //组包
+            byte[] SendDate = pack(src, (int)CGI_TYPE.CGI_TYPE_NEWSENDMSG, bufferlen, customerInfoCache.AesKey, customerInfoCache.PriKeyBuf, customerInfoCache.MUid, customerInfoCache.Cookie, 5, true, true);
+
+            //发包
+            byte[] RetDate = Util.HttpPost(SendDate, URL.CGI_MMSNSCOMMENT);
+            if (RetDate.Length > 32)
+            {
+                var packinfo = UnPackHeader(RetDate, out mUid, out cookie);
+                //Console.WriteLine("CGI {0} BodyLength {1} m_bCompressed {2}", packinfo.CGI, packinfo.body.Length, packinfo.m_bCompressed);
+                RespProtobuf = packinfo.body;
+                if (packinfo.m_bCompressed)
+                {
+                    RespProtobuf = Util.uncompress_aes(packinfo.body, customerInfoCache.AesKey);
+                }
+                else
+                {
+                    RespProtobuf = Util.nouncompress_aes(packinfo.body, customerInfoCache.AesKey);
+                }
+            }
+            else
+            {
+                throw new Exception("数据包可能有问题,请稍后再试");
+            }
+
+            var snsCommentResponse = Util.Deserialize<micromsg.SnsCommentResponse>(RespProtobuf);
+            return snsCommentResponse;
+        }
+
+
+        /// <summary>
         /// 发送文字信息
         /// </summary>
         /// <param name="wxId"></param>
@@ -2174,8 +2730,78 @@ namespace Wechat.Protocol
 
             return UploadVoiceResponse_;
         }
+        /// <summary>
+        /// 上传通讯录
+        /// </summary>
+        /// <param name="Mobile_"></param>
+        /// <param name="UPMobile"></param>
+        /// <param name="UserName"></param>
+        /// <returns></returns>
+        public micromsg.UploadMContactResponse UploadMContact(string wxId, string Mobile_, micromsg.Mobile[] UPMobile)
+        {
+            string key = ConstCacheKey.GetWxIdKey(wxId);
+            var cache = CacheHelper.CreateInstance();
+            var customerInfoCache = cache.Get<CustomerInfoCache>(key);
+            if (customerInfoCache == null)
+            {
+                throw new ExpiredException("缓存失效，请重新生成二维码登录");
+            }
+            micromsg.UploadMContactRequest uploadMContact = new micromsg.UploadMContactRequest()
+            {
+                BaseRequest = new micromsg.BaseRequest()
+                {
+                    SessionKey = customerInfoCache.BaseRequest.sessionKey,
+                    Uin = (uint)customerInfoCache.BaseRequest.uin,
+                    DeviceID = customerInfoCache.BaseRequest.devicelId,
+                    ClientVersion = customerInfoCache.BaseRequest.clientVersion,
+                    DeviceType = Encoding.UTF8.GetBytes(customerInfoCache.BaseRequest.osType),
+                    Scene = (uint)customerInfoCache.BaseRequest.scene
+                },
+                Opcode = 1,
+                UserName = wxId
+            };
 
+            uploadMContact.Mobile = Mobile_;
+            foreach (micromsg.Mobile mobile in UPMobile)
+            {
+                uploadMContact.MobileList.Add(mobile);
+            }
 
+            uploadMContact.MobileListSize = UPMobile.Length;
+            int mUid = 0;
+            string cookie = null;
+            var src = Util.Serialize(uploadMContact);
+            int bufferlen = src.Length;
+            //组包
+            byte[] SendDate = pack(src, (int)CGI_TYPE.CGI_TYPE_UPLOADMCONTACT, bufferlen, customerInfoCache.AesKey, customerInfoCache.PriKeyBuf, customerInfoCache.MUid, customerInfoCache.Cookie, 5, true, true);
+            //发包
+            byte[] RetDate = Util.HttpPost(SendDate, URL.CGI_UPLOADMCONTACT);
+            byte[] RespProtobuf = new byte[0];
+
+            if (RetDate.Length > 32)
+            {
+                var packinfo = UnPackHeader(RetDate, out mUid, out cookie);
+                //Console.WriteLine("CGI {0} BodyLength {1} m_bCompressed {2}", packinfo.CGI, packinfo.body.Length, packinfo.m_bCompressed);
+                RespProtobuf = packinfo.body;
+                if (packinfo.m_bCompressed)
+                {
+                    RespProtobuf = Util.uncompress_aes(packinfo.body, customerInfoCache.AesKey);
+                }
+                else
+                {
+                    RespProtobuf = Util.nouncompress_aes(packinfo.body, customerInfoCache.AesKey);
+                }
+
+            }
+            else
+            {
+                throw new Exception("数据包可能有问题,请稍后再试");
+            }
+
+            var UploadMContactResponse = Util.Deserialize<micromsg.UploadMContactResponse>(RespProtobuf);
+            return UploadMContactResponse;
+
+        }
         public NewSendMsgRespone SendVoiceMessage1(string wxId, string toWxId, string content, byte[] buffer, VoiceFormat voiceFormat = VoiceFormat.MM_VOICE_FORMAT_AMR, int voiceLen = 100, int type = 34)
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
@@ -2241,6 +2867,74 @@ namespace Wechat.Protocol
 
             var NewSendMsg = Util.Deserialize<NewSendMsgRespone>(RespProtobuf);
             return NewSendMsg;
+        }
+
+
+        public TenPayResponse TenPay(string wxId, enMMTenPayCgiCmd cgiCmd, string reqText = "", string reqTextWx = "")
+        {
+            string key = ConstCacheKey.GetWxIdKey(wxId);
+            var cache = CacheHelper.CreateInstance();
+            var customerInfoCache = cache.Get<CustomerInfoCache>(key);
+            if (customerInfoCache == null)
+            {
+                throw new ExpiredException("缓存失效，请重新生成二维码登录");
+            }
+            byte[] RespProtobuf = new byte[0];
+
+            SKBuiltinString_S reqText_ = new SKBuiltinString_S();
+            reqText_.buffer = reqText;
+            reqText_.iLen = (uint)reqText.Length;
+
+            SKBuiltinString_S reqTextWx_ = new SKBuiltinString_S();
+            reqTextWx_.buffer = reqTextWx;
+            reqTextWx_.iLen = (uint)reqTextWx.Length;
+            TenPayRequest tenPay_ = new TenPayRequest()
+            {
+                baseRequest = new BaseRequest()
+                {
+                    sessionKey = customerInfoCache.BaseRequest.sessionKey,
+                    uin = customerInfoCache.BaseRequest.uin,
+                    devicelId = customerInfoCache.BaseRequest.devicelId,
+                    clientVersion = customerInfoCache.BaseRequest.clientVersion,
+                    osType = customerInfoCache.BaseRequest.osType,
+                    scene = customerInfoCache.BaseRequest.scene
+                },
+                cgiCmd = cgiCmd,
+                outPutType = (uint)1,
+                reqText = reqText_,
+                reqTextWx = reqTextWx_
+
+            };
+            int mUid = 0;
+            string cookie = null;
+            var src = Util.Serialize(tenPay_);
+            int bufferlen = src.Length;
+            //组包
+            byte[] SendDate = pack(src, (int)CGI_TYPE.CGI_TYPE_TENPAY, bufferlen, customerInfoCache.AesKey, customerInfoCache.PriKeyBuf, customerInfoCache.MUid, customerInfoCache.Cookie, 5, true, true);
+            //发包
+            byte[] RetDate = Util.HttpPost(SendDate, URL.CGI_TENPAY);
+            if (RetDate.Length > 32)
+            {
+                var packinfo = UnPackHeader(RetDate, out mUid, out cookie);
+                //Console.WriteLine("CGI {0} BodyLength {1} m_bCompressed {2}", packinfo.CGI, packinfo.body.Length, packinfo.m_bCompressed);
+                RespProtobuf = packinfo.body;
+                if (packinfo.m_bCompressed)
+                {
+                    RespProtobuf = Util.uncompress_aes(packinfo.body, customerInfoCache.AesKey);
+                }
+                else
+                {
+                    RespProtobuf = Util.nouncompress_aes(packinfo.body, customerInfoCache.AesKey);
+                }
+
+            }
+            else
+            {
+                throw new Exception("数据包可能有问题,请稍后再试");
+            }
+
+            var TenPayResponse_ = Util.Deserialize<TenPayResponse>(RespProtobuf);
+            return TenPayResponse_;
         }
         /// <summary>
         /// 发送视频消息
@@ -2623,6 +3317,7 @@ namespace Wechat.Protocol
                 user.verifyUserTicket = antispamTicket;
             }
             verifyUser_[0] = user;
+       
             VerifyUserRequest1 verifyUser_b = new VerifyUserRequest1()
             {
                 baseRequest = new BaseRequest()
@@ -2640,6 +3335,87 @@ namespace Wechat.Protocol
                 verifyContent = Content,
                 verifyUserListSize = 1,
                 verifyUserList = verifyUser_,
+            };
+
+            var src = Util.Serialize(verifyUser_b);
+
+          
+            int mUid = 0;
+            string cookie = null;
+            int bufferlen = src.Length;
+            //组包
+            byte[] SendDate = pack(src, (int)CGI_TYPE.CGI_TYPE_VERIFYUSER, bufferlen, customerInfoCache.AesKey, customerInfoCache.PriKeyBuf, customerInfoCache.MUid, customerInfoCache.Cookie, 5, true, true);
+            //发包
+            byte[] RetDate = Util.HttpPost(SendDate, URL.CGI_VERIFYUSER);
+            if (RetDate.Length > 32)
+            {
+                var packinfo = UnPackHeader(RetDate, out mUid, out cookie);
+                //Console.WriteLine("CGI {0} BodyLength {1} m_bCompressed {2}", packinfo.CGI, packinfo.body.Length, packinfo.m_bCompressed);
+                RespProtobuf = packinfo.body;
+                if (packinfo.m_bCompressed)
+                {
+                    RespProtobuf = Util.uncompress_aes(packinfo.body, customerInfoCache.AesKey);
+                }
+                else
+                {
+                    RespProtobuf = Util.nouncompress_aes(packinfo.body, customerInfoCache.AesKey);
+                }
+
+            }
+            else
+            {
+                throw new ExpiredException("用户可能退出,请重新登陆");
+            }
+
+            var VerifyUseResponse_ = Util.Deserialize<VerifyUserResponese>(RespProtobuf);
+            return VerifyUseResponse_;
+        }
+       
+        /// <summary>
+        /// v1 v2操作
+        /// </summary>
+        /// <param name="opCode">1关注公众号2打招呼 主动添加好友3通过好友请求</param>
+        /// <param name="Content">内容</param>
+        /// <param name="antispamTicket">v2</param>
+        /// <param name="value">v1</param>
+        /// <param name="sceneList">1来源QQ2来源邮箱3来源微信号14群聊15手机号18附近的人25漂流瓶29摇一摇30二维码13来源通讯录</param>
+        /// <returns></returns>
+        public VerifyUserResponese VerifyUserList(string wxId, VerifyUserOpCode opCode, string Content, VerifyUser[] verifyUsers, byte sceneList = 0x0f)
+        {
+            string key = ConstCacheKey.GetWxIdKey(wxId);
+            var cache = CacheHelper.CreateInstance();
+            var customerInfoCache = cache.Get<CustomerInfoCache>(key);
+            if (customerInfoCache == null)
+            {
+                throw new ExpiredException("缓存失效，请重新生成二维码登录");
+            }
+            byte[] RespProtobuf = new byte[0];
+            //VerifyUser[] verifyUser_ = verifyUsers;
+
+            //VerifyUser user = new VerifyUser();
+            //user.value = value;
+            //user.antispamTicket = antispamTicket;
+            //user.friendFlag = 0;
+            //user.scanQrcodeFromScene = 0;
+
+
+            VerifyUserRequest1 verifyUser_b = new VerifyUserRequest1()
+            {
+                baseRequest = new BaseRequest()
+                {
+                    sessionKey = customerInfoCache.BaseRequest.sessionKey,
+                    uin = customerInfoCache.BaseRequest.uin,
+                    devicelId = customerInfoCache.BaseRequest.devicelId,
+                    clientVersion = customerInfoCache.BaseRequest.clientVersion,
+                    osType = customerInfoCache.BaseRequest.osType,
+                    scene = customerInfoCache.BaseRequest.scene
+                },
+                SceneListNumFieldNumber = (uint)1,
+                opcode = opCode,
+                sceneList = new byte[] { sceneList },
+                verifyContent = Content,
+                verifyUserListSize = (uint)verifyUsers.Count(),
+                verifyUserList = verifyUsers,
             };
 
             var src = Util.Serialize(verifyUser_b);
@@ -2675,7 +3451,6 @@ namespace Wechat.Protocol
             var VerifyUseResponse_ = Util.Deserialize<VerifyUserResponese>(RespProtobuf);
             return VerifyUseResponse_;
         }
-
         /// <summary>
         /// 初始化用户信息
         /// </summary>
