@@ -17,9 +17,6 @@ using MMPro;
 
 namespace Wechat.Protocol
 {
-
-
-
     public class WechatHelper
     {
         [DllImport("Common.dll")]
@@ -32,16 +29,23 @@ namespace Wechat.Protocol
         private static extern uint Adler32(uint adler, byte[] buf, int len);
 
         //微信版本号
-        private int version = 369658059;//369558056;
+        private int version = 369558056;//369558056;
 
         //RSA秘钥版本
         private uint LOGIN_RSA_VER = 174;
         /// <summary>
         /// 系统类型
         /// </summary>
-        private string osType = "iMac MacBookPro9,1 OSX OSX 10.11.2 build(15C50)";
-
+        private string osType = "iMac MacBookPro9,1";
+        //private string osType = "Windows 10";
         private string phoneOsType = "iPad iPhone OS9.3.3";
+        public WechatHelper()
+        {
+            //version = 369658059;
+            //phoneOsType = "iPad iPhone OS9.3.3";
+            //osType = "iMac MacBookPro9,1 OSX OSX 10.11.2 build(15C50)";
+
+        }
 
         /// <summary>
         /// 获取AesKey
@@ -877,6 +881,9 @@ namespace Wechat.Protocol
 
 
 
+
+
+
         /// <summary>
         /// 创建群
         /// </summary>
@@ -1069,7 +1076,7 @@ namespace Wechat.Protocol
             {
                 throw new ExpiredException("用户可能退出,请重新登陆");
             }
-            Debug.Print(RespProtobuf.ToString(16, 2));
+          
             var DelChatRoomMemberResponse_ = Util.Deserialize<DelChatRoomMemberResponse>(RespProtobuf);
             return DelChatRoomMemberResponse_;
 
@@ -1132,7 +1139,7 @@ namespace Wechat.Protocol
             {
                 throw new ExpiredException("用户可能退出,请重新登陆");
             }
-            Debug.Print(RespProtobuf.ToString(16, 2));
+ 
             var GetChatroomMemberDetailResponse_ = Util.Deserialize<GetChatroomMemberDetailResponse>(RespProtobuf);
             return GetChatroomMemberDetailResponse_;
         }
@@ -1257,17 +1264,82 @@ namespace Wechat.Protocol
             {
                 throw new ExpiredException("用户可能退出,请重新登陆");
             }
-            Debug.Print(RespProtobuf.ToString(16, 2));
+ 
             var SetChatRoomAnnouncementResponse_ = Util.Deserialize<micromsg.SetChatRoomAnnouncementResponse>(RespProtobuf);
             return SetChatRoomAnnouncementResponse_;
         }
+
+
+        /// <summary>
+        /// 退出登录
+        /// </summary>
+        /// <returns></returns>
+        public micromsg.LogOutResponse logOut(string wxId)
+        {
+            string key = ConstCacheKey.GetWxIdKey(wxId);
+            var cache = CacheHelper.CreateInstance();
+            var customerInfoCache = cache.Get<CustomerInfoCache>(key);
+            if (customerInfoCache == null)
+            {
+                throw new ExpiredException("缓存失效，请重新生成二维码登录");
+            }
+            micromsg.LogOutRequest logOut_ = new micromsg.LogOutRequest()
+            {
+                BaseRequest = new micromsg.BaseRequest()
+                {
+                    SessionKey = customerInfoCache.BaseRequest.sessionKey,
+                    Uin = (uint)customerInfoCache.BaseRequest.uin,
+                    DeviceID = customerInfoCache.BaseRequest.devicelId,
+                    ClientVersion = customerInfoCache.BaseRequest.clientVersion,
+                    DeviceType = Encoding.UTF8.GetBytes(customerInfoCache.BaseRequest.osType),
+                    Scene = (uint)customerInfoCache.BaseRequest.scene
+                },
+                Scene = 0,
+            };
+
+            var src = Util.Serialize(logOut_);
+
+            byte[] RespProtobuf = new byte[0];
+
+
+            int mUid = 0;
+            string cookie = null;
+            int bufferlen = src.Length;
+            //组包
+            byte[] SendDate = pack(src, 282, bufferlen, customerInfoCache.AesKey, customerInfoCache.PriKeyBuf, customerInfoCache.MUid, customerInfoCache.Cookie, 5, true, true);
+            //发包
+            byte[] RetDate = Util.HttpPost(SendDate, "/cgi-bin/micromsg-bin/logout");
+            if (RetDate.Length > 32)
+            {
+                var packinfo = UnPackHeader(RetDate, out mUid, out cookie);
+                //Console.WriteLine("CGI {0} BodyLength {1} m_bCompressed {2}", packinfo.CGI, packinfo.body.Length, packinfo.m_bCompressed);
+                RespProtobuf = packinfo.body;
+                if (packinfo.m_bCompressed)
+                {
+                    RespProtobuf = Util.uncompress_aes(packinfo.body, customerInfoCache.AesKey);
+                }
+                else
+                {
+                    RespProtobuf = Util.nouncompress_aes(packinfo.body, customerInfoCache.AesKey);
+                }
+
+            }
+            else
+            {
+                throw new ExpiredException("用户可能退出,请重新登陆");
+            }
+            
+            var LogOutResponse_ = Util.Deserialize<micromsg.LogOutResponse>(RespProtobuf);
+            return LogOutResponse_;
+        }
+
         /// <summary>
         /// 精准获取通讯录  
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
         public InitContactResponse InitContact(string wxId, int currentWxcontactSeq = 0)
-        {           
+        {
             string key = ConstCacheKey.GetWxIdKey(wxId);
             var cache = CacheHelper.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
@@ -2088,7 +2160,7 @@ namespace Wechat.Protocol
             }
             else
             {
-                throw new Exception("数据包可能有问题,请稍后再试");
+                throw new Exception("数据包可能有问题,请重新生成二维码登录");
             }
 
             var SnsUserPageResponse_ = Util.Deserialize<SnsUserPageResponse>(RespProtobuf);
@@ -2159,7 +2231,7 @@ namespace Wechat.Protocol
             }
             else
             {
-                throw new Exception("数据包可能有问题,请稍后再试");
+                throw new Exception("数据包可能有问题,请重新生成二维码登录");
             }
 
             var SnsTimeLineResponse_ = Util.Deserialize<SnsTimeLineResponse>(RespProtobuf);
@@ -2230,7 +2302,7 @@ namespace Wechat.Protocol
             }
             else
             {
-                throw new Exception("数据包可能有问题,请稍后再试");
+                throw new Exception("数据包可能有问题,请重新生成二维码登录");
             }
             var SnsObjectOpResponse_ = Util.Deserialize<SnsObjectOpResponse>(RespProtobuf);
             return SnsObjectOpResponse_;
@@ -2320,7 +2392,7 @@ namespace Wechat.Protocol
             }
             else
             {
-                throw new Exception("数据包可能有问题,请稍后再试");
+                throw new Exception("数据包可能有问题,请重新生成二维码登录");
             }
             var SnsPostResponse = Util.Deserialize<SnsPostResponse>(RespProtobuf);
             return SnsPostResponse;
@@ -2376,7 +2448,7 @@ namespace Wechat.Protocol
             }
             else
             {
-                throw new Exception("数据包可能有问题,请稍后再试");
+                throw new Exception("数据包可能有问题,请重新生成二维码登录");
             }
 
             //mm.command.MMSnsSyncRequest nsrReceive = mm.command.MMSnsSyncRequest.ParseFrom(RespProtobuf);
@@ -2475,7 +2547,7 @@ namespace Wechat.Protocol
                 }
                 else
                 {
-                    throw new Exception("数据包可能有问题,请稍后再试");
+                    throw new Exception("数据包可能有问题,请重新生成二维码登录");
                 }
                 SnsUploadResponse_ = Util.Deserialize<micromsg.SnsUploadResponse>(RespProtobuf);
 
@@ -2567,7 +2639,7 @@ namespace Wechat.Protocol
             }
             else
             {
-                throw new Exception("数据包可能有问题,请稍后再试");
+                throw new Exception("数据包可能有问题,请重新生成二维码登录");
             }
 
             var snsCommentResponse = Util.Deserialize<micromsg.SnsCommentResponse>(RespProtobuf);
@@ -2643,7 +2715,7 @@ namespace Wechat.Protocol
             }
             else
             {
-                throw new Exception("数据包可能有问题,请稍后再试");
+                throw new Exception("数据包可能有问题,请重新生成二维码登录");
             }
 
             var NewSendMsg = Util.Deserialize<NewSendMsgRespone>(RespProtobuf);
@@ -2795,7 +2867,7 @@ namespace Wechat.Protocol
             }
             else
             {
-                throw new Exception("数据包可能有问题,请稍后再试");
+                throw new Exception("数据包可能有问题,请重新生成二维码登录");
             }
 
             var UploadMContactResponse = Util.Deserialize<micromsg.UploadMContactResponse>(RespProtobuf);
@@ -2862,11 +2934,286 @@ namespace Wechat.Protocol
             }
             else
             {
-                throw new Exception("数据包可能有问题,请稍后再试");
+                throw new Exception("数据包可能有问题,请重新生成二维码登录");
             }
 
             var NewSendMsg = Util.Deserialize<NewSendMsgRespone>(RespProtobuf);
             return NewSendMsg;
+        }
+
+        /// <summary>
+        /// 同步收藏 
+        /// </summary>
+        /// <param name="keybuf">第二次请求需要带上第一次返回的</param>
+        /// <returns></returns>
+        public micromsg.FavSyncResponse FavSync(string wxId, byte[] keybuf = null)
+        {
+            string key = ConstCacheKey.GetWxIdKey(wxId);
+            var cache = CacheHelper.CreateInstance();
+            var customerInfoCache = cache.Get<CustomerInfoCache>(key);
+            if (customerInfoCache == null)
+            {
+                throw new ExpiredException("缓存失效，请重新生成二维码登录");
+            }
+            byte[] RespProtobuf = keybuf;
+            micromsg.SKBuiltinBuffer_t keybuf_ = new micromsg.SKBuiltinBuffer_t();
+            if (keybuf != null)
+            {
+                keybuf_.Buffer = keybuf;
+                keybuf_.iLen = (uint)keybuf.Length;
+            }
+
+            micromsg.FavSyncRequest favSync_ = new micromsg.FavSyncRequest()
+            {
+                KeyBuf = keybuf_,
+                Selector = 1,
+            };
+
+            var src = Util.Serialize(favSync_);
+
+            int mUid = 0;
+            string cookie = null;
+            int bufferlen = src.Length;
+            //组包
+            byte[] SendDate = pack(src, (int)CGI_TYPE.CGI_TYPE_FAVSYNC, bufferlen, customerInfoCache.AesKey, customerInfoCache.PriKeyBuf, customerInfoCache.MUid, customerInfoCache.Cookie, 5, true, true);
+            //发包
+            byte[] RetDate = Util.HttpPost(SendDate, URL.CGI_FAVSYNC);
+            if (RetDate.Length > 32)
+            {
+                var packinfo = UnPackHeader(RetDate, out mUid, out cookie);
+                //Console.WriteLine("CGI {0} BodyLength {1} m_bCompressed {2}", packinfo.CGI, packinfo.body.Length, packinfo.m_bCompressed);
+                RespProtobuf = packinfo.body;
+                if (packinfo.m_bCompressed)
+                {
+                    RespProtobuf = Util.uncompress_aes(packinfo.body, customerInfoCache.AesKey);
+                }
+                else
+                {
+                    RespProtobuf = Util.nouncompress_aes(packinfo.body, customerInfoCache.AesKey);
+                }
+
+            }
+            else
+            {
+                throw new ExpiredException("用户可能退出,请重新登陆");
+            }
+
+            var FavSyncResponse_ = Util.Deserialize<micromsg.FavSyncResponse>(RespProtobuf);
+            return FavSyncResponse_;
+        }
+
+        public IList<micromsg.AddFavItem> ToAddFavItem(micromsg.FavSyncResponse favSyncResponse)
+        {
+            IList<micromsg.AddFavItem> list = new List<micromsg.AddFavItem>();
+            foreach (var s in favSyncResponse.CmdList.List)
+            {
+                micromsg.AddFavItem shareFav = Util.Deserialize<micromsg.AddFavItem>(s.CmdBuf.Buffer);
+                list.Add(shareFav);
+            }
+            return list;
+
+        }
+        /// <summary>
+        ///获取单条收藏
+        /// </summary>
+        /// <param name="FavId">收藏id</param>
+        /// <returns></returns>
+        public micromsg.BatchGetFavItemResponse GetFavItem(string wxId, int FavId)
+        {
+            string key = ConstCacheKey.GetWxIdKey(wxId);
+            var cache = CacheHelper.CreateInstance();
+            var customerInfoCache = cache.Get<CustomerInfoCache>(key);
+            if (customerInfoCache == null)
+            {
+                throw new ExpiredException("缓存失效，请重新生成二维码登录");
+            }
+
+            micromsg.BatchGetFavItemRequest batchGetFavItem = new micromsg.BatchGetFavItemRequest()
+            {
+                BaseRequest = new micromsg.BaseRequest()
+                {
+                    SessionKey = customerInfoCache.BaseRequest.sessionKey,
+                    Uin = (uint)customerInfoCache.BaseRequest.uin,
+                    DeviceID = customerInfoCache.BaseRequest.devicelId,
+                    ClientVersion = customerInfoCache.BaseRequest.clientVersion,
+                    DeviceType = Encoding.UTF8.GetBytes(customerInfoCache.BaseRequest.osType),
+                    Scene = (uint)customerInfoCache.BaseRequest.scene
+                },
+            };
+            batchGetFavItem.Count = 1;
+            batchGetFavItem.FavIdList.Add((uint)FavId);
+
+            var src = Util.Serialize(batchGetFavItem);
+
+            byte[] RespProtobuf = new byte[0];
+
+            int mUid = 0;
+            string cookie = null;
+            int bufferlen = src.Length;
+            //组包
+            byte[] SendDate = pack(src, (int)CGI_TYPE.CGI_TYPE_BATCHGETFAVITEM, bufferlen, customerInfoCache.AesKey, customerInfoCache.PriKeyBuf, customerInfoCache.MUid, customerInfoCache.Cookie, 5, true, true);
+            //发包
+            byte[] RetDate = Util.HttpPost(SendDate, URL.CGI_BATCHGETFAVITEM);
+            if (RetDate.Length > 32)
+            {
+                var packinfo = UnPackHeader(RetDate, out mUid, out cookie);
+                //Console.WriteLine("CGI {0} BodyLength {1} m_bCompressed {2}", packinfo.CGI, packinfo.body.Length, packinfo.m_bCompressed);
+                RespProtobuf = packinfo.body;
+                if (packinfo.m_bCompressed)
+                {
+                    RespProtobuf = Util.uncompress_aes(packinfo.body, customerInfoCache.AesKey);
+                }
+                else
+                {
+                    RespProtobuf = Util.nouncompress_aes(packinfo.body, customerInfoCache.AesKey);
+                }
+
+            }
+            else
+            {
+                throw new Exception("数据包可能有问题,请重新生成二维码登录");
+            }
+ 
+            var BatchGetFavItemResponse_ = Util.Deserialize<micromsg.BatchGetFavItemResponse>(RespProtobuf);
+            return BatchGetFavItemResponse_;
+        }
+
+        /// <summary>
+        /// 删除收藏 这里可删除多条收藏
+        /// </summary>
+        /// <param name="FavId">收藏id</param>
+        /// <returns></returns>
+        public micromsg.BatchDelFavItemResponse DelFavItem(string wxId, uint[] FavId)
+        {
+
+            string key = ConstCacheKey.GetWxIdKey(wxId);
+            var cache = CacheHelper.CreateInstance();
+            var customerInfoCache = cache.Get<CustomerInfoCache>(key);
+            if (customerInfoCache == null)
+            {
+                throw new ExpiredException("缓存失效，请重新生成二维码登录");
+            }
+
+            micromsg.BatchDelFavItemRequest DelFavItem = new micromsg.BatchDelFavItemRequest()
+            {
+                BaseRequest = new micromsg.BaseRequest()
+                {
+                    SessionKey = customerInfoCache.BaseRequest.sessionKey,
+                    Uin = (uint)customerInfoCache.BaseRequest.uin,
+                    DeviceID = customerInfoCache.BaseRequest.devicelId,
+                    ClientVersion = customerInfoCache.BaseRequest.clientVersion,
+                    DeviceType = Encoding.UTF8.GetBytes(customerInfoCache.BaseRequest.osType),
+                    Scene = (uint)customerInfoCache.BaseRequest.scene
+                },
+            };
+            DelFavItem.Count = (uint)FavId.Length;
+            foreach (uint ID in FavId)
+            {
+                DelFavItem.FavIdList.Add(ID);
+            }
+
+
+            var src = Util.Serialize(DelFavItem);
+
+            byte[] RespProtobuf = new byte[0];
+
+            int mUid = 0;
+            string cookie = null;
+            int bufferlen = src.Length;
+            //组包
+            byte[] SendDate = pack(src, 484, bufferlen, customerInfoCache.AesKey, customerInfoCache.PriKeyBuf, customerInfoCache.MUid, customerInfoCache.Cookie, 5, true, true);
+            //发包
+            byte[] RetDate = Util.HttpPost(SendDate, "/cgi-bin/micromsg-bin/batchdelfavitem");
+            if (RetDate.Length > 32)
+            {
+                var packinfo = UnPackHeader(RetDate, out mUid, out cookie);
+                //Console.WriteLine("CGI {0} BodyLength {1} m_bCompressed {2}", packinfo.CGI, packinfo.body.Length, packinfo.m_bCompressed);
+                RespProtobuf = packinfo.body;
+                if (packinfo.m_bCompressed)
+                {
+                    RespProtobuf = Util.uncompress_aes(packinfo.body, customerInfoCache.AesKey);
+                }
+                else
+                {
+                    RespProtobuf = Util.nouncompress_aes(packinfo.body, customerInfoCache.AesKey);
+                }
+
+            }
+            else
+            {
+                throw new Exception("数据包可能有问题,请重新生成二维码登录");
+            }
+
+            var BatchDelFavItemResponse_ = Util.Deserialize<micromsg.BatchDelFavItemResponse>(RespProtobuf);
+            return BatchDelFavItemResponse_;
+        }
+
+        /// <summary>
+        /// 添加收藏
+        /// </summary>
+        /// <param name="object_"></param>
+        /// <param name="SourceId_"></param>
+        /// <returns></returns>
+        public micromsg.AddFavItemResponse addFavItem(string wxId, string object_, string SourceId_ = "")
+        {
+            string key = ConstCacheKey.GetWxIdKey(wxId);
+            var cache = CacheHelper.CreateInstance();
+            var customerInfoCache = cache.Get<CustomerInfoCache>(key);
+            if (customerInfoCache == null)
+            {
+                throw new ExpiredException("缓存失效，请重新生成二维码登录");
+            }
+            micromsg.AddFavItemRequest addFav = new micromsg.AddFavItemRequest()
+            {
+                BaseRequest = new micromsg.BaseRequest()
+                {
+                    SessionKey = customerInfoCache.BaseRequest.sessionKey,
+                    Uin = (uint)customerInfoCache.BaseRequest.uin,
+                    DeviceID = customerInfoCache.BaseRequest.devicelId,
+                    ClientVersion = customerInfoCache.BaseRequest.clientVersion,
+                    DeviceType = Encoding.UTF8.GetBytes(customerInfoCache.BaseRequest.osType),
+                    Scene = (uint)customerInfoCache.BaseRequest.scene
+                },
+                ClientId = CurrentTime_().ToString(),
+                Object = object_,
+                Type = 1,
+                SourceId = SourceId_,
+                SourceType = 2,
+            };
+
+            var src = Util.Serialize(addFav);
+
+            byte[] RespProtobuf = new byte[0];
+
+            int mUid = 0;
+            string cookie = null;
+            int bufferlen = src.Length;
+            //组包
+            byte[] SendDate = pack(src, 401, bufferlen, customerInfoCache.AesKey, customerInfoCache.PriKeyBuf, customerInfoCache.MUid, customerInfoCache.Cookie, 5, true, true);
+            //发包
+            byte[] RetDate = Util.HttpPost(SendDate, "/cgi-bin/micromsg-bin/addfavitem");
+            if (RetDate.Length > 32)
+            {
+                var packinfo = UnPackHeader(RetDate, out mUid, out cookie);
+                //Console.WriteLine("CGI {0} BodyLength {1} m_bCompressed {2}", packinfo.CGI, packinfo.body.Length, packinfo.m_bCompressed);
+                RespProtobuf = packinfo.body;
+                if (packinfo.m_bCompressed)
+                {
+                    RespProtobuf = Util.uncompress_aes(packinfo.body, customerInfoCache.AesKey);
+                }
+                else
+                {
+                    RespProtobuf = Util.nouncompress_aes(packinfo.body, customerInfoCache.AesKey);
+                }
+
+            }
+            else
+            {
+                throw new Exception("数据包可能有问题,请重新生成二维码登录");
+            }
+ 
+            var AddFavItemResponse_ = Util.Deserialize<micromsg.AddFavItemResponse>(RespProtobuf);
+            return AddFavItemResponse_;
         }
 
 
@@ -2930,7 +3277,7 @@ namespace Wechat.Protocol
             }
             else
             {
-                throw new Exception("数据包可能有问题,请稍后再试");
+                throw new Exception("数据包可能有问题,请重新生成二维码登录");
             }
 
             var TenPayResponse_ = Util.Deserialize<TenPayResponse>(RespProtobuf);
@@ -3317,7 +3664,7 @@ namespace Wechat.Protocol
                 user.verifyUserTicket = antispamTicket;
             }
             verifyUser_[0] = user;
-       
+
             VerifyUserRequest1 verifyUser_b = new VerifyUserRequest1()
             {
                 baseRequest = new BaseRequest()
@@ -3339,7 +3686,7 @@ namespace Wechat.Protocol
 
             var src = Util.Serialize(verifyUser_b);
 
-          
+
             int mUid = 0;
             string cookie = null;
             int bufferlen = src.Length;
@@ -3370,7 +3717,7 @@ namespace Wechat.Protocol
             var VerifyUseResponse_ = Util.Deserialize<VerifyUserResponese>(RespProtobuf);
             return VerifyUseResponse_;
         }
-       
+
         /// <summary>
         /// v1 v2操作
         /// </summary>

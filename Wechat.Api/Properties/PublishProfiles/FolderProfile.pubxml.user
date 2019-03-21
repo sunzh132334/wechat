@@ -298,19 +298,19 @@
       <publishTime>01/23/2014 13:57:34</publishTime>
     </File>
     <File Include="bin/Wechat.Api.dll">
-      <publishTime>03/20/2019 17:59:10</publishTime>
+      <publishTime>03/21/2019 15:15:24</publishTime>
     </File>
     <File Include="bin/Wechat.Api.pdb">
-      <publishTime>03/20/2019 17:59:10</publishTime>
+      <publishTime>03/21/2019 15:15:24</publishTime>
     </File>
     <File Include="bin/Wechat.Api.xml">
-      <publishTime>03/20/2019 17:50:11</publishTime>
+      <publishTime>03/21/2019 15:14:54</publishTime>
     </File>
     <File Include="bin/Wechat.Protocol.dll">
-      <publishTime>03/20/2019 17:59:07</publishTime>
+      <publishTime>03/21/2019 15:15:23</publishTime>
     </File>
     <File Include="bin/Wechat.Protocol.pdb">
-      <publishTime>03/20/2019 17:59:07</publishTime>
+      <publishTime>03/21/2019 15:15:23</publishTime>
     </File>
     <File Include="bin/Wechat.Util.dll">
       <publishTime>03/20/2019 17:58:59</publishTime>
@@ -370,7 +370,7 @@
       <publishTime>03/19/2019 17:35:06</publishTime>
     </File>
     <File Include="Wechat.Api.xml">
-      <publishTime>03/20/2019 17:50:11</publishTime>
+      <publishTime>03/21/2019 15:14:54</publishTime>
     </File>
   </ItemGroup>
 </Project>

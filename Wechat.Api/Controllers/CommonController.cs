@@ -10,10 +10,11 @@ using Wechat.Protocol;
 using Wechat.Util.Exceptions;
 namespace Wechat.Api.Controllers
 {
+    /// <summary>
+    /// 公共
+    /// </summary>
     public class CommonController : WebchatControllerBase
     {
-
-
         /// <summary>
         /// 获取大图片
         /// </summary>   
@@ -179,7 +180,7 @@ namespace Wechat.Api.Controllers
         /// <summary>
         /// 同步微信消息
         /// </summary>
-        /// <param name="wxId"></param>
+        /// <param name="wxId">微信Id</param>
         /// <returns></returns>
         [HttpPost]
         [Route("api/Common/SyncMessage/{wxId}")]
@@ -211,7 +212,7 @@ namespace Wechat.Api.Controllers
         /// <summary>
         /// 修改密码
         /// </summary>
-        /// <param name="wxId"></param>
+        /// <param name="changePassword"></param>
         /// <returns></returns>
         [HttpPost]
         [Route("api/Common/ChangePassword")]

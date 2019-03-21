@@ -60,8 +60,7 @@ namespace Wechat.Api.Controllers
 
         /// <summary>
         /// 发送声音消息
-        /// </summary>
-        /// <param name="voiceMessage"></param>
+        /// </summary> 
         /// <returns></returns>
         [HttpPost()]
         [Route("api/Message/SendVoiceMessage")]

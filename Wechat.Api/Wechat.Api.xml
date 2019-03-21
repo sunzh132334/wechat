@@ -1,0 +1,1369 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Wechat.Api</name>
+    </assembly>
+    <members>
+        <member name="T:Wechat.Api.Abstracts.WebchatControllerBase">
+            <summary>
+            微信基类
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Controllers.CommonController">
+            <summary>
+            公共
+            </summary>
+        </member>
+        <member name="M:Wechat.Api.Controllers.CommonController.GetBigImage(Wechat.Api.Request.Common.BigImage)">
+            <summary>
+            获取大图片
+            </summary>   
+            <param name="bigImage"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.CommonController.GetSharkItOff(Wechat.Api.Request.Common.SharkItOff)">
+            <summary>
+            摇一摇
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.CommonController.GetPeopleNearby(Wechat.Api.Request.Common.PeopleNearby)">
+            <summary>
+            附近的人
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.CommonController.BindEmail(Wechat.Api.Request.Common.BindEmail)">
+            <summary>
+            绑定邮箱
+            </summary>
+            <param name="bindEmail"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.CommonController.SyncMessage(System.String)">
+            <summary>
+            同步微信消息
+            </summary>
+            <param name="wxId">微信Id</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.CommonController.ChangePassword(Wechat.Api.Request.Common.ChangePassword)">
+            <summary>
+            修改密码
+            </summary>
+            <param name="changePassword"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.CommonController.ForkOfficialAccountMessage(Wechat.Api.Request.Common.ForkOfficialAccount)">
+            <summary>
+            关注公众号
+            </summary>
+            <param name="forkOfficialAccount"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.CommonController.UploadContrats(Wechat.Api.Request.Common.UploadContrat)">
+            <summary>
+            上传手机联系人
+            </summary>
+            <param name="uploadContrat"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Wechat.Api.Controllers.FavorController">
+            <summary>
+            收藏
+            </summary>
+        </member>
+        <member name="M:Wechat.Api.Controllers.FavorController.FavSync(Wechat.Api.Request.Favor.FavSync)">
+            <summary>
+            同步收藏
+            </summary>
+            <param name="favSync"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.FavorController.GetFavItem(System.String,System.Int32)">
+            <summary>
+            获取单条收藏
+            </summary>
+            <param name="wxId">微信Id</param>
+            <param name="favId">收藏Id</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.FavorController.DelFavItem(Wechat.Api.Request.Favor.DelFavItem)">
+            <summary>
+            删除收藏
+            </summary>
+            <param name="delFavItem"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.FavorController.AddFavItem(Wechat.Api.Request.Favor.AddFavItem)">
+            <summary>
+            添加收藏
+            </summary>
+            <param name="addFavItem"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Wechat.Api.Controllers.FriendCircleController">
+            <summary>
+            朋友圈
+            </summary>
+        </member>
+        <member name="M:Wechat.Api.Controllers.FriendCircleController.GetFriendCircleDetail(Wechat.Api.Request.FriendCircle.FriendCircle)">
+            <summary>
+            获取特定人朋友圈
+            </summary>
+            <param name="friendCircle"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.FriendCircleController.GetFriendCircleList(Wechat.Api.Request.FriendCircle.FriendCircleList)">
+            <summary>
+            获取自己朋友圈列表
+            </summary>
+            <param name="friendCircleList"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.FriendCircleController.SetFriendCircle(Wechat.Api.Request.FriendCircle.SetFriendCircle)">
+            <summary>
+            操作朋友圈 1删除朋友圈2设为隐私3设为公开4删除评论5取消点赞
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.FriendCircleController.SendFriendCircle(Wechat.Api.Request.FriendCircle.SendFriendCircle)">
+            <summary>
+            发送朋友圈
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.FriendCircleController.SyncFriendCircle(System.String)">
+            <summary>
+            同步朋友圈
+            </summary>
+            <param name="wxId">微信Id</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.FriendCircleController.SendFriendCircleImage">
+            <summary>
+            上传朋友圈图片
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.FriendCircleController.SendFriendCircleComment(Wechat.Api.Request.FriendCircle.FriendCircleComment)">
+            <summary>
+            发送评论
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Wechat.Api.Controllers.FriendController">
+            <summary>
+            好友
+            </summary>
+        </member>
+        <member name="M:Wechat.Api.Controllers.FriendController.GetContractList(System.String,System.Int32)">
+            <summary>
+            获取好友联系人
+            </summary>
+            <param name="WxId">微信Id</param>
+            <param name="CurrentWxcontactSeq">排序</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.FriendController.GetContractDetail(System.String,System.String)">
+            <summary>
+            获取好友详情
+            </summary>
+            <param name="WxId">微信Id</param>
+            <param name="SearchWxId">搜索的微信Id</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.FriendController.SearchContract(System.String,System.String)">
+            <summary>
+            搜索微信用户信息
+            </summary>
+            <param name="WxId">微信Id</param>
+            <param name="SearchWxName">虽有微信的名称</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.FriendController.AddFriend(Wechat.Api.Request.Friend.AddFriend)">
+            <summary>
+            添加好友
+            </summary>
+            <param name="addFriend"></param> 
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.FriendController.AddFriendRequest(Wechat.Api.Request.Friend.AddFriend)">
+            <summary>
+            添加好友
+            </summary>
+            <param name="addFriend"></param> 
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.FriendController.AddFriendRequestList(Wechat.Api.Request.Friend.AddFriendList)">
+            <summary>
+            批量添加好友
+            </summary>
+            <param name="addFriendList"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.FriendController.PassFriendVerify(Wechat.Api.Request.Friend.FriendVerify)">
+            <summary>
+            通过好友验证
+            </summary>
+            <param name="passFriendVerify"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.FriendController.RejectFriendVerify(Wechat.Api.Request.Friend.FriendVerify)">
+            <summary>
+            拒绝好友验证
+            </summary>
+            <param name="rejectFriendVerify"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Wechat.Api.Controllers.GroupController">
+            <summary>
+            群
+            </summary>
+        </member>
+        <member name="M:Wechat.Api.Controllers.GroupController.CreateGroupAsync(Wechat.Api.Request.Group.CreateGroup)">
+            <summary>
+            创建群
+            </summary>
+            <param name="greateGroup"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.GroupController.AddGroupMember(Wechat.Api.Request.Group.GroupMember)">
+            <summary>
+            添加群成员
+            </summary>
+            <param name="addGroupMember"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.GroupController.DeleteGroupMember(Wechat.Api.Request.Group.GroupMember)">
+            <summary>
+            删除群成员
+            </summary>
+            <param name="deleteGroupMember"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.GroupController.GetGroupMembers(Wechat.Api.Request.Group.GetGroupMember)">
+            <summary>
+            获取群成员
+            </summary>
+            <param name="addGroupMember"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.GroupController.QuitGroup(Wechat.Api.Request.Group.QuitGroup)">
+            <summary>
+            获取群成员
+            </summary>
+            <param name="quitGroup"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.GroupController.UpdateGroupAnnouncement(Wechat.Api.Request.Group.GroupAnnouncement)">
+            <summary>
+            修改公告
+            </summary>
+            <param name="groupAnnouncement"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Wechat.Api.Controllers.LabelController">
+            <summary>
+            标签
+            </summary>
+        </member>
+        <member name="M:Wechat.Api.Controllers.LabelController.GetLableList(System.String)">
+            <summary>
+            获取标签列表
+            </summary>
+            <param name="wxId">微信Id</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.LabelController.AddLabelName(Wechat.Api.Request.Label.AddLabel)">
+            <summary>
+            添加标签
+            </summary>
+            <param name="addLabel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.LabelController.UpdateLabelName(Wechat.Api.Request.Label.UpdateLabel)">
+            <summary>
+            修改标签
+            </summary>
+            <param name="updateLabel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.LabelController.DeleteLabelName(Wechat.Api.Request.Label.DeleteLabel)">
+            <summary>
+            删除标签
+            </summary>
+            <param name="deleteLabel"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Wechat.Api.Controllers.LoginController">
+            <summary>
+            登陆
+            </summary> 
+        </member>
+        <member name="M:Wechat.Api.Controllers.LoginController.#ctor">
+            <summary>
+            构造
+            </summary>
+        </member>
+        <member name="M:Wechat.Api.Controllers.LoginController.GetQrCode">
+            <summary>
+            获取登陆二维码
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.LoginController.CheckLogin(System.String)">
+            <summary>
+            检查是否登陆
+            </summary>
+            <param name="uuid">UUid</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.LoginController.LogOut(System.String)">
+            <summary>
+            退出登录
+            </summary>
+            <param name="wxId">微信Id</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.LoginController.NewInit(System.String)">
+            <summary>
+            初始化用户信息
+            </summary>
+            <param name="wxId">微信Id</param>
+            <returns></returns>
+        </member>
+        <member name="T:Wechat.Api.Controllers.IndexController">
+            <summary>
+            首页
+            </summary>
+        </member>
+        <member name="M:Wechat.Api.Controllers.IndexController.Get">
+            <summary>
+            首页
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Wechat.Api.Controllers.MessageController">
+            <summary>
+            消息服务
+            </summary>
+        </member>
+        <member name="M:Wechat.Api.Controllers.MessageController.SendTxtMessage(Wechat.Api.Request.Message.TxtMessage)">
+            <summary>
+            发送文本信息
+            </summary>
+            <param name="txtMessage"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.MessageController.SendVoiceMessage">
+            <summary>
+            发送声音消息
+            </summary> 
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.MessageController.SendImageMessage">
+            <summary>
+            发送图片消息
+            </summary> 
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.MessageController.SendVideoMessage">
+            <summary>
+            发送视频消息
+            </summary>       
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.MessageController.SendAppMessage(Wechat.Api.Request.Message.AppMessage)">
+            <summary>
+            发送App消息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.MessageController.SendShareMessage(Wechat.Api.Request.Message.ShareMessage)">
+            <summary>
+            发送分享消息
+            </summary>
+            <param name="appMessage"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.MessageController.SendCardMessage(Wechat.Api.Request.Message.CardMessage)">
+            <summary>
+            发送卡片消息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.MessageController.SendLocationMessage(Wechat.Api.Request.Message.LocationMessage)">
+            <summary>
+            发送位置信息
+            </summary>
+            <param name="cardMessage"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Wechat.Api.Controllers.PayController">
+            <summary>
+            支付
+            </summary>
+        </member>
+        <member name="M:Wechat.Api.Controllers.PayController.GetBandCardList(System.String)">
+            <summary>
+            获取银行卡信息
+            </summary>
+            <param name="wxId">微信Id</param>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.PayController.CreatePreTransfer(Wechat.Api.Request.Pay.CreatePreTransfer)">
+            <summary>
+            创建转账
+            </summary>
+            <param name="createPreTransfer"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.PayController.ConfirmTransfer(Wechat.Api.Request.Pay.ConfirmTransfer)">
+            <summary>
+            确认转账
+            </summary>
+            <param name="confirmTransfer"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.PayController.GeneratePayQCode(Wechat.Api.Request.Pay.GeneratePayQCode)">
+            <summary>
+            生成自定义支付二维码
+            </summary>
+            <param name="generatePayQCode"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Wechat.Api.Filters.ExceptionAttribute">
+            <summary>
+            WebApi异常过滤器
+            可以在Controller或Action上单独使用，也可直接注册为全局过滤器
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Filters.ValidParameterAttribute">
+            <summary>
+            参数验证
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.WebApiApplication">
+            <summary>
+            启动文件
+            </summary>
+        </member>
+        <member name="M:Wechat.Api.WebApiApplication.Application_Start">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Request.Common.BindEmail">
+            <summary>
+            绑定邮箱
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Common.BindEmail.Email">
+            <summary>
+            邮箱
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Request.Common.ChangePassword">
+            <summary>
+            修改密码
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Common.ChangePassword.NewPassword">
+            <summary>
+            新密码
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Common.ChangePassword.Ticket">
+            <summary>
+            票据
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Request.Common.ForkOfficialAccount">
+            <summary>
+            关注公众号
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Common.ForkOfficialAccount.AppId">
+            <summary>
+            公众号AppId
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Request.Common.PeopleNearby">
+            <summary>
+            附近的人
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Common.PeopleNearby.Longitude">
+            <summary>
+            经度
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Common.PeopleNearby.Latitude">
+            <summary>
+            纬度
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Request.Common.SharkItOff">
+            <summary>
+            摇一摇
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Common.SharkItOff.Longitude">
+            <summary>
+            经度
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Common.SharkItOff.Latitude">
+            <summary>
+            纬度
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Request.Common.UploadContrat">
+            <summary>
+            上传通讯录
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Common.UploadContrat.CurrentPhoneNo">
+            <summary>
+            当前手机号码
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Common.UploadContrat.PhoneNos">
+            <summary>
+            上传手机号码列表
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Request.Common.BigImage">
+            <summary>
+            高清图片
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Common.BigImage.ToWxId">
+            <summary>
+            接收的微信Id
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Common.BigImage.MsgId">
+            <summary>
+            消息Id
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Common.BigImage.LongDataLength">
+            <summary>
+            消息长度
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Request.Favor.AddFavItem">
+            <summary>
+            添加收藏
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Favor.AddFavItem.Object">
+            <summary>
+            组装的xml数据
+            <favitem type='1'><desc>我通过了你的朋友验证请求，现在我们可以开始聊天了</desc><source sourcetype='1' sourceid='2252832101216037513'><fromusr>wxid_ccl6h2zrd7rl12</fromusr><tousr>wxid_xqyjnvihzqyn12</tousr><msgid>2252832101216037513</msgid></source></favitem>
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Favor.AddFavItem.SourceId">
+            <summary>
+            来源Id
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Request.Favor.DelFavItem">
+            <summary>
+            删除收藏
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Favor.DelFavItem.favIds">
+            <summary>
+            收藏id列表
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Request.Favor.FavSync">
+            <summary>
+            同步收藏
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Favor.FavSync.KeyBuf">
+            <summary>
+            二进制流
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Request.FriendCircle.FriendCircle">
+            <summary>
+            朋友圈
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.FriendCircle.FriendCircle.FristPageMd5">
+            <summary>
+            分页Md5 默认为空
+            </summary>  
+        </member>
+        <member name="P:Wechat.Api.Request.FriendCircle.FriendCircle.ToWxId">
+            <summary>
+            查询人的微信朋友圈
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Request.FriendCircle.FriendCircleComment">
+            <summary>
+            回复朋友圈 （评论 点赞）
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.FriendCircle.FriendCircleComment.Id">
+            <summary>
+            朋友圈Id
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.FriendCircle.FriendCircleComment.Type">
+            <summary>
+            类型 1点赞 2：文本 3:消息 4：with 5陌生人点赞
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.FriendCircle.FriendCircleComment.Content">
+            <summary>
+            内容
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.FriendCircle.FriendCircleComment.ReplyCommnetId">
+            <summary>
+            回复评论Id
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Request.FriendCircle.FriendCircleList">
+            <summary>
+            朋友圈列表
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.FriendCircle.FriendCircleList.FristPageMd5">
+            <summary>
+            分页Md5
+            </summary> 
+        </member>
+        <member name="T:Wechat.Api.Request.FriendCircle.SendFriendCircle">
+            <summary>
+            发送朋友圈
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.FriendCircle.SendFriendCircle.Type">
+            <summary>
+            0:文字 1：图片 2视频 3：链接
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.FriendCircle.SendFriendCircle.BlackList">
+            <summary>
+            黑名单wxId用户列表
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.FriendCircle.SendFriendCircle.WithUserList">
+            <summary>
+            标记的Wxid列表
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.FriendCircle.SendFriendCircle.MediaInfos">
+            <summary>
+            media列表
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.FriendCircle.SendFriendCircle.Title">
+            <summary>
+            标题
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.FriendCircle.SendFriendCircle.ContentUrl">
+            <summary>
+            内容的链接
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.FriendCircle.SendFriendCircle.Description">
+            <summary>
+            描述
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.FriendCircle.SendFriendCircle.Content">
+            <summary>
+            内容
+            </summary>     
+        </member>
+        <member name="P:Wechat.Api.Request.FriendCircle.MediaInfo.Url">
+            <summary>
+            数据链接
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.FriendCircle.MediaInfo.ImageUrl">
+            <summary>
+            图片链接
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.FriendCircle.MediaInfo.Width">
+            <summary>
+            高度
+            </summary> 
+        </member>
+        <member name="P:Wechat.Api.Request.FriendCircle.MediaInfo.Height">
+            <summary>
+            宽度
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.FriendCircle.MediaInfo.TotalSize">
+            <summary>
+            总大小
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.FriendCircle.SendFriendCircleImage.ClientId">
+            <summary>
+            客户端Id
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.FriendCircle.SendFriendCircleImage.BufferUrl">
+            <summary>
+            bufferurl
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.FriendCircle.SendFriendCircleImage.ThumbUrls">
+            <summary>
+            ThumbUrls
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.FriendCircle.SendFriendCircleImage.Id">
+            <summary>
+            Id
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.FriendCircle.SendFriendCircleImage.Type">
+            <summary>
+            类型
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Request.FriendCircle.SetFriendCircle">
+            <summary>
+            设置朋友圈
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.FriendCircle.SetFriendCircle.Id">
+            <summary>
+            朋友圈Id
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.FriendCircle.SetFriendCircle.Type">
+            <summary>
+            朋友圈类型 1删除朋友圈2设为隐私3设为公开4删除评论5取消点赞
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Request.Friend.AddFriend">
+            <summary>
+            添加微信好友
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Friend.AddFriend.UserNameV1">
+            <summary>
+            添加微信好友用户V1数据
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Friend.AddFriend.AntispamTicket">
+            <summary>
+            添加微信好友用户的票证数据
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Friend.AddFriend.Content">
+            <summary>
+            内容
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Friend.AddFriend.Origin">
+            <summary>
+            来源 1来源QQ2来源邮箱3来源微信号14群聊15手机号18附近的人25漂流瓶29摇一摇30二维码13来源通讯录
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Request.Friend.AddFriendList">
+            <summary>
+            批量添加好友
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Friend.AddFriendList.Content">
+            <summary>
+            内容
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Friend.AddFriendList.Origin">
+            <summary>
+            来源 1来源QQ2来源邮箱3来源微信号14群聊15手机号18附近的人25漂流瓶29摇一摇30二维码13来源通讯录
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Friend.AddFriendList.Friends">
+            <summary>
+            好友列表
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Friend.AddFriendDetail.UserNameV1">
+            <summary>
+            添加微信好友用户V1数据
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Friend.AddFriendDetail.AntispamTicket">
+            <summary>
+            添加微信好友用户的票证数据
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Friend.AddFriendDetail.Origin">
+            <summary>
+            来源 1来源QQ2来源邮箱3来源微信号14群聊15手机号18附近的人25漂流瓶29摇一摇30二维码13来源通讯录
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Friend.FriendVerify.UserNameV1">
+            <summary>
+            添加微信好友用户V1数据
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Friend.FriendVerify.AntispamTicket">
+            <summary>
+            添加微信好友用户的票证数据
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Friend.FriendVerify.Content">
+            <summary>
+            内容
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Friend.FriendVerify.Origin">
+            <summary>
+            来源 1来源QQ2来源邮箱3来源微信号14群聊15手机号18附近的人25漂流瓶29摇一摇30二维码13来源通讯录
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Request.Group.GroupMember">
+            <summary>
+            群成员
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Group.GroupMember.ChatRoomName">
+            <summary>
+            群Id
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Group.GroupMember.ToWxIds">
+            <summary>
+            群成员
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Request.Group.CreateGroup">
+            <summary>
+            创建群
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Group.CreateGroup.GroupName">
+            <summary>
+            群名称
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Group.CreateGroup.ToWxIds">
+            <summary>
+            群成员
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Request.Group.GetGroupMember">
+            <summary>
+            群成员
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Group.GetGroupMember.ChatRoomName">
+            <summary>
+            群Id
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Request.Group.GroupAnnouncement">
+            <summary>
+            群公告
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Group.GroupAnnouncement.ChatRoomName">
+            <summary>
+            群Id
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Group.GroupAnnouncement.Announcement">
+            <summary>
+            公告
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Request.Group.QuitGroup">
+            <summary>
+            退出群
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Group.QuitGroup.ChatRoomName">
+            <summary>
+            群Id
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Label.AddLabel.LabelName">
+            <summary>
+            标签名称
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Request.Label.DeleteLabel">
+            <summary>
+            删除标签
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Label.DeleteLabel.LabelIDList">
+            <summary>
+            标签名称
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Request.Label.UpdateLabel">
+            <summary>
+            修改标签
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Label.UpdateLabel.ToWxId">
+            <summary>
+            配置的微信Id
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Label.UpdateLabel.LabelIDList">
+            <summary>
+            标签Id列表
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Request.Message.AppMessage">
+            <summary>
+            App消息
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Message.AppMessage.ToWxId">
+            <summary>
+            接收的微信ID
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Message.AppMessage.AppId">
+            <summary>
+            appId
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Message.AppMessage.Title">
+            <summary>
+            标题
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Message.AppMessage.Desc">
+            <summary>
+            描述
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Message.AppMessage.Type">
+            <summary>
+            app类型 3：音乐  4：小app  5：大app
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Message.AppMessage.Url">
+            <summary>
+            链接
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Message.AppMessage.DataUrl">
+            <summary>
+            数据Url
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Message.AppMessage.ThumbUrl">
+            <summary>
+            图片地址
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Request.Message.CardMessage">
+            <summary>
+            名片消息
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Message.CardMessage.ToWxId">
+            <summary>
+            接收的微信ID
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Message.CardMessage.CardWxId">
+            <summary>
+            发送的微信Id
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Message.CardMessage.CardNickName">
+            <summary>
+            昵称
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Message.CardMessage.CardAlias">
+            <summary>
+            别名
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Request.Message.ImageMessage">
+            <summary>
+            图片消息
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Message.ImageMessage.ToWxId">
+            <summary>
+            接收的微信ID
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Request.Message.LocationMessage">
+            <summary>
+            地址位置信息
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Message.LocationMessage.ToWxId">
+            <summary>
+            接收的微信ID
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Message.LocationMessage.Longitude">
+            <summary>
+            经度
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Message.LocationMessage.Latitude">
+            <summary>
+            纬度
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Message.LocationMessage.Name">
+            <summary>
+            名称
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Request.Message.ShareMessage">
+            <summary>
+            分享消息
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Message.ShareMessage.ToWxId">
+            <summary>
+            接收的微信ID
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Message.ShareMessage.Title">
+            <summary>
+            标题
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Message.ShareMessage.Desc">
+            <summary>
+            描述
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Message.ShareMessage.Type">
+            <summary>
+            app类型 3：音乐  4：小app  5：大app
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Message.ShareMessage.Url">
+            <summary>
+            链接
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Message.ShareMessage.DataUrl">
+            <summary>
+            数据Url
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Message.ShareMessage.ThumbUrl">
+            <summary>
+            图片地址
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Request.Message.TxtMessage">
+            <summary>
+            文本消息
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Message.TxtMessage.ToWxId">
+            <summary>
+            发送的微信ID
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Message.TxtMessage.Content">
+            <summary>
+            发送内容
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Request.Message.VideoMessage">
+            <summary>
+            视频消息
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Message.VideoMessage.ToWxId">
+            <summary>
+            发送的微信ID
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Request.Message.VoiceMessage">
+            <summary>
+            声音消息
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Message.VoiceMessage.ToWxId">
+            <summary>
+            发送的微信ID
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Request.Pay.ConfirmTransfer">
+            <summary>
+            确认转账
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Pay.ConfirmTransfer.BankType">
+            <summary>
+            银行类型
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Pay.ConfirmTransfer.BindSerial">
+            <summary>
+            绑定卡号的Id
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Pay.ConfirmTransfer.ReqKey">
+            <summary>
+            请求的Key
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Pay.ConfirmTransfer.PayPassword">
+            <summary>
+            支付密码
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Request.Pay.CreatePreTransfer">
+            <summary>
+            创建转账
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Pay.CreatePreTransfer.ToWxId">
+            <summary>
+            到账微信Id
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Pay.CreatePreTransfer.Money">
+            <summary>
+            金额
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Pay.CreatePreTransfer.Name">
+            <summary>
+            转账名称
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Request.Pay.GeneratePayQCode">
+            <summary>
+            生成支付二维码
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Pay.GeneratePayQCode.Name">
+            <summary>
+            描述
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Pay.GeneratePayQCode.Money">
+            <summary>
+            金额
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Request.RequestBase">
+            <summary>
+            请求基类
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.RequestBase.WxId">
+            <summary>
+            微信Id
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Response.FriendCircle.FriendCircleResponse.FristPageMd5">
+            <summary>
+            分页的Md5
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Response.FriendCircle.FriendCircleResponse.ObjectList">
+            <summary>
+            朋友圈详情
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Response.Friend.ContractListResponse.Contracts">
+            <summary>
+            联系人
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Response.Friend.ContractListResponse.CurrentWxcontactSeq">
+            <summary>
+            分页
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Response.Friend.ContractResponse">
+            <summary>
+            联系人
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Response.Friend.ContractResponse.WxId">
+            <summary>
+            微信Id
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Response.Friend.ContractResponse.NickName">
+            <summary>
+            昵称
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Response.Friend.ContractResponse.WeiboNickname">
+            <summary>
+            微博昵称
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Response.Friend.ContractResponse.Country">
+            <summary>
+            国家
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Response.Friend.ContractResponse.City">
+            <summary>
+            城市
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Response.Friend.ContractResponse.BigHeadImgUrl">
+            <summary>
+            大头像url
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Response.Friend.ContractResponse.SmallHeadImgUrl">
+            <summary>
+            小头像url
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Response.Friend.ContractResponse.IDCardNum">
+            <summary>
+            身份证号码
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Response.Friend.ContractResponse.RealName">
+            <summary>
+            真实姓名
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Response.Friend.ContractResponse.Alias">
+            <summary>
+            别名
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Response.Friend.ContractResponse.Description">
+            <summary>
+            描述
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Response.Friend.ContractResponse.Sex">
+            <summary>
+            性别
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Response.Friend.ContractResponse.CardImgUrl">
+            <summary>
+            卡图片地址
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Response.Login.CheckLoginResponse">
+            <summary>
+            检查登陆
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Response.Login.CheckLoginResponse.Uuid">
+            <summary>
+            UuId
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Response.Login.CheckLoginResponse.WxId">
+            <summary>
+            微信Id
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Response.Login.CheckLoginResponse.NickName">
+            <summary>
+            昵称
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Response.Login.CheckLoginResponse.State">
+            <summary>
+            状态 -1失效 0:未扫码 1：扫码 2：登陆
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Response.Login.CheckLoginResponse.Device">
+            <summary>
+            设备Id
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Response.Login.CheckLoginResponse.HeadUrl">
+            <summary>
+            头像Url
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Response.Login.CheckLoginResponse.Mobile">
+            <summary>
+            手机
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Response.Login.CheckLoginResponse.Email">
+            <summary>
+            邮箱
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Response.Login.CheckLoginResponse.Alias">
+            <summary>
+            别名
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Response.Login.QrCodeResponse.QrBase64">
+            <summary>
+            base64图片
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Response.Login.QrCodeResponse.Uuid">
+            <summary>
+            二维码标识
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Response.Login.QrCodeResponse.ExpiredTime">
+            <summary>
+            过期时间
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.ResponseBase">
+            <summary>
+            返回参数
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.ResponseBase.Success">
+            <summary>
+            是否成功
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.ResponseBase.Code">
+            <summary>
+            返回码
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.ResponseBase.Message">
+            <summary>
+            返回消息
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.ResponseBase`1.Data">
+            <summary>
+            数据
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.ResponseBase`2.Data">
+            <summary>
+            数据
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.ResponseBase`2.Result">
+            <summary>
+            数据
+            </summary>
+        </member>
+    </members>
+</doc>

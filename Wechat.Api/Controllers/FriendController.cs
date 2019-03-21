@@ -20,13 +20,11 @@ namespace Wechat.Api.Controllers
     public class FriendController : WebchatControllerBase
     {
 
-    
-
         /// <summary>
         /// 获取好友联系人
         /// </summary>
-        /// <param name="WxId"></param>
-        /// <param name="CurrentWxcontactSeq"></param>
+        /// <param name="WxId">微信Id</param>
+        /// <param name="CurrentWxcontactSeq">排序</param>
         /// <returns></returns>
         [HttpPost]
         [Route("api/Friend/GetContractList/{WxId}/{CurrentWxcontactSeq?}")]
@@ -71,8 +69,8 @@ namespace Wechat.Api.Controllers
         /// <summary>
         /// 获取好友详情
         /// </summary>
-        /// <param name="WxId"></param>
-        /// <param name="SearchWxId"></param>
+        /// <param name="WxId">微信Id</param>
+        /// <param name="SearchWxId">搜索的微信Id</param>
         /// <returns></returns>
         [HttpPost]
         [Route("api/Friend/GetContractDetail/{WxId}/{SearchWxId}")]
@@ -114,8 +112,8 @@ namespace Wechat.Api.Controllers
         /// <summary>
         /// 搜索微信用户信息
         /// </summary>
-        /// <param name="WxId"></param>
-        /// <param name="SearchWxName"></param>
+        /// <param name="WxId">微信Id</param>
+        /// <param name="SearchWxName">虽有微信的名称</param>
         /// <returns></returns>
         [HttpPost]
         [Route("api/Friend/SearchContract/{WxId}/{SearchWxName}")]

@@ -20,12 +20,10 @@ namespace Wechat.Api.Controllers
     public class LabelController : WebchatControllerBase
     {
 
-        
-
         /// <summary>
         /// 获取标签列表
         /// </summary>
-        /// <param name="wxId"></param>
+        /// <param name="wxId">微信Id</param>
         /// <returns></returns>
         [HttpPost()]
         [Route("api/Label/GetLableList/{wxId}")]

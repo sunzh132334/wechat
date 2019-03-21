@@ -16,6 +16,9 @@ namespace Wechat.Api.Controllers
     public class LoginController : ApiController
     {
         private WechatHelper _wechat = null;
+        /// <summary>
+        /// 构造
+        /// </summary>
         public LoginController()
         {
             _wechat = new WechatHelper();
@@ -68,16 +71,16 @@ namespace Wechat.Api.Controllers
         /// <summary>
         /// 检查是否登陆
         /// </summary>
-        /// <param name="uuid"></param>
+        /// <param name="uuid">UUid</param>
         /// <returns></returns>
         [HttpPost]
         [Route("api/Login/CheckLogin/{Uuid}")]
-        public Task<HttpResponseMessage> CheckLogin(string Uuid)
+        public Task<HttpResponseMessage> CheckLogin(string uuid)
         {
             ResponseBase<CheckLoginResponse> response = new ResponseBase<CheckLoginResponse>();
             try
             {
-                var result = _wechat.CheckLoginQRCode(Uuid);
+                var result = _wechat.CheckLoginQRCode(uuid);
                 CheckLoginResponse checkLoginResponse = new CheckLoginResponse();
                 checkLoginResponse.State = result.State;
                 checkLoginResponse.Uuid = result.Uuid;
@@ -105,12 +108,48 @@ namespace Wechat.Api.Controllers
             return response.ToHttpResponseAsync();
         }
 
-
-
+        /// <summary>
+        /// 退出登录
+        /// </summary>
+        /// <param name="wxId">微信Id</param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("api/Login/LogOut/{wxId}")]
+        public Task<HttpResponseMessage> LogOut(string wxId)
+        {
+            ResponseBase<InitResponse> response = new ResponseBase<InitResponse>();
+            try
+            {
+                var result = _wechat.logOut(wxId);
+                if (result == null || result.BaseResponse.Ret != (int)MMPro.MM.RetConst.MM_OK)
+                {
+                    response.Success = false;
+                    response.Code = "501";
+                    response.Message = result.BaseResponse.ErrMsg.String ?? "退出失败";
+                }
+                else
+                {
+                    response.Message = "退出成功";
+                }
+            }
+            catch (ExpiredException ex)
+            {
+                response.Success = false;
+                response.Code = "401";
+                response.Message = ex.Message;
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Code = "500";
+                response.Message = ex.Message;
+            }
+            return response.ToHttpResponseAsync();
+        }
         /// <summary>
         /// 初始化用户信息
         /// </summary>
-        /// <param name="uuid"></param>
+        /// <param name="wxId">微信Id</param>
         /// <returns></returns>
         [HttpPost]
         [Route("api/Login/NewInit/{wxId}")]

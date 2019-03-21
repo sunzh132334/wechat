@@ -25,7 +25,7 @@ namespace Wechat.Api.Controllers
         /// <summary>
         /// 获取特定人朋友圈
         /// </summary>
-        /// <param name="bindEmail"></param>
+        /// <param name="friendCircle"></param>
         /// <returns></returns>
         [HttpPost]
         [Route("api/FriendCircle/GetFriendCircleDetail")]
@@ -69,7 +69,7 @@ namespace Wechat.Api.Controllers
         /// <summary>
         /// 获取自己朋友圈列表
         /// </summary>
-        /// <param name="friendCircle"></param>
+        /// <param name="friendCircleList"></param>
         /// <returns></returns>
         [HttpPost]
         [Route("api/FriendCircle/GetFriendCircleList")]
@@ -205,7 +205,7 @@ namespace Wechat.Api.Controllers
         /// <summary>
         /// 同步朋友圈
         /// </summary>
-        /// <param name="wxId"></param>
+        /// <param name="wxId">微信Id</param>
         /// <returns></returns>
         [HttpPost]
         [Route("api/FriendCircle/SyncFriendCircle/{wxId}")]

@@ -162,6 +162,7 @@
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\CommonController.cs" />
+    <Compile Include="Controllers\FavorController.cs" />
     <Compile Include="Controllers\FriendCircleController.cs" />
     <Compile Include="Controllers\FriendController.cs" />
     <Compile Include="Controllers\GroupController.cs" />
@@ -186,6 +187,9 @@
     <Compile Include="Request\Common\PeopleNearby.cs" />
     <Compile Include="Request\Common\SharkItOff.cs" />
     <Compile Include="Request\Common\UploadContrat.cs" />
+    <Compile Include="Request\Favor\AddFavItem.cs" />
+    <Compile Include="Request\Favor\DelFavItem.cs" />
+    <Compile Include="Request\Favor\FavSync.cs" />
     <Compile Include="Request\FriendCircle\FriendCircle.cs" />
     <Compile Include="Request\FriendCircle\FriendCircleComment.cs" />
     <Compile Include="Request\FriendCircle\FriendCircleList.cs" />
