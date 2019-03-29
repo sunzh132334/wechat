@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -6,6 +7,7 @@ using System.Web;
 using System.Web.Http;
 using Wechat.Api.Abstracts;
 using Wechat.Api.Extensions;
+using Wechat.Api.Helper;
 using Wechat.Api.Request.Message;
 using Wechat.Protocol;
 using Wechat.Util.Exceptions;
@@ -28,20 +30,17 @@ namespace Wechat.Api.Controllers
         [Route("api/Message/SendTxtMessage")]
         public Task<HttpResponseMessage> SendTxtMessage(TxtMessage txtMessage)
         {
-            ResponseBase<MMPro.MM.NewSendMsgRespone> response = new ResponseBase<MMPro.MM.NewSendMsgRespone>();
+            ResponseBase<IList<MMPro.MM.NewSendMsgRespone>> response = new ResponseBase<IList<MMPro.MM.NewSendMsgRespone>>();
             try
             {
-                var result = wechat.SendNewMsg(txtMessage.WxId, txtMessage.ToWxId, txtMessage.Content);
-                if (result == null || result.baseResponse.ret != (int)MMPro.MM.RetConst.MM_OK)
+                IList<MMPro.MM.NewSendMsgRespone> list = new List<MMPro.MM.NewSendMsgRespone>();
+                foreach (var item in txtMessage.ToWxIds)
                 {
-                    response.Success = false;
-                    response.Code = "501";
-                    response.Message = result.baseResponse.errMsg.@string ?? "发送失败";
+                    var result = wechat.SendNewMsg(txtMessage.WxId, item, txtMessage.Content);
+                    list.Add(result);
                 }
-                else
-                {
-                    response.Data = result;
-                }
+
+                response.Data = list;
             }
             catch (ExpiredException ex)
             {
@@ -64,73 +63,19 @@ namespace Wechat.Api.Controllers
         /// <returns></returns>
         [HttpPost()]
         [Route("api/Message/SendVoiceMessage")]
-        public async Task<HttpResponseMessage> SendVoiceMessage()
+        public async Task<HttpResponseMessage> SendVoiceMessage(VoiceMessage voiceMessage)
         {
-            ResponseBase<MMPro.MM.UploadVoiceResponse> response = new ResponseBase<MMPro.MM.UploadVoiceResponse>();
-            if (!Request.Content.IsMimeMultipartContent())
-            {
-                response.Success = false;
-                response.Code = "400";
-                response.Message = "请表单提交";
-                return await response.ToHttpResponseAsync();
-            }
-            var fileCount = HttpContext.Current.Request.Files.Count;
-            if (fileCount == 0)
-            {
-                response.Success = false;
-                response.Code = "400";
-                response.Message = "请上传文件";
-                return await response.ToHttpResponseAsync();
-            }
-            var file = HttpContext.Current.Request.Files[0];
-            if (file.FileName.IsVoice())
-            {
-                response.Success = false;
-                response.Code = "400";
-                response.Message = "请上传声音文件";
-                return await response.ToHttpResponseAsync();
-            }
-            var wxId = HttpContext.Current.Request["WxId"];
-            var toWxId = HttpContext.Current.Request["ToWxId"];
-            var voiceSecond = HttpContext.Current.Request["VoiceSecond"];
-            if (string.IsNullOrEmpty(wxId))
-            {
-                response.Success = false;
-                response.Code = "400";
-                response.Message = "WxId不能为空";
-                return await response.ToHttpResponseAsync();
-            }
-            if (string.IsNullOrEmpty(toWxId))
-            {
-                response.Success = false;
-                response.Code = "400";
-                response.Message = "ToWxId不能为空";
-                return await response.ToHttpResponseAsync();
-            }
-            if (string.IsNullOrEmpty(voiceSecond))
-            {
-                response.Success = false;
-                response.Code = "400";
-                response.Message = "VoiceSecond不能为空";
-                return await response.ToHttpResponseAsync();
-            }
+            ResponseBase<IList<MMPro.MM.UploadVoiceResponse>> response = new ResponseBase<IList<MMPro.MM.UploadVoiceResponse>>();
             try
             {
-                byte[] buffer = await file.InputStream.ToBufferAsync();
-
-                var result = wechat.SendVoiceMessage(wxId, toWxId, buffer, file.FileName.GetVoiceType(), Convert.ToInt32(string.IsNullOrEmpty(voiceSecond) ? "1" : voiceSecond) * 100);
-
-
-                if (result == null || result.baseResponse.ret != (int)MMPro.MM.RetConst.MM_OK)
+                IList<MMPro.MM.UploadVoiceResponse> list = new List<MMPro.MM.UploadVoiceResponse>();
+                byte[] buffer = await FileStorageHelper.DownloadToBufferAsync(voiceMessage.ObjectName);
+                foreach (var item in voiceMessage.ToWxIds)
                 {
-                    response.Success = false;
-                    response.Code = "501";
-                    response.Message = result.baseResponse.errMsg.@string ?? "发送失败";
+                    var result = wechat.SendVoiceMessage(voiceMessage.WxId, item, buffer, voiceMessage.FileName.GetVoiceType(), voiceMessage.VoiceSecond * 100);
+                    list.Add(result);
                 }
-                else
-                {
-                    response.Data = result;
-                }
+                response.Data = list;
             }
             catch (ExpiredException ex)
             {
@@ -153,63 +98,19 @@ namespace Wechat.Api.Controllers
         /// <returns></returns>
         [HttpPost()]
         [Route("api/Message/SendImageMessage")]
-        public async Task<HttpResponseMessage> SendImageMessage()
+        public async Task<HttpResponseMessage> SendImageMessage(ImageMessage imageMessage)
         {
-            ResponseBase<MMPro.MM.UploadMsgImgResponse> response = new ResponseBase<MMPro.MM.UploadMsgImgResponse>();
-            if (!Request.Content.IsMimeMultipartContent())
-            {
-                response.Success = false;
-                response.Code = "400";
-                response.Message = "请表单提交";
-                return await response.ToHttpResponseAsync();
-            }
-            var fileCount = HttpContext.Current.Request.Files.Count;
-            if (fileCount == 0)
-            {
-                response.Success = false;
-                response.Code = "400";
-                response.Message = "请上传文件";
-            }
-            var file = HttpContext.Current.Request.Files[0];
-            if (file.FileName.IsImage())
-            {
-                response.Success = false;
-                response.Code = "400";
-                response.Message = "请上传图片文件";
-                return await response.ToHttpResponseAsync();
-            }
-            var wxId = HttpContext.Current.Request["WxId"];
-            var toWxId = HttpContext.Current.Request["ToWxId"];
-            if (string.IsNullOrEmpty(wxId))
-            {
-                response.Success = false;
-                response.Code = "400";
-                response.Message = "WxId不能为空";
-                return await response.ToHttpResponseAsync();
-            }
-            if (string.IsNullOrEmpty(toWxId))
-            {
-                response.Success = false;
-                response.Code = "400";
-                response.Message = "ToWxId不能为空";
-                return await response.ToHttpResponseAsync();
-            }
+            ResponseBase<IList<MMPro.MM.UploadMsgImgResponse>> response = new ResponseBase<IList<MMPro.MM.UploadMsgImgResponse>>();
             try
             {
-
-                byte[] buffer = await file.InputStream.ToBufferAsync();
-
-                var result = wechat.SendImageMessage(wxId, toWxId, buffer);
-                if (result == null || result.baseResponse.ret != (int)MMPro.MM.RetConst.MM_OK)
+                IList<MMPro.MM.UploadMsgImgResponse> list = new List<MMPro.MM.UploadMsgImgResponse>();
+                byte[] buffer = await FileStorageHelper.DownloadToBufferAsync(imageMessage.ObjectName);
+                foreach (var item in imageMessage.ToWxIds)
                 {
-                    response.Success = false;
-                    response.Code = "501";
-                    response.Message = result.baseResponse.errMsg.@string;
+                    var result = wechat.SendImageMessage(imageMessage.WxId, item, buffer);
+                    list.Add(result);
                 }
-                else
-                {
-                    response.Data = result;
-                }
+                response.Data = list;
             }
             catch (ExpiredException ex)
             {
@@ -234,63 +135,19 @@ namespace Wechat.Api.Controllers
         /// <returns></returns>
         [HttpPost()]
         [Route("api/Message/SendVideoMessage")]
-        public async Task<HttpResponseMessage> SendVideoMessage()
+        public async Task<HttpResponseMessage> SendVideoMessage(VideoMessage videoMessage)
         {
-            ResponseBase<micromsg.UploadVideoResponse> response = new ResponseBase<micromsg.UploadVideoResponse>();
-            if (!Request.Content.IsMimeMultipartContent())
-            {
-                response.Success = false;
-                response.Code = "400";
-                response.Message = "请表单提交";
-                return await response.ToHttpResponseAsync();
-            }
-            var fileCount = HttpContext.Current.Request.Files.Count;
-            if (fileCount == 0)
-            {
-                response.Success = false;
-                response.Code = "400";
-                response.Message = "请上传文件";
-            }
-            var file = HttpContext.Current.Request.Files[0];
-            if (file.FileName.IsVideo())
-            {
-                response.Success = false;
-                response.Code = "400";
-                response.Message = "请上传视频文件";
-                return await response.ToHttpResponseAsync();
-            }
-            var wxId = HttpContext.Current.Request["WxId"];
-            var toWxId = HttpContext.Current.Request["ToWxId"];
-            if (string.IsNullOrEmpty(wxId))
-            {
-                response.Success = false;
-                response.Code = "400";
-                response.Message = "WxId不能为空";
-                return await response.ToHttpResponseAsync();
-            }
-            if (string.IsNullOrEmpty(toWxId))
-            {
-                response.Success = false;
-                response.Code = "400";
-                response.Message = "ToWxId不能为空";
-                return await response.ToHttpResponseAsync();
-            }
+            ResponseBase<IList<micromsg.UploadVideoResponse>> response = new ResponseBase<IList<micromsg.UploadVideoResponse>>();
             try
             {
-
-                byte[] buffer = await file.InputStream.ToBufferAsync();
-
-                var result = wechat.SendVideoMessage(wxId, toWxId, buffer);
-                if (result == null || result.BaseResponse.Ret != (int)MMPro.MM.RetConst.MM_OK)
+                IList<micromsg.UploadVideoResponse> list = new List<micromsg.UploadVideoResponse>();
+                byte[] buffer = await FileStorageHelper.DownloadToBufferAsync(videoMessage.ObjectName);
+                foreach (var item in videoMessage.ToWxIds)
                 {
-                    response.Success = false;
-                    response.Code = "501";
-                    response.Message = result.BaseResponse.ErrMsg.String ?? "发送失败";
+                    var result = wechat.SendVideoMessage(videoMessage.WxId, item, buffer);
+                    list.Add(result);
                 }
-                else
-                {
-                    response.Data = result;
-                }
+                response.Data = list;
             }
             catch (ExpiredException ex)
             {
@@ -313,26 +170,21 @@ namespace Wechat.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost()]
-        [Route("api/Message/AppMessage")]
+        [Route("api/Message/SendAppMessage")]
         public async Task<HttpResponseMessage> SendAppMessage(AppMessage appMessage)
         {
-            ResponseBase<micromsg.SendAppMsgResponse> response = new ResponseBase<micromsg.SendAppMsgResponse>();
+            ResponseBase<IList<micromsg.SendAppMsgResponse>> response = new ResponseBase<IList<micromsg.SendAppMsgResponse>>();
             try
             {
+                IList<micromsg.SendAppMsgResponse> list = new List<micromsg.SendAppMsgResponse>();
                 string dataUrl = string.IsNullOrEmpty(appMessage.DataUrl) ? appMessage.Url : appMessage.DataUrl;
                 string appMessageFormat = $"<appmsg appid=\"{appMessage.AppId}\" sdkver=\"0\"><title>{appMessage.Title}</title><des>{appMessage.Desc}</des><type>{appMessage.Type}</type><showtype>0</showtype><soundtype>0</soundtype><contentattr>0</contentattr><url>{appMessage.Url}</url><lowurl>{appMessage.Url}</lowurl><dataurl>{dataUrl}</dataurl><lowdataurl>{dataUrl}</lowdataurl> <thumburl>{appMessage.ThumbUrl}</thumburl></appmsg>";
-
-                var result = wechat.SendAppMsg(appMessageFormat, appMessage.ToWxId, appMessage.WxId);
-                if (result == null || result.BaseResponse.Ret != (int)MMPro.MM.RetConst.MM_OK)
+                foreach (var item in appMessage.ToWxIds)
                 {
-                    response.Success = false;
-                    response.Code = "501";
-                    response.Message = result.BaseResponse.ErrMsg.String ?? "发送失败";
+                    var result = wechat.SendAppMsg(appMessageFormat, item, appMessage.WxId);
+                    list.Add(result);
                 }
-                else
-                {
-                    response.Data = result;
-                }
+                response.Data = list;
             }
             catch (ExpiredException ex)
             {
@@ -360,23 +212,18 @@ namespace Wechat.Api.Controllers
         [Route("api/Message/SendShareMessage")]
         public async Task<HttpResponseMessage> SendShareMessage(ShareMessage appMessage)
         {
-            ResponseBase<micromsg.SendAppMsgResponse> response = new ResponseBase<micromsg.SendAppMsgResponse>();
+            ResponseBase<IList<micromsg.SendAppMsgResponse>> response = new ResponseBase<IList<micromsg.SendAppMsgResponse>>();
             try
             {
+                IList<micromsg.SendAppMsgResponse> list = new List<micromsg.SendAppMsgResponse>();
                 string dataUrl = string.IsNullOrEmpty(appMessage.DataUrl) ? appMessage.Url : appMessage.DataUrl;
                 string appMessageFormat = $"<appmsg  sdkver=\"0\"><title>{appMessage.Title}</title><des>{appMessage.Desc}</des><type>{appMessage.Type}</type><showtype>0</showtype><soundtype>0</soundtype><contentattr>0</contentattr><url>{appMessage.Url}</url><lowurl>{appMessage.Url}</lowurl><dataurl>{dataUrl}</dataurl><lowdataurl>{dataUrl}</lowdataurl> <thumburl>{appMessage.ThumbUrl}</thumburl></appmsg>";
-
-                var result = wechat.SendAppMsg(appMessageFormat, appMessage.ToWxId, appMessage.WxId);
-                if (result == null || result.BaseResponse.Ret != (int)MMPro.MM.RetConst.MM_OK)
+                foreach (var item in appMessage.ToWxIds)
                 {
-                    response.Success = false;
-                    response.Code = "501";
-                    response.Message = result.BaseResponse.ErrMsg.String ?? "发送失败";
+                    var result = wechat.SendAppMsg(appMessageFormat, item, appMessage.WxId);
+                    list.Add(result);
                 }
-                else
-                {
-                    response.Data = result;
-                }
+                response.Data = list;
             }
             catch (ExpiredException ex)
             {
@@ -403,23 +250,18 @@ namespace Wechat.Api.Controllers
         [Route("api/Message/SendCardMessage")]
         public async Task<HttpResponseMessage> SendCardMessage(CardMessage cardMessage)
         {
-            ResponseBase<MMPro.MM.NewSendMsgRespone> response = new ResponseBase<MMPro.MM.NewSendMsgRespone>();
+            ResponseBase<IList<MMPro.MM.NewSendMsgRespone>> response = new ResponseBase<IList<MMPro.MM.NewSendMsgRespone>>();
             try
             {
+                IList<MMPro.MM.NewSendMsgRespone> list = new List<MMPro.MM.NewSendMsgRespone>();
                 cardMessage.CardNickName = string.IsNullOrEmpty(cardMessage.CardNickName) ? cardMessage.CardWxId : cardMessage.CardNickName;
                 string appMessageFormat = $"<?xml version=\"1.0\"?>\n<msg bigheadimgurl=\"\" smallheadimgurl=\"\" username=\"{cardMessage.CardWxId}\" nickname=\"{cardMessage.CardNickName}\" fullpy=\"\" shortpy=\"\" alias=\"{cardMessage.CardAlias}\" imagestatus=\"0\" scene=\"17\" province=\"\" city=\"\" sign=\"\" sex=\"2\" certflag=\"0\" certinfo=\"\" brandIconUrl=\"\" brandHomeUrl=\"\" brandSubscriptConfigUrl=\"\" brandFlags=\"0\" regionCode=\"CN\" />\n";
-
-                var result = wechat.SendNewMsg(cardMessage.WxId, cardMessage.ToWxId, appMessageFormat, 42);
-                if (result == null || result.baseResponse.ret != (int)MMPro.MM.RetConst.MM_OK)
+                foreach (var item in cardMessage.ToWxIds)
                 {
-                    response.Success = false;
-                    response.Code = "501";
-                    response.Message = result.baseResponse.errMsg.@string ?? "发送失败";
+                    var result = wechat.SendNewMsg(cardMessage.WxId, item, appMessageFormat, 42);
+                    list.Add(result);
                 }
-                else
-                {
-                    response.Data = result;
-                }
+                response.Data = list;
             }
             catch (ExpiredException ex)
             {
@@ -446,22 +288,17 @@ namespace Wechat.Api.Controllers
         [Route("api/Message/SendLocationMessage")]
         public async Task<HttpResponseMessage> SendLocationMessage(LocationMessage cardMessage)
         {
-            ResponseBase<MMPro.MM.NewSendMsgRespone> response = new ResponseBase<MMPro.MM.NewSendMsgRespone>();
+            ResponseBase<IList<MMPro.MM.NewSendMsgRespone>> response = new ResponseBase<IList<MMPro.MM.NewSendMsgRespone>>();
             try
             {
+                IList<MMPro.MM.NewSendMsgRespone> list = new List<MMPro.MM.NewSendMsgRespone>();
                 string appMessageFormat = $"<?xml version=\"1.0\"?>\n<msg>\n\t<location x=\"{cardMessage.Latitude}\" y=\"{cardMessage.Longitude}\" scale=\"16\" label=\"{cardMessage.Name}\" maptype=\"0\" poiname=\"[位置]{cardMessage.Name}\" poiid=\"\" />\n</msg>";
-
-                var result = wechat.SendNewMsg(cardMessage.WxId, cardMessage.ToWxId, appMessageFormat, 48);
-                if (result == null || result.baseResponse.ret != (int)MMPro.MM.RetConst.MM_OK)
+                foreach (var item in cardMessage.ToWxIds)
                 {
-                    response.Success = false;
-                    response.Code = "501";
-                    response.Message = result.baseResponse.errMsg.@string ?? "发送失败";
+                    var result = wechat.SendNewMsg(cardMessage.WxId, item, appMessageFormat, 48);
+                    list.Add(result);
                 }
-                else
-                {
-                    response.Data = result;
-                }
+                response.Data = list;
             }
             catch (ExpiredException ex)
             {

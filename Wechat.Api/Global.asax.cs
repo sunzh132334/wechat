@@ -7,6 +7,8 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using Wechat.Api.Filters;
+using Wechat.Api.Helper;
+using Wechat.Util;
 
 namespace Wechat.Api
 {
@@ -30,8 +32,10 @@ namespace Wechat.Api
             GlobalConfiguration.Configuration.Filters.Add(new ValidParameterAttribute());
             //注册认证
             //GlobalConfiguration.Configuration.Filters.Add(new AuthenticationAttribute());
-            
 
+            //上传文件服务
+            QueueHelper<UploadFileObj>.Register(UploadFileAction.UploadFile);
+            QueueHelper<UploadFileObj>.Start();
         }
     }
 }

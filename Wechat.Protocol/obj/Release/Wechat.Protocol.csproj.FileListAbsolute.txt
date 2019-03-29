@@ -126,3 +126,4 @@ C:\Users\LTL\Desktop\Wechat\Wechat.Protocol\bin\Release\System.Xml.XPath.dll
 C:\Users\LTL\Desktop\Wechat\Wechat.Protocol\bin\Release\System.Xml.XPath.XDocument.dll
 C:\Users\LTL\Desktop\Wechat\Wechat.Protocol\bin\Release\zxing.pdb
 C:\Users\LTL\Desktop\Wechat\Wechat.Protocol\bin\Release\zxing.presentation.pdb
+C:\Users\LTL\Desktop\Wechat\Wechat.Protocol\bin\Release\log4net.dll

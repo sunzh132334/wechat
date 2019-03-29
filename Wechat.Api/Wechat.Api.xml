@@ -21,6 +21,33 @@
             <param name="bigImage"></param>
             <returns></returns>
         </member>
+        <member name="M:Wechat.Api.Controllers.CommonController.GetBigImage(System.Int32,System.String,System.String,System.Int64)">
+            <summary>
+            获取大图片
+            </summary>
+            <param name="MsgId"></param>
+            <param name="WxId"></param>
+            <param name="ToWxId"></param>
+            <param name="LongDataLength"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.CommonController.GetBigVideo(Wechat.Api.Request.Common.BigVideo)">
+            <summary>
+            获取视频
+            </summary>
+            <param name="bigVideo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Controllers.CommonController.GetBigVideo(System.Int32,System.String,System.String,System.Int64)">
+            <summary>
+            获取视频
+            </summary>
+            <param name="MsgId"></param>
+            <param name="WxId"></param>
+            <param name="ToWxId"></param>
+            <param name="LongDataLength"></param>
+            <returns></returns>
+        </member>
         <member name="M:Wechat.Api.Controllers.CommonController.GetSharkItOff(Wechat.Api.Request.Common.SharkItOff)">
             <summary>
             摇一摇
@@ -282,6 +309,13 @@
             <param name="addLabel"></param>
             <returns></returns>
         </member>
+        <member name="M:Wechat.Api.Controllers.LabelController.BatchUpdateLabelName(Wechat.Api.Request.Label.BatchUpdateLabel)">
+            <summary>
+            批量修改标签
+            </summary>
+            <param name="batchUpdateLabel"></param>
+            <returns></returns>
+        </member>
         <member name="M:Wechat.Api.Controllers.LabelController.UpdateLabelName(Wechat.Api.Request.Label.UpdateLabel)">
             <summary>
             修改标签
@@ -356,19 +390,19 @@
             <param name="txtMessage"></param>
             <returns></returns>
         </member>
-        <member name="M:Wechat.Api.Controllers.MessageController.SendVoiceMessage">
+        <member name="M:Wechat.Api.Controllers.MessageController.SendVoiceMessage(Wechat.Api.Request.Message.VoiceMessage)">
             <summary>
             发送声音消息
             </summary> 
             <returns></returns>
         </member>
-        <member name="M:Wechat.Api.Controllers.MessageController.SendImageMessage">
+        <member name="M:Wechat.Api.Controllers.MessageController.SendImageMessage(Wechat.Api.Request.Message.ImageMessage)">
             <summary>
             发送图片消息
             </summary> 
             <returns></returns>
         </member>
-        <member name="M:Wechat.Api.Controllers.MessageController.SendVideoMessage">
+        <member name="M:Wechat.Api.Controllers.MessageController.SendVideoMessage(Wechat.Api.Request.Message.VideoMessage)">
             <summary>
             发送视频消息
             </summary>       
@@ -452,6 +486,91 @@
         <member name="M:Wechat.Api.WebApiApplication.Application_Start">
             <summary>
             
+            </summary>
+        </member>
+        <member name="T:Wechat.Api.Helper.FileStorageHelper">
+            <summary>
+            文件存储
+            </summary>
+        </member>
+        <member name="M:Wechat.Api.Helper.FileStorageHelper.GetObjectName(System.String)">
+            <summary>
+            获取objectName
+            </summary>
+            <param name="MchId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Helper.FileStorageHelper.CreateOssClient">
+            <summary>
+            创建对象
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Helper.FileStorageHelper.DownloadToBuffer(System.String)">
+            <summary>
+            下载
+            </summary>
+            <param name="objectName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Helper.FileStorageHelper.DownloadToStream(System.String)">
+            <summary>
+            下载
+            </summary>
+            <param name="objectName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Helper.FileStorageHelper.DownloadToBufferAsync(System.String)">
+            <summary>
+            异步下载
+            </summary> 
+            <param name="objectName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Wechat.Api.Helper.FileStorageHelper.Upload(System.String,System.IO.Stream,System.String)">
+            <summary>
+            上传
+            </summary>
+            <param name="fileName"></param>
+            <param name="sm"></param>
+            <param name="objectName"></param>
+        </member>
+        <member name="M:Wechat.Api.Helper.FileStorageHelper.Upload(System.String,System.Byte[],System.String)">
+            <summary>
+            上传
+            </summary>
+            <param name="fileName"></param>
+            <param name="buffer"></param>
+            <param name="objectName"></param>
+        </member>
+        <member name="T:Wechat.Api.Request.Common.BigVideo">
+            <summary>
+            视频
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Common.BigVideo.ToWxId">
+            <summary>
+            接收的微信Id
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Common.BigVideo.MsgId">
+            <summary>
+            消息Id
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Common.BigVideo.StartPos">
+            <summary>
+            开始位置
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Common.BigVideo.DataLength">
+            <summary>
+            大小
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Common.BigVideo.LongDataLength">
+            <summary>
+            消息长度
             </summary>
         </member>
         <member name="T:Wechat.Api.Request.Common.BindEmail">
@@ -900,6 +1019,21 @@
             标签名称
             </summary>
         </member>
+        <member name="T:Wechat.Api.Request.Label.BatchUpdateLabel">
+            <summary>
+            批量添加
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Label.BatchUpdateLabel.ToWxIds">
+            <summary>
+            配置的微信Id
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Label.BatchUpdateLabel.LabelIDList">
+            <summary>
+            标签Id列表
+            </summary>
+        </member>
         <member name="T:Wechat.Api.Request.Label.DeleteLabel">
             <summary>
             删除标签
@@ -930,7 +1064,7 @@
             App消息
             </summary>
         </member>
-        <member name="P:Wechat.Api.Request.Message.AppMessage.ToWxId">
+        <member name="P:Wechat.Api.Request.Message.AppMessage.ToWxIds">
             <summary>
             接收的微信ID
             </summary>
@@ -975,7 +1109,7 @@
             名片消息
             </summary>
         </member>
-        <member name="P:Wechat.Api.Request.Message.CardMessage.ToWxId">
+        <member name="P:Wechat.Api.Request.Message.CardMessage.ToWxIds">
             <summary>
             接收的微信ID
             </summary>
@@ -1000,9 +1134,14 @@
             图片消息
             </summary>
         </member>
-        <member name="P:Wechat.Api.Request.Message.ImageMessage.ToWxId">
+        <member name="P:Wechat.Api.Request.Message.ImageMessage.ToWxIds">
             <summary>
             接收的微信ID
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Message.ImageMessage.ObjectName">
+            <summary>
+            oss ObjectName
             </summary>
         </member>
         <member name="T:Wechat.Api.Request.Message.LocationMessage">
@@ -1010,7 +1149,7 @@
             地址位置信息
             </summary>
         </member>
-        <member name="P:Wechat.Api.Request.Message.LocationMessage.ToWxId">
+        <member name="P:Wechat.Api.Request.Message.LocationMessage.ToWxIds">
             <summary>
             接收的微信ID
             </summary>
@@ -1035,7 +1174,7 @@
             分享消息
             </summary>
         </member>
-        <member name="P:Wechat.Api.Request.Message.ShareMessage.ToWxId">
+        <member name="P:Wechat.Api.Request.Message.ShareMessage.ToWxIds">
             <summary>
             接收的微信ID
             </summary>
@@ -1075,7 +1214,7 @@
             文本消息
             </summary>
         </member>
-        <member name="P:Wechat.Api.Request.Message.TxtMessage.ToWxId">
+        <member name="P:Wechat.Api.Request.Message.TxtMessage.ToWxIds">
             <summary>
             发送的微信ID
             </summary>
@@ -1090,9 +1229,14 @@
             视频消息
             </summary>
         </member>
-        <member name="P:Wechat.Api.Request.Message.VideoMessage.ToWxId">
+        <member name="P:Wechat.Api.Request.Message.VideoMessage.ToWxIds">
             <summary>
             发送的微信ID
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Message.VideoMessage.ObjectName">
+            <summary>
+            oss ObjectName
             </summary>
         </member>
         <member name="T:Wechat.Api.Request.Message.VoiceMessage">
@@ -1100,9 +1244,24 @@
             声音消息
             </summary>
         </member>
-        <member name="P:Wechat.Api.Request.Message.VoiceMessage.ToWxId">
+        <member name="P:Wechat.Api.Request.Message.VoiceMessage.ToWxIds">
             <summary>
             发送的微信ID
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Message.VoiceMessage.VoiceSecond">
+            <summary>
+            声音秒数
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Message.VoiceMessage.ObjectName">
+            <summary>
+            oss ObjectName
+            </summary>
+        </member>
+        <member name="P:Wechat.Api.Request.Message.VoiceMessage.FileName">
+            <summary>
+            文件名
             </summary>
         </member>
         <member name="T:Wechat.Api.Request.Pay.ConfirmTransfer">

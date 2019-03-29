@@ -116,3 +116,5 @@ C:\Users\LTL\Desktop\Wechat\Wechat.Util\bin\Debug\zxing.dll
 C:\Users\LTL\Desktop\Wechat\Wechat.Util\bin\Debug\zxing.pdb
 C:\Users\LTL\Desktop\Wechat\Wechat.Util\bin\Debug\zxing.presentation.dll
 C:\Users\LTL\Desktop\Wechat\Wechat.Util\bin\Debug\zxing.presentation.pdb
+C:\Users\LTL\Desktop\Wechat\Wechat.Util\obj\Debug\Wechat.Util.csprojAssemblyReference.cache
+C:\Users\LTL\Desktop\Wechat\Wechat.Util\bin\Debug\log4net.dll

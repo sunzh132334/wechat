@@ -117,3 +117,4 @@ C:\Users\LTL\Desktop\Wechat\Wechat.Util\bin\Release\zxing.dll
 C:\Users\LTL\Desktop\Wechat\Wechat.Util\bin\Release\zxing.pdb
 C:\Users\LTL\Desktop\Wechat\Wechat.Util\bin\Release\zxing.presentation.dll
 C:\Users\LTL\Desktop\Wechat\Wechat.Util\bin\Release\zxing.presentation.pdb
+C:\Users\LTL\Desktop\Wechat\Wechat.Util\bin\Release\log4net.dll

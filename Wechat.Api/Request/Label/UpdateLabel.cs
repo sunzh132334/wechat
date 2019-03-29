@@ -19,7 +19,7 @@ namespace Wechat.Api.Request.Label
         /// <summary>
         /// 标签Id列表
         /// </summary>
-        [Required]
+        //[Required]
         public string LabelIDList { get; set; }
 
     

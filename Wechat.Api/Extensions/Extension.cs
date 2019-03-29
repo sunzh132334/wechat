@@ -25,6 +25,12 @@ namespace Wechat.Api.Extensions
             return Task.FromResult(HttpResponseMessageHelper.GetImageOk(response));
         }
 
+
+        public static Task<HttpResponseMessage> ToHttpVideoResponseAsync(this byte[] response)
+        {
+            return Task.FromResult(HttpResponseMessageHelper.GetVideoOk(response));
+        }
+
         public static Task<HttpResponseMessage> ToHttpImageResponseAsync(this Image image)
         {
             return Task.FromResult(HttpResponseMessageHelper.GetImageOk(image.ImageToByteArray()));

@@ -15,7 +15,7 @@ namespace Wechat.Api.Request.Message
         /// 接收的微信ID
         /// </summary>
         [Required]
-        public string ToWxId { get; set; }
+        public IList<string> ToWxIds { get; set; }
 
         /// <summary>
         /// 发送的微信Id

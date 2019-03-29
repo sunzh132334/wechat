@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Wechat.Api.Abstracts;
 using Wechat.Api.Extensions;
+using Wechat.Api.Helper;
 using Wechat.Api.Request.Common;
 using Wechat.Protocol;
+using Wechat.Util;
 using Wechat.Util.Exceptions;
 namespace Wechat.Api.Controllers
 {
@@ -24,13 +27,56 @@ namespace Wechat.Api.Controllers
         [Route("api/Common/GetBigImage")]
         public Task<HttpResponseMessage> GetBigImage(BigImage bigImage)
         {
+            ResponseBase<string> response = new ResponseBase<string>();
+            try
+            {
+                UploadFileObj uploadFileObj = new UploadFileObj()
+                {
+                    MsgId = bigImage.MsgId,
+                    MsgType = 3,
+                    WxId = bigImage.WxId,
+                    ToWxId = bigImage.ToWxId,
+                    LongDataLength = bigImage.LongDataLength,
+
+                };
+                string objName = QueueHelper<UploadFileObj>.Work(uploadFileObj);
+                response.Data = objName;
+
+            }
+            catch (ExpiredException ex)
+            {
+                response.Success = false;
+                response.Code = "401";
+                response.Message = ex.Message;
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Code = "500";
+                response.Message = ex.Message;
+            }
+            return response.ToHttpResponseAsync();
+        }
+
+        /// <summary>
+        /// 获取大图片
+        /// </summary>
+        /// <param name="MsgId"></param>
+        /// <param name="WxId"></param>
+        /// <param name="ToWxId"></param>
+        /// <param name="LongDataLength"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("api/Common/GetBigImage/{MsgId}/{WxId}/{ToWxId}/{LongDataLength}")]
+        public Task<HttpResponseMessage> GetBigImage(int MsgId, string WxId, string ToWxId, long LongDataLength)
+        {
             ResponseBase response = new ResponseBase();
             try
             {
-                var buffer = wechat.GetMsgBigImg(bigImage.LongDataLength, bigImage.MsgId, bigImage.WxId, bigImage.ToWxId, 0);
-                if (buffer == null)
+                var buffer = wechat.GetMsgBigImg(LongDataLength, MsgId, WxId, ToWxId, 0, (int)LongDataLength, 1);
+                if (buffer != null)
                 {
-                    buffer.ToHttpImageResponseAsync();
+                    return buffer.ToHttpImageResponseAsync();
                 }
                 else
                 {
@@ -54,7 +100,89 @@ namespace Wechat.Api.Controllers
             }
             return response.ToHttpResponseAsync();
         }
+        /// <summary>
+        /// 获取视频
+        /// </summary>
+        /// <param name="bigVideo"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("api/Common/GetBigVideo")]
+        public Task<HttpResponseMessage> GetBigVideo(BigVideo bigVideo)
+        {
+            ResponseBase<string> response = new ResponseBase<string>();
+            try
+            {
+                UploadFileObj uploadFileObj = new UploadFileObj()
+                {
+                    MsgId = bigVideo.MsgId,
+                    MsgType = 43,
+                    WxId = bigVideo.WxId,
+                    ToWxId = bigVideo.ToWxId,
+                    LongDataLength = bigVideo.LongDataLength,
 
+                };
+                string objName = QueueHelper<UploadFileObj>.Work(uploadFileObj);
+                response.Data = objName;
+
+            }
+            catch (ExpiredException ex)
+            {
+                response.Success = false;
+                response.Code = "401";
+                response.Message = ex.Message;
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Code = "500";
+                response.Message = ex.Message;
+            }
+            return response.ToHttpResponseAsync();
+        }
+
+        /// <summary>
+        /// 获取视频
+        /// </summary>
+        /// <param name="MsgId"></param>
+        /// <param name="WxId"></param>
+        /// <param name="ToWxId"></param>
+        /// <param name="LongDataLength"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("api/Common/GetBigVideo/{MsgId}/{WxId}/{ToWxId}/{LongDataLength}")]
+        public Task<HttpResponseMessage> GetBigVideo(int MsgId, string WxId, string ToWxId, long LongDataLength)
+        {
+            ResponseBase<byte[]> response = new ResponseBase<byte[]>();
+            try
+            {
+                var buffer = wechat.GetVideo(WxId, ToWxId, MsgId, LongDataLength, (int)LongDataLength, 0, 0);
+                if (buffer != null)
+                {
+                    return buffer.ToHttpVideoResponseAsync();
+                }
+                else
+                {
+                    response.Success = false;
+                    response.Code = "402";
+                    response.Message = "视频未找到";
+                }
+
+
+            }
+            catch (ExpiredException ex)
+            {
+                response.Success = false;
+                response.Code = "401";
+                response.Message = ex.Message;
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Code = "500";
+                response.Message = ex.Message;
+            }
+            return response.ToHttpResponseAsync();
+        }
         /// <summary>
         /// 摇一摇
         /// </summary>

@@ -17,7 +17,7 @@ namespace Wechat.Util.Cache
         /// </summary>
         /// <param name="key">缓存键</param>
         /// <returns>缓存值</returns>
-        object Get(string key);
+        string Get(string key);
         /// <summary>
         /// 获得指定键的缓存值
         /// </summary>

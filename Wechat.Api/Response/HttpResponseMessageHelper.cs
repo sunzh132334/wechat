@@ -78,6 +78,14 @@ namespace Wechat.Api.Response
             return response;
         }
 
+        public static HttpResponseMessage GetVideoOk(byte[] content)
+        {
+            var response = CreateHttpResponseMessage(HttpStatusCode.OK);
+            response.Content = new ByteArrayContent(content);
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("audio/mp4");
+            return response;
+        }
+
         public static HttpResponseMessage GetImageOk(Stream content)
         {
             var response = CreateHttpResponseMessage(HttpStatusCode.OK);

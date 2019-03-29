@@ -16,12 +16,13 @@ namespace Wechat.Api.Request.Message
         /// 接收的微信ID
         /// </summary>
         [Required]
-        public string ToWxId { get; set; }
+        public IList<string> ToWxIds { get; set; }
 
-        ///// <summary>
-        ///// 声音文件
-        ///// </summary>
-        //[Required]
-        //public FileInfo File { get; set; }
+
+        /// <summary>
+        /// oss ObjectName
+        /// </summary>
+        [Required]
+        public string ObjectName { get; set; }
     }
 }

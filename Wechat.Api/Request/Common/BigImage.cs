@@ -22,7 +22,17 @@ namespace Wechat.Api.Request.Common
         /// </summary>
         [Required]
         public int MsgId { get; set; }
+        ///// <summary>
+        ///// 开始位置
+        ///// </summary>
+        //[Required]
+        //public int StartPos { get; set; }
 
+        ///// <summary>
+        ///// 大小
+        ///// </summary>
+        //[Required]
+        //public int DataLength { get; set; }
         /// <summary>
         /// 消息长度
         /// </summary>

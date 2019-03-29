@@ -35,7 +35,7 @@ namespace Wechat.Api.Controllers
                 var result = wechat.GetContactLabelList(wxId);
                 if (result == null || result.baseResponse.ret != (int)MMPro.MM.RetConst.MM_OK)
                 {
-                     response.Success = false;
+                    response.Success = false;
                     response.Code = "501";
                     response.Message = result.baseResponse.errMsg.@string ?? "获取失败";
                 }
@@ -46,13 +46,13 @@ namespace Wechat.Api.Controllers
             }
             catch (ExpiredException ex)
             {
-                 response.Success = false;
+                response.Success = false;
                 response.Code = "401";
                 response.Message = ex.Message;
             }
             catch (Exception ex)
             {
-                 response.Success = false;
+                response.Success = false;
                 response.Code = "500";
                 response.Message = ex.Message;
             }
@@ -74,7 +74,7 @@ namespace Wechat.Api.Controllers
                 var result = wechat.AddContactLabel(addLabel.WxId, addLabel.LabelName);
                 if (result == null || result.BaseResponse.Ret != (int)MMPro.MM.RetConst.MM_OK)
                 {
-                     response.Success = false;
+                    response.Success = false;
                     response.Code = "501";
                     response.Message = result.BaseResponse.ErrMsg.String ?? "添加失败";
                 }
@@ -86,13 +86,62 @@ namespace Wechat.Api.Controllers
             }
             catch (ExpiredException ex)
             {
-                 response.Success = false;
+                response.Success = false;
                 response.Code = "401";
                 response.Message = ex.Message;
             }
             catch (Exception ex)
             {
-                 response.Success = false;
+                response.Success = false;
+                response.Code = "500";
+                response.Message = ex.Message;
+            }
+            return response.ToHttpResponseAsync();
+        }
+
+
+        /// <summary>
+        /// 批量修改标签
+        /// </summary>
+        /// <param name="batchUpdateLabel"></param>
+        /// <returns></returns>
+        [HttpPost()]
+        [Route("api/Label/BatchUpdateLabelName")]
+        public Task<HttpResponseMessage> BatchUpdateLabelName(BatchUpdateLabel batchUpdateLabel)
+        {
+            ResponseBase response = new ResponseBase();
+            try
+            {
+                micromsg.UserLabelInfo[] userLabels = new micromsg.UserLabelInfo[batchUpdateLabel.ToWxIds.Count];
+                for (int i = 0; i < batchUpdateLabel.ToWxIds.Count; i++)
+                {           
+                    userLabels[i] = new micromsg.UserLabelInfo();
+                    userLabels[i].LabelIDList = batchUpdateLabel.LabelIDList;
+                    userLabels[i].UserName = batchUpdateLabel.ToWxIds[i];
+               
+                }
+                var result = wechat.ModifyContactLabelList(batchUpdateLabel.WxId, userLabels);
+                if (result == null || result.BaseResponse.Ret != (int)MMPro.MM.RetConst.MM_OK)
+                {
+                    response.Success = false;
+                    response.Code = "501";
+                    response.Message = result.BaseResponse.ErrMsg.String ?? "修改失败";
+                }
+                else
+                {
+
+                    response.Message = "修改成功";
+                }
+            }
+            catch (ExpiredException ex)
+            {
+                response.Success = false;
+                response.Code = "401";
+                response.Message = ex.Message;
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
                 response.Code = "500";
                 response.Message = ex.Message;
             }
@@ -105,8 +154,6 @@ namespace Wechat.Api.Controllers
         /// </summary>
         /// <param name="updateLabel"></param>
         /// <returns></returns>
-        [HttpPost()]
-        [Route("api/Label/UpdateLabelName")]
         public Task<HttpResponseMessage> UpdateLabelName(UpdateLabel updateLabel)
         {
             ResponseBase response = new ResponseBase();
@@ -119,7 +166,7 @@ namespace Wechat.Api.Controllers
                 var result = wechat.ModifyContactLabelList(updateLabel.WxId, userLabels);
                 if (result == null || result.BaseResponse.Ret != (int)MMPro.MM.RetConst.MM_OK)
                 {
-                     response.Success = false;
+                    response.Success = false;
                     response.Code = "501";
                     response.Message = result.BaseResponse.ErrMsg.String ?? "修改失败";
                 }
@@ -131,19 +178,18 @@ namespace Wechat.Api.Controllers
             }
             catch (ExpiredException ex)
             {
-                 response.Success = false;
+                response.Success = false;
                 response.Code = "401";
                 response.Message = ex.Message;
             }
             catch (Exception ex)
             {
-                 response.Success = false;
+                response.Success = false;
                 response.Code = "500";
                 response.Message = ex.Message;
             }
             return response.ToHttpResponseAsync();
         }
-
 
         /// <summary>
         /// 删除标签
@@ -156,11 +202,11 @@ namespace Wechat.Api.Controllers
         {
             ResponseBase response = new ResponseBase();
             try
-            {   
+            {
                 var result = wechat.DelContactLabel(deleteLabel.WxId, deleteLabel.LabelIDList);
                 if (result == null || result.BaseResponse.Ret != (int)MMPro.MM.RetConst.MM_OK)
                 {
-                     response.Success = false;
+                    response.Success = false;
                     response.Code = "501";
                     response.Message = result.BaseResponse.ErrMsg.String ?? "删除失败";
                 }
@@ -171,13 +217,13 @@ namespace Wechat.Api.Controllers
             }
             catch (ExpiredException ex)
             {
-                 response.Success = false;
+                response.Success = false;
                 response.Code = "401";
                 response.Message = ex.Message;
             }
             catch (Exception ex)
             {
-                 response.Success = false;
+                response.Success = false;
                 response.Code = "500";
                 response.Message = ex.Message;
             }

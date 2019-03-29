@@ -29,7 +29,7 @@ namespace Wechat.Api.Filters
             }
             else
             {
-                var customerInfoCache = CacheHelper.CreateInstance().Get<CustomerInfoCache>(ConstCacheKey.GetWxIdKey(requestBase.WxId));
+                var customerInfoCache = RedisCache.CreateInstance().Get<CustomerInfoCache>(ConstCacheKey.GetWxIdKey(requestBase.WxId));
                 if (customerInfoCache == null)
                 {
                     ResponseBase response = new ResponseBase()

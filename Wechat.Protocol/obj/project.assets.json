@@ -2,6 +2,15 @@
   "version": 3,
   "targets": {
     ".NETFramework,Version=v4.6.1": {
+      "log4net/2.0.8": {
+        "type": "package",
+        "compile": {
+          "lib/net45-full/log4net.dll": {}
+        },
+        "runtime": {
+          "lib/net45-full/log4net.dll": {}
+        }
+      },
       "Newtonsoft.Json/12.0.1": {
         "type": "package",
         "compile": {
@@ -166,7 +175,8 @@
         "dependencies": {
           "Newtonsoft.Json": "12.0.1",
           "StackExchange.Redis": "2.0.519",
-          "ZXing.Net": "0.16.4"
+          "ZXing.Net": "0.16.4",
+          "log4net": "2.0.8"
         },
         "compile": {
           "bin/placeholder/Wechat.Util.dll": {}
@@ -177,6 +187,15 @@
       }
     },
     ".NETFramework,Version=v4.6.1/win": {
+      "log4net/2.0.8": {
+        "type": "package",
+        "compile": {
+          "lib/net45-full/log4net.dll": {}
+        },
+        "runtime": {
+          "lib/net45-full/log4net.dll": {}
+        }
+      },
       "Newtonsoft.Json/12.0.1": {
         "type": "package",
         "compile": {
@@ -341,7 +360,8 @@
         "dependencies": {
           "Newtonsoft.Json": "12.0.1",
           "StackExchange.Redis": "2.0.519",
-          "ZXing.Net": "0.16.4"
+          "ZXing.Net": "0.16.4",
+          "log4net": "2.0.8"
         },
         "compile": {
           "bin/placeholder/Wechat.Util.dll": {}
@@ -352,6 +372,15 @@
       }
     },
     ".NETFramework,Version=v4.6.1/win-x64": {
+      "log4net/2.0.8": {
+        "type": "package",
+        "compile": {
+          "lib/net45-full/log4net.dll": {}
+        },
+        "runtime": {
+          "lib/net45-full/log4net.dll": {}
+        }
+      },
       "Newtonsoft.Json/12.0.1": {
         "type": "package",
         "compile": {
@@ -516,7 +545,8 @@
         "dependencies": {
           "Newtonsoft.Json": "12.0.1",
           "StackExchange.Redis": "2.0.519",
-          "ZXing.Net": "0.16.4"
+          "ZXing.Net": "0.16.4",
+          "log4net": "2.0.8"
         },
         "compile": {
           "bin/placeholder/Wechat.Util.dll": {}
@@ -527,6 +557,15 @@
       }
     },
     ".NETFramework,Version=v4.6.1/win-x86": {
+      "log4net/2.0.8": {
+        "type": "package",
+        "compile": {
+          "lib/net45-full/log4net.dll": {}
+        },
+        "runtime": {
+          "lib/net45-full/log4net.dll": {}
+        }
+      },
       "Newtonsoft.Json/12.0.1": {
         "type": "package",
         "compile": {
@@ -691,7 +730,8 @@
         "dependencies": {
           "Newtonsoft.Json": "12.0.1",
           "StackExchange.Redis": "2.0.519",
-          "ZXing.Net": "0.16.4"
+          "ZXing.Net": "0.16.4",
+          "log4net": "2.0.8"
         },
         "compile": {
           "bin/placeholder/Wechat.Util.dll": {}
@@ -703,6 +743,30 @@
     }
   },
   "libraries": {
+    "log4net/2.0.8": {
+      "sha512": "N41MQGHZImiCfn0cUuSBjZxrcNfIQCuCgQP0rpgB3J/NWponEh3lc1LxJEuIsPAR9Oc1jVvfkNNFCY1C5hf9LA==",
+      "type": "package",
+      "path": "log4net/2.0.8",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net20-full/log4net.dll",
+        "lib/net20-full/log4net.xml",
+        "lib/net35-client/log4net.dll",
+        "lib/net35-client/log4net.xml",
+        "lib/net35-full/log4net.dll",
+        "lib/net35-full/log4net.xml",
+        "lib/net40-client/log4net.dll",
+        "lib/net40-client/log4net.xml",
+        "lib/net40-full/log4net.dll",
+        "lib/net40-full/log4net.xml",
+        "lib/net45-full/log4net.dll",
+        "lib/net45-full/log4net.xml",
+        "lib/netstandard1.3/log4net.dll",
+        "log4net.2.0.8.nupkg.sha512",
+        "log4net.nuspec"
+      ]
+    },
     "Newtonsoft.Json/12.0.1": {
       "sha512": "pBR3wCgYWZGiaZDYP+HHYnalVnPJlpP1q55qvVb+adrDHmFMDc1NAKio61xTwftK3Pw5h7TZJPJEEVMd6ty8rg==",
       "type": "package",
@@ -1176,6 +1240,7 @@
         "net461"
       ],
       "sources": {
+        "http://localhost:81/nuget": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

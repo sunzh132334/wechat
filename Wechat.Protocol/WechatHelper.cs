@@ -14,6 +14,8 @@ using Wechat.Util.Exceptions;
 using Wechat.Util.Extensions;
 using System.Threading.Tasks;
 using MMPro;
+using Wechat.Util;
+using System.Xml;
 
 namespace Wechat.Protocol
 {
@@ -36,14 +38,14 @@ namespace Wechat.Protocol
         /// <summary>
         /// 系统类型
         /// </summary>
-        private string osType = "iMac MacBookPro9,1";
+        private string osType = "iMac MacBookPro9,1 OSX OSX 10.11.2 build(15C50)";
         //private string osType = "Windows 10";
         private string phoneOsType = "iPad iPhone OS9.3.3";
         public WechatHelper()
         {
             //version = 369658059;
             //phoneOsType = "iPad iPhone OS9.3.3";
-            //osType = "iMac MacBookPro9,1 OSX OSX 10.11.2 build(15C50)";
+            //osType = "iPad iPhone OS9.3.3";
 
         }
 
@@ -72,6 +74,7 @@ namespace Wechat.Protocol
         /// <returns></returns>
         public GetLoginQRCodeResponse GetLoginQRcode()
         {
+
             var aesKey = GetAeskey();
             var deviceId = GetDeviceId();
             int mUid = 0;
@@ -121,7 +124,7 @@ namespace Wechat.Protocol
                         DeviceId = deviceId,
                         Cookie = cookie,
                     };
-                    CacheHelper.CreateInstance().Add(key, customerInfoCache, 600);
+                    RedisCache.CreateInstance().Add(key, customerInfoCache, 600);
 
                 }
             }
@@ -141,7 +144,7 @@ namespace Wechat.Protocol
         public CustomerInfoCache CheckLoginQRCode(string uuid, int count = 1)
         {
             string key = ConstCacheKey.GetUuidKey(uuid);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -224,7 +227,7 @@ namespace Wechat.Protocol
                         //发送登录包
                         checkManualAuth(customerInfoCache, count);
                         //cache.RemoveKeyCache(key);
-                        cache.Add(ConstCacheKey.GetWxIdKey(customerInfoCache.WxId), customerInfoCache, DateTime.Now.AddYears(1), TimeSpan.Zero);
+                        cache.Add(ConstCacheKey.GetWxIdKey(customerInfoCache.WxId), customerInfoCache, DateTime.Now.AddYears(1));
 
                     }
                 }
@@ -244,7 +247,7 @@ namespace Wechat.Protocol
         {
             InitResponse list = new InitResponse();
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -277,6 +280,28 @@ namespace Wechat.Protocol
                             break;
                         case SyncCmdID.CmdIdAddMsg:
                             var addMsg = Util.Deserialize<micromsg.AddMsg>(r.CmdBuf.Buffer.ToByteArray());
+                            if (addMsg.MsgType == 3 || addMsg.MsgType == 34 || addMsg.MsgType == 43)
+                            {
+                                try
+                                {
+                                    UploadFileObj uploadFileObj = new UploadFileObj()
+                                    {
+                                        MsgId = addMsg.MsgId,
+                                        WxId = addMsg.FromUserName.String,
+                                        ToWxId = addMsg.ToUserName.String,
+                                        MsgType = addMsg.MsgType,
+                                        Buffer = addMsg.ImgBuf.Buffer,
+
+                                    };
+                                    XmlDocument xml = new XmlDocument();
+                                    xml.LoadXml(addMsg.Content.String);
+                                    var length = xml.SelectSingleNode("/msg")?.SelectSingleNode("videomsg")?.Attributes["length"];
+                                    uploadFileObj.LongDataLength = length == null ? 0 : Convert.ToInt64(length.Value);
+                                    QueueHelper<UploadFileObj>.EnqueueTask(uploadFileObj);
+                                }
+                                catch { }
+                            }
+
                             list.AddMsgs.Add(addMsg);
                             break;
                         case SyncCmdID.CmdIdModMsgStatus:
@@ -492,7 +517,7 @@ namespace Wechat.Protocol
         {
             InitResponse list = new InitResponse();
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -535,6 +560,42 @@ namespace Wechat.Protocol
                             break;
                         case SyncCmdID.CmdIdAddMsg:
                             var addMsg = Util.Deserialize<micromsg.AddMsg>(r.cmdBuf.data);
+                            if (addMsg.MsgType == 3 || addMsg.MsgType == 34 || addMsg.MsgType == 43)
+                            {
+                                try
+                                {
+                                    UploadFileObj uploadFileObj = new UploadFileObj()
+                                    {
+                                        MsgId = addMsg.MsgId,
+                                        WxId = addMsg.FromUserName.String,
+                                        ToWxId = addMsg.ToUserName.String,
+                                        MsgType = addMsg.MsgType,
+                                        Buffer = addMsg.ImgBuf.Buffer,
+
+                                    };
+                                    XmlDocument xml = new XmlDocument();
+                                    xml.LoadXml(addMsg.Content.String);
+                                    XmlAttribute length = null;
+                                    if (addMsg.MsgType == 3)
+                                    {
+                                        length = xml.SelectSingleNode("/msg")?.SelectSingleNode("img")?.Attributes["hdlength"];
+                                       
+                                    }
+                                    else if (addMsg.MsgType == 34)
+                                    {
+                                        length = xml.SelectSingleNode("/msg")?.SelectSingleNode("voicemsg")?.Attributes["voicelength"];
+                                    }
+                                    else if (addMsg.MsgType == 43)
+                                    {
+                                        length = xml.SelectSingleNode("/msg")?.SelectSingleNode("videomsg")?.Attributes["length"];
+                                    }
+
+                                    uploadFileObj.LongDataLength = length == null ? 0 : Convert.ToInt64(length.Value);
+                                    QueueHelper<UploadFileObj>.EnqueueTask(uploadFileObj);
+                                }
+                                catch { }
+                            }
+
                             list.AddMsgs.Add(addMsg);
                             break;
                         case SyncCmdID.CmdIdModMsgStatus:
@@ -807,7 +868,7 @@ namespace Wechat.Protocol
         public micromsg.NewSetPasswdResponse NewSetPasswd(string wxId, string NewPasswd, string ticket)
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -893,7 +954,7 @@ namespace Wechat.Protocol
         public CreateChatRoomResponese CreateChatRoom(string wxId, MemberReq[] list, string topic = "")
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -959,7 +1020,7 @@ namespace Wechat.Protocol
         public AddChatRoomMemberResponse AddChatRoomMember(string wxId, string chatRoomName, MemberReq[] list)
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -1026,7 +1087,7 @@ namespace Wechat.Protocol
         public DelChatRoomMemberResponse DelChatRoomMember(string wxId, string chatRoomName, DelMemberReq[] list)
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -1076,7 +1137,7 @@ namespace Wechat.Protocol
             {
                 throw new ExpiredException("用户可能退出,请重新登陆");
             }
-          
+
             var DelChatRoomMemberResponse_ = Util.Deserialize<DelChatRoomMemberResponse>(RespProtobuf);
             return DelChatRoomMemberResponse_;
 
@@ -1091,7 +1152,7 @@ namespace Wechat.Protocol
         public GetChatroomMemberDetailResponse GetChatroomMemberDetail(string wxId, string chatroomUserName)
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -1139,7 +1200,7 @@ namespace Wechat.Protocol
             {
                 throw new ExpiredException("用户可能退出,请重新登陆");
             }
- 
+
             var GetChatroomMemberDetailResponse_ = Util.Deserialize<GetChatroomMemberDetailResponse>(RespProtobuf);
             return GetChatroomMemberDetailResponse_;
         }
@@ -1153,7 +1214,7 @@ namespace Wechat.Protocol
         public micromsg.QuitChatRoomResp QuitGroup(string wxId, string chatroomUserName)
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -1213,7 +1274,7 @@ namespace Wechat.Protocol
         public micromsg.SetChatRoomAnnouncementResponse setChatRoomAnnouncement(string wxId, string ChatRoomName, string Announcement)
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -1264,7 +1325,7 @@ namespace Wechat.Protocol
             {
                 throw new ExpiredException("用户可能退出,请重新登陆");
             }
- 
+
             var SetChatRoomAnnouncementResponse_ = Util.Deserialize<micromsg.SetChatRoomAnnouncementResponse>(RespProtobuf);
             return SetChatRoomAnnouncementResponse_;
         }
@@ -1277,7 +1338,7 @@ namespace Wechat.Protocol
         public micromsg.LogOutResponse logOut(string wxId)
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -1328,7 +1389,7 @@ namespace Wechat.Protocol
             {
                 throw new ExpiredException("用户可能退出,请重新登陆");
             }
-            
+
             var LogOutResponse_ = Util.Deserialize<micromsg.LogOutResponse>(RespProtobuf);
             return LogOutResponse_;
         }
@@ -1341,7 +1402,7 @@ namespace Wechat.Protocol
         public InitContactResponse InitContact(string wxId, int currentWxcontactSeq = 0)
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -1386,6 +1447,8 @@ namespace Wechat.Protocol
             return InitContactResponse_;
         }
 
+
+
         /// <summary>
         /// 获取用户详情
         /// </summary>
@@ -1395,7 +1458,7 @@ namespace Wechat.Protocol
         public micromsg.GetContactResponse GetContactDetail(string wxId, string searchWxId, string ChatRoom = "")
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -1475,7 +1538,7 @@ namespace Wechat.Protocol
         public LbsResponse LbsLBSFind(string wxId, float latitude, float logitude, int type = 1)
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -1546,7 +1609,7 @@ namespace Wechat.Protocol
         public SearchContactResponse SearchContact(string wxId, string userName)
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -1616,7 +1679,7 @@ namespace Wechat.Protocol
         public micromsg.GetA8KeyResp GetA8Key(string wxId, string url, int opcode = 2)
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -1688,7 +1751,7 @@ namespace Wechat.Protocol
         public micromsg.AddContactLabelResponse AddContactLabel(string wxId, string LabelName)
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -1761,7 +1824,7 @@ namespace Wechat.Protocol
         public micromsg.ModifyContactLabelListResponse ModifyContactLabelList(string wxId, micromsg.UserLabelInfo[] UserLabelInfo)
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -1831,7 +1894,7 @@ namespace Wechat.Protocol
         public micromsg.DelContactLabelResponse DelContactLabel(string wxId, string LabelIDList_)
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -1897,7 +1960,7 @@ namespace Wechat.Protocol
         public GetContactLabelListResponse GetContactLabelList(string wxId)
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -1959,7 +2022,7 @@ namespace Wechat.Protocol
         public micromsg.BindEmailResponse BindEmail(string wxId, string Email, int opcode = 1)
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -2024,7 +2087,7 @@ namespace Wechat.Protocol
         public micromsg.ShakeGetResponse ShakeReport(string wxId, float Latitude, float Longitude)
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -2107,7 +2170,7 @@ namespace Wechat.Protocol
         public SnsUserPageResponse SnsUserPage(string fristPageMd5, string wxId, string toWxId, int maxid = 0)
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -2178,7 +2241,7 @@ namespace Wechat.Protocol
         public SnsTimeLineResponse SnsTimeLine(string wxId, string fristPageMd5 = "", int maxid = 0)
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -2248,7 +2311,7 @@ namespace Wechat.Protocol
         public SnsObjectOpResponse GetSnsObjectOp(ulong id, string wxId, SnsObjectOpType type)
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -2317,7 +2380,7 @@ namespace Wechat.Protocol
         public SnsPostResponse SnsPost(string wxId, string content, IList<string> BlackList, IList<string> WithUserList)
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -2407,7 +2470,7 @@ namespace Wechat.Protocol
         public SnsSyncResponse SnsSync(string wxId)
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -2465,7 +2528,7 @@ namespace Wechat.Protocol
         public micromsg.SnsUploadResponse SnsUpload(string wxId, Stream sm)
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -2571,7 +2634,7 @@ namespace Wechat.Protocol
         public micromsg.SnsCommentResponse SnsComment(ulong id, string wxId, string toWxId, int relpyCommentId, string content, SnsObjectType type)
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -2658,7 +2721,7 @@ namespace Wechat.Protocol
         public NewSendMsgRespone SendNewMsg(string wxId, string toWxId, string content, int type = 1)
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -2735,7 +2798,7 @@ namespace Wechat.Protocol
         public UploadVoiceResponse SendVoiceMessage(string wxId, string toWxId, byte[] buffer, VoiceFormat voiceFormat = VoiceFormat.MM_VOICE_FORMAT_AMR, int voiceLen = 100)
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -2812,7 +2875,7 @@ namespace Wechat.Protocol
         public micromsg.UploadMContactResponse UploadMContact(string wxId, string Mobile_, micromsg.Mobile[] UPMobile)
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -2877,7 +2940,7 @@ namespace Wechat.Protocol
         public NewSendMsgRespone SendVoiceMessage1(string wxId, string toWxId, string content, byte[] buffer, VoiceFormat voiceFormat = VoiceFormat.MM_VOICE_FORMAT_AMR, int voiceLen = 100, int type = 34)
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -2949,7 +3012,7 @@ namespace Wechat.Protocol
         public micromsg.FavSyncResponse FavSync(string wxId, byte[] keybuf = null)
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -3021,7 +3084,7 @@ namespace Wechat.Protocol
         public micromsg.BatchGetFavItemResponse GetFavItem(string wxId, int FavId)
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -3073,7 +3136,7 @@ namespace Wechat.Protocol
             {
                 throw new Exception("数据包可能有问题,请重新生成二维码登录");
             }
- 
+
             var BatchGetFavItemResponse_ = Util.Deserialize<micromsg.BatchGetFavItemResponse>(RespProtobuf);
             return BatchGetFavItemResponse_;
         }
@@ -3087,7 +3150,7 @@ namespace Wechat.Protocol
         {
 
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -3157,7 +3220,7 @@ namespace Wechat.Protocol
         public micromsg.AddFavItemResponse addFavItem(string wxId, string object_, string SourceId_ = "")
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -3211,7 +3274,7 @@ namespace Wechat.Protocol
             {
                 throw new Exception("数据包可能有问题,请重新生成二维码登录");
             }
- 
+
             var AddFavItemResponse_ = Util.Deserialize<micromsg.AddFavItemResponse>(RespProtobuf);
             return AddFavItemResponse_;
         }
@@ -3220,7 +3283,7 @@ namespace Wechat.Protocol
         public TenPayResponse TenPay(string wxId, enMMTenPayCgiCmd cgiCmd, string reqText = "", string reqTextWx = "")
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -3294,7 +3357,7 @@ namespace Wechat.Protocol
         public micromsg.UploadVideoResponse SendVideoMessage(string wxId, string toWxId, byte[] buffer, int VideoFrom = 0)
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -3390,7 +3453,7 @@ namespace Wechat.Protocol
         public UploadMsgImgResponse SendImageMessage(string wxId, string toWxId, byte[] buffer)
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -3497,7 +3560,7 @@ namespace Wechat.Protocol
         public micromsg.SendAppMsgResponse SendCardMsg(string Content, string toWxid, string wxId)
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -3570,7 +3633,7 @@ namespace Wechat.Protocol
         public micromsg.SendAppMsgResponse SendAppMsg(string Content, string toWxid, string wxId, int type = 8)
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -3644,7 +3707,7 @@ namespace Wechat.Protocol
         public VerifyUserResponese VerifyUser(string wxId, VerifyUserOpCode opCode, string Content, string antispamTicket, string value, byte sceneList = 0x0f)
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -3730,7 +3793,7 @@ namespace Wechat.Protocol
         public VerifyUserResponese VerifyUserList(string wxId, VerifyUserOpCode opCode, string Content, VerifyUser[] verifyUsers, byte sceneList = 0x0f)
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
@@ -3806,7 +3869,7 @@ namespace Wechat.Protocol
         public mm.command.NewInitResponse NewInit(CustomerInfoCache customerInfoCache)
         {
             //string key = ConstCacheKey.GetWxIdKey(wxId);
-            //var cache = CacheHelper.CreateInstance();
+            //var cache = RedisCache.CreateInstance();
             //var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             //if (customerInfoCache == null)
             //{
@@ -3867,99 +3930,194 @@ namespace Wechat.Protocol
         /// <param name="toWxid"></param>
         /// <param name="CompressType"></param>
         /// <returns></returns>
-        public byte[] GetMsgBigImg(long datatotalength, int MsgId, string wxId, string toWxid, uint CompressType = 1)
+        public byte[] GetMsgBigImg(long datatotalength, int MsgId, string wxId, string toWxid, int StartPos, int datalen, uint CompressType = 1)
         {
             string key = ConstCacheKey.GetWxIdKey(wxId);
-            var cache = CacheHelper.CreateInstance();
+            var cache = RedisCache.CreateInstance();
             var customerInfoCache = cache.Get<CustomerInfoCache>(key);
             if (customerInfoCache == null)
             {
                 throw new ExpiredException("缓存失效，请重新生成二维码登录");
             }
-            int Startpos = 0;//起始位置
-            int datalen = 30720;//数据分块长度
+
+
             //long datatotalength = 1238782;//根据需要选择下载 高清图还是缩略图 长度自然是对应 高清长度和缩略长度
             List<byte> downImgData = new List<byte>();
             var GetMsgImgResponse_ = new micromsg.GetMsgImgResponse();
-            while (Startpos != (int)datatotalength)
-            {//
-                int count = 0;
-                if (datatotalength - Startpos > datalen)
-                {
-                    count = datalen;
-                }
-                else
-                {
-                    count = (int)datatotalength - Startpos;
-                }
 
-                micromsg.SKBuiltinString_t ToUserName_ = new micromsg.SKBuiltinString_t();
-                ToUserName_.String = toWxid;
-
-                micromsg.SKBuiltinString_t FromUserName_ = new micromsg.SKBuiltinString_t();
-                FromUserName_.String = wxId;
-                micromsg.GetMsgImgRequest getMsgImg_ = new micromsg.GetMsgImgRequest()
-                {
-                    BaseRequest = new micromsg.BaseRequest()
-                    {
-                        SessionKey = customerInfoCache.BaseRequest.sessionKey,
-                        Uin = (uint)customerInfoCache.BaseRequest.uin,
-                        DeviceID = customerInfoCache.BaseRequest.devicelId,
-                        ClientVersion = customerInfoCache.BaseRequest.clientVersion,
-                        DeviceType = Encoding.UTF8.GetBytes(customerInfoCache.BaseRequest.osType),
-                        Scene = (uint)customerInfoCache.BaseRequest.scene
-                    },
-
-                    MsgId = (uint)MsgId,
-                    StartPos = (uint)Startpos,
-                    DataLen = (uint)count,
-                    TotalLen = (uint)datatotalength,
-                    CompressType = CompressType,//hdlength  1高清0缩略
-                    ToUserName = ToUserName_,
-                    FromUserName = FromUserName_
-                };
-
-                var src = Util.Serialize(getMsgImg_);
-
-                byte[] RespProtobuf = new byte[0];
-
-                int mUid = 0;
-                string cookie = null;
-                int bufferlen = src.Length;
-                //组包
-                byte[] SendDate = pack(src, 109, bufferlen, customerInfoCache.AesKey, customerInfoCache.PriKeyBuf, customerInfoCache.MUid, customerInfoCache.Cookie, 5, true, true);
-                //发包
-                byte[] RetDate = Util.HttpPost(SendDate, "/cgi-bin/micromsg-bin/getmsgimg");
-                if (RetDate.Length > 32)
-                {
-                    var packinfo = UnPackHeader(RetDate, out mUid, out cookie);
-                    //Console.WriteLine("CGI {0} BodyLength {1} m_bCompressed {2}", packinfo.CGI, packinfo.body.Length, packinfo.m_bCompressed);
-                    RespProtobuf = packinfo.body;
-                    if (packinfo.m_bCompressed)
-                    {
-                        RespProtobuf = Util.uncompress_aes(packinfo.body, customerInfoCache.AesKey);
-                    }
-                    else
-                    {
-                        RespProtobuf = Util.nouncompress_aes(packinfo.body, customerInfoCache.AesKey);
-                    }
-
-                }
-                else
-                {
-                    throw new ExpiredException("用户可能退出,请重新登陆");
-                }
-
-                GetMsgImgResponse_ = Util.Deserialize<micromsg.GetMsgImgResponse>(RespProtobuf);
-                if (GetMsgImgResponse_.Data == null) { continue; }
-                if (GetMsgImgResponse_.Data.iLen != 0)
-                {
-                    downImgData.AddRange(GetMsgImgResponse_.Data.Buffer);
-                    Startpos = Startpos + GetMsgImgResponse_.Data.Buffer.Length;
-                }
+            int count = 0;
+            if (datatotalength - StartPos >= datalen)
+            {
+                count = datalen;
+            }
+            else
+            {
+                count = (int)datatotalength - StartPos;
             }
 
-            return downImgData.ToArray();
+            micromsg.SKBuiltinString_t ToUserName_ = new micromsg.SKBuiltinString_t();
+            ToUserName_.String = toWxid;
+
+            micromsg.SKBuiltinString_t FromUserName_ = new micromsg.SKBuiltinString_t();
+            FromUserName_.String = wxId;
+            micromsg.GetMsgImgRequest getMsgImg_ = new micromsg.GetMsgImgRequest()
+            {
+                BaseRequest = new micromsg.BaseRequest()
+                {
+                    SessionKey = customerInfoCache.BaseRequest.sessionKey,
+                    Uin = (uint)customerInfoCache.BaseRequest.uin,
+                    DeviceID = customerInfoCache.BaseRequest.devicelId,
+                    ClientVersion = customerInfoCache.BaseRequest.clientVersion,
+                    DeviceType = Encoding.UTF8.GetBytes(customerInfoCache.BaseRequest.osType),
+                    Scene = (uint)customerInfoCache.BaseRequest.scene
+                },
+
+                MsgId = (uint)MsgId,
+                StartPos = (uint)StartPos,
+                DataLen = (uint)count,
+                TotalLen = (uint)datatotalength,
+                CompressType = CompressType,//hdlength  1高清0缩略
+                ToUserName = ToUserName_,
+                FromUserName = FromUserName_
+            };
+
+            var src = Util.Serialize(getMsgImg_);
+
+            byte[] RespProtobuf = new byte[0];
+
+            int mUid = 0;
+            string cookie = null;
+            int bufferlen = src.Length;
+            //组包
+            byte[] SendDate = pack(src, 109, bufferlen, customerInfoCache.AesKey, customerInfoCache.PriKeyBuf, customerInfoCache.MUid, customerInfoCache.Cookie, 5, true, true);
+            //发包
+            byte[] RetDate = Util.HttpPost(SendDate, "/cgi-bin/micromsg-bin/getmsgimg");
+            if (RetDate.Length > 32)
+            {
+                var packinfo = UnPackHeader(RetDate, out mUid, out cookie);
+                //Console.WriteLine("CGI {0} BodyLength {1} m_bCompressed {2}", packinfo.CGI, packinfo.body.Length, packinfo.m_bCompressed);
+                RespProtobuf = packinfo.body;
+                if (packinfo.m_bCompressed)
+                {
+                    RespProtobuf = Util.uncompress_aes(packinfo.body, customerInfoCache.AesKey);
+                }
+                else
+                {
+                    RespProtobuf = Util.nouncompress_aes(packinfo.body, customerInfoCache.AesKey);
+                }
+
+            }
+            else
+            {
+                throw new ExpiredException("用户可能退出,请重新登陆");
+            }
+
+            GetMsgImgResponse_ = Util.Deserialize<micromsg.GetMsgImgResponse>(RespProtobuf);
+            if (GetMsgImgResponse_.Data != null)
+            {
+                return GetMsgImgResponse_.Data.Buffer;
+            }
+            return null;
+
+
+        }
+
+        /// <summary>
+        /// 获取视频
+        /// </summary>
+        /// <param name="wxId"></param>
+        /// <param name="toWxid"></param>
+        /// <param name="MsgId"></param>
+        /// <param name="datatotalength"></param>
+        /// <param name="StartPos"></param>
+        /// <param name="datalen"></param>
+        /// <param name="TotalLen"></param>
+        /// <returns></returns>
+        public byte[] GetVideo(string wxId, string toWxid, int MsgId, long datatotalength, int StartPos, int datalen, uint CompressType = 1)
+        {
+            string key = ConstCacheKey.GetWxIdKey(wxId);
+            var cache = RedisCache.CreateInstance();
+            var customerInfoCache = cache.Get<CustomerInfoCache>(key);
+            if (customerInfoCache == null)
+            {
+                throw new ExpiredException("缓存失效，请重新生成二维码登录");
+            }
+            int Startpos = 0;//起始位置 
+            //long datatotalength = 1238782;//根据需要选择下载 高清图还是缩略图 长度自然是对应 高清长度和缩略长度
+            List<byte> downImgData = new List<byte>();
+            var GetMsgImgResponse_ = new micromsg.DownloadVideoResponse();
+
+
+
+            micromsg.SKBuiltinString_t ToUserName_ = new micromsg.SKBuiltinString_t();
+            ToUserName_.String = toWxid;
+
+            micromsg.SKBuiltinString_t FromUserName_ = new micromsg.SKBuiltinString_t();
+            FromUserName_.String = wxId;
+            micromsg.DownloadVideoRequest downloadVideoRequest = new micromsg.DownloadVideoRequest()
+            {
+                BaseRequest = new micromsg.BaseRequest()
+                {
+                    SessionKey = customerInfoCache.BaseRequest.sessionKey,
+                    Uin = (uint)customerInfoCache.BaseRequest.uin,
+                    DeviceID = customerInfoCache.BaseRequest.devicelId,
+                    ClientVersion = customerInfoCache.BaseRequest.clientVersion,
+                    DeviceType = Encoding.UTF8.GetBytes(customerInfoCache.BaseRequest.osType),
+                    Scene = (uint)customerInfoCache.BaseRequest.scene
+                },
+
+                MsgId = (uint)MsgId,
+                StartPos = (uint)Startpos,
+                NetworkEnv = 1,
+                TotalLen = (uint)datalen,
+                MxPackSize = (uint)datatotalength,
+
+
+            };
+
+            var src = Util.Serialize(downloadVideoRequest);
+
+            byte[] RespProtobuf = new byte[0];
+
+            int mUid = 0;
+            string cookie = null;
+            int bufferlen = src.Length;
+            //组包
+            byte[] SendDate = pack(src, 150, bufferlen, customerInfoCache.AesKey, customerInfoCache.PriKeyBuf, customerInfoCache.MUid, customerInfoCache.Cookie, 5, true, true);
+            //发包
+            byte[] RetDate = Util.HttpPost(SendDate, "/cgi-bin/micromsg-bin/downloadvideo");
+            if (RetDate.Length > 32)
+            {
+                var packinfo = UnPackHeader(RetDate, out mUid, out cookie);
+                //Console.WriteLine("CGI {0} BodyLength {1} m_bCompressed {2}", packinfo.CGI, packinfo.body.Length, packinfo.m_bCompressed);
+                RespProtobuf = packinfo.body;
+                if (packinfo.m_bCompressed)
+                {
+                    RespProtobuf = Util.uncompress_aes(packinfo.body, customerInfoCache.AesKey);
+                }
+                else
+                {
+                    RespProtobuf = Util.nouncompress_aes(packinfo.body, customerInfoCache.AesKey);
+                }
+
+            }
+            else
+            {
+                throw new ExpiredException("用户可能退出,请重新登陆");
+            }
+
+            GetMsgImgResponse_ = Util.Deserialize<micromsg.DownloadVideoResponse>(RespProtobuf);
+
+            if (GetMsgImgResponse_.Data.iLen != 0)
+            {
+                return GetMsgImgResponse_.Data.Buffer.ToArray();
+
+            }
+
+
+            return null;
+
+
         }
 
 

@@ -28,7 +28,7 @@ namespace Wechat.Api.Filters
                 Message = actionExecutedContext.Exception.Message
             };
 
-            Logger.Error(actionExecutedContext.Exception.Message, actionExecutedContext.Exception);
+            Logger.GetLog<ExceptionAttribute>().Error(actionExecutedContext.Exception.Message, actionExecutedContext.Exception);
             actionExecutedContext.Response = await response.ToHttpResponseAsync();
         }
     }
